@@ -33,7 +33,6 @@ public class User {
 	 private Long id;
 	
 	 @NotNull(message = "User's name cannot be empty")
-	 @UniqueElements
 	 private String username;
 	 @Size(min=8, max=12, message = "Password must be between 8 and 12 characters")
 	 private String password;
