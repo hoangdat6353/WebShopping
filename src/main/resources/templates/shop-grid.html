@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="App Shopping">
+    <meta name="keywords" content="App, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AppShopping</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+	<link rel="icon" href="@{img/other/favicon.png}" type="image/png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/slicknav.min.css" type="text/css">
+
+    <link rel="stylesheet" href="@{css/style.css}" type="text/css">
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- option Begin -->
+    <div class="option_menu_overlay"></div>
+    <div class="option_menu_wrapper">
+        <div class="option_menu_logo">
+            <a><img src="@{img/other/logo.png}" alt=""></a>
+        </div>
+        <div class="option_menu_cart">
+            <ul>
+				<?php
+				if (isset($_SESSION['userLogin']))
+				{
+				echo "<li><i class='fa fa-heart'></i></li>";
+				echo "<div class='header_cart_price'>Số tiền bạn có: ".$row_nguoidung['sodu']."  vnđ </div>";
+				}
+				?>
+			</ul>
+        </div>
+        <div class="option_menu_widget">
+            
+            <div class="header_top_right_auth">
+                 <?php
+					if (!isset($_SESSION['userLogin']))
+						{
+							echo '<a href="login"><i class="fa fa-user"></i> Đăng nhập</a>';
+						}
+					else
+						{
+							echo'<a href="logout"><i class="fa fa-user"></i> Đăng xuất</a>';
+						}
+				?>
+            </div>
+        </div>
+		<!-- Navigation mobile -->
+        <nav class="option_menu_nav mobile-menu">
+            <ul>
+                <li><a href="index.php">Trang Chủ</a></li>
+                <li class="active"><a href="shop-grid">Bảng xếp hạng</a></li>
+               
+            </ul>
+        </nav>
+        <div id="mobile-menu-wrap"></div>
+        <div class="header_top_right_social">
+         
+            <?php
+			if (isset($_SESSION['userLogin']))
+				{
+                    echo "<a href='account-profile'><i class='fa fa-user'></i> Xin chào, ".$Username."</a>";
+
+				}
+			?>
+        </div>
+		<div class="option_menu_contact">
+            <ul>
+                <li><i class="fa fa-envelope"></i> appshop@gmail.com</li>
+                <li>Luôn luôn phong cách!</li>
+            </ul>
+        </div>
+        
+    </div>
+    <!-- option End -->
+
+    <!-- Khung Header -->
+    <header class="header">
+        <div class="header_top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header_top_left">
+                            <ul>
+                                <li><i class="fa fa-envelope"></i> appshop@gmail.com</li>
+                                <li>Luôn luôn phong cách!</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header_top_right">
+                            <div class="header_top_right_social">
+                              
+                               <?php
+								if (isset($_SESSION['userLogin']))
+								{
+									echo "<a href='account-profile.php'><i class='fa fa-user'></i> Xin chào, ".$Username."</a>";
+
+								}
+								?>
+                            </div>
+                           
+                            <div class="header_top_right_auth">
+                                <?php
+								if (!isset($_SESSION['userLogin']))
+								{
+									echo '<a href="login"><i class="fa fa-user"></i> Đăng nhập</a>';
+								}
+								else
+								{
+									echo'<a href="logout"><i class="fa fa-user"></i> Đăng xuất</a>';
+								}
+								?>
+                            </div>
+							
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="header_logo">
+                        <a href="index.php"><img src="@{img/other/logo.png}" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <nav class="header_menu">
+                        <ul>
+                            <li><a href="index">Trang Chủ</a></li>
+							<li class="active"><a href="shop-grid">Bảng xếp hạng</a></li>						
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3">
+                    <div class="header_cart">
+                        <ul>
+                            <?php
+							if (isset($_SESSION['userLogin']))
+							{
+							echo "<li><i class='fa fa-heart'></i></li>";
+							echo "<div class='header_cart_price'>Số tiền bạn có: ".$row_nguoidung['sodu']."  vnđ </div>";
+							}
+							?>
+                        </ul>
+						
+                    </div>
+                </div>
+            </div>
+            <div class="option_open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Khung Header -->
+
+    <!-- brave Section Begin -->
+    <section class="brave brave-normal">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="brave_categories">
+                        <div class="brave_categories_all">
+                            <i class="fa fa-bars"></i>
+                            <span>Thể loại<span class="fa fa-angle-down pull-right pt-1"></span></span>
+                        </div>
+                         <?php
+						$sql_cate = "SELECT * FROM theloai";
+						$query_cate = mysqli_query($mysqli,$sql_cate);
+											
+						if (mysqli_num_rows($query_cate) > 0)
+						{	echo '<ul>';
+							while ($row_cate = mysqli_fetch_assoc($query_cate))
+							{
+								echo '<li><a class="smooth-goto" href="shop-type.php?theloai='.$row_cate['tentheloai'].'">'.$row_cate['tentheloai'].'</a></li>';
+							}
+						}
+							echo '
+							<li><a class="smooth-goto" href="shop-type.php?hinhthucmua=Miễn phí">Miễn phí</a></li>
+                            <li><a class="smooth-goto" href="shop-type.php?hinhthucmua=Trả phí">Tính phí</a></li>
+                        </ul> ';
+						
+						?>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="brave_search">
+                        <div class="brave_search_form">
+                            <form action="shop-search.php" method="POST">
+                                <input id="searchScroll" type="text" name="searching" placeholder="Tìm kiếm trên AppShopping">
+                                <button type="submit" name="submitSearch" class="site-btn">TÌM KIẾM</button>
+                            </form>
+                        </div>
+                        <div class="brave_search_phone">
+                            <div class="brave_search_phone_icon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <div class="brave_search_phone_text">
+                                <h5>+84 908.834.238</h5>
+                                <span>Hỗ trợ 24/7</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- brave Section End -->
+	
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="@{img/other/breadcrumb.jpg}">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb_text">
+                        <h2 href="shop-grid.php">Bảng Xếp Hạng</h2>
+                        <div class="breadcrumb_option">
+                            <a href="index.php">Trang chủ</a>
+                            <span>Bảng xếp hạng</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+    <!-- apps Section Begin -->
+	<?php
+	$sql_pay = "SELECT * FROM ungdung WHERE hinhthucmua ='Trả phí' AND trangthai ='Publish' ORDER BY luottai DESC LIMIT 6";
+	$query_pay = mysqli_query($mysqli,$sql_pay);
+	
+	
+	echo "<section class='apps spad'>";
+        echo "<div class='container'>";
+		echo "<div class='row justify-content-center'>";
+        echo "<div class='col-lg-10 col-md-7'>";
+	if (mysqli_num_rows($query_pay) > 0)
+	{
+	
+					 echo "<div class='apps_most'>";
+						echo "<div class='section-title'>";
+                            echo "<h2>Ứng dụng được mua nhiều nhất</h2>";
+                        echo "</div>";
+						echo "<div class='row'>";
+                             echo "<div class='apps_most_slider owl-carousel'>";
+									while ($row_pay = mysqli_fetch_assoc($query_pay))
+									{
+										?>
+										<?php									
+												
+										echo "<div class='col-lg-4'>";
+											echo "<div class='apps_most_item'>";
+                                        echo "<div class='apps_most_item_pic set-bg'
+                                            data-setbg='img/featured/".$row_pay['iconimage']."'>";
+								
+											echo "<div class='apps_most_percent'>TOP</div>";
+                                            echo "<ul class='apps_item_pic_hover'>";
+                                                echo "<li><a><i class='fa fa-heart'></i></a></li>";
+                                                echo "<li><a href='shop-details.php?appName=".$row_pay['tenungdung']."'><i class='fa fa-shopping-cart'></i></a></li>";
+                                            echo "</ul>";
+                                        echo "</div>";
+                                        echo "<div class='apps_most_item_text'>";
+                                            echo "<span>".$row_pay['theloai']."</span>";
+                                            echo "<h5><a href='shop-details.php?appName=".$row_pay['tenungdung']."'>".$row_pay['tenungdung']."</a></h5>";
+                                            echo "<div class='apps_item_price'>".$row_pay['hinhthucmua']."</div>";
+                                        echo "</div>";
+                                   echo " </div>";
+                               echo " </div>";
+										?>
+										<?php
+									}
+							echo "</div>";
+						echo "</div>";	 
+					 echo "</div>";
+	}
+		 echo "</div>";
+			echo "</div>";
+		echo "</div>";
+	echo "</section>";
+	?>
+	
+	<?php
+	$sql_free = "SELECT * FROM ungdung WHERE hinhthucmua ='Miễn phí' AND trangthai ='Publish' ORDER BY luottai DESC LIMIT 6";
+	$query_free = mysqli_query($mysqli,$sql_free);
+	
+	
+	echo "<section class='apps spad'>";
+        echo "<div class='container'>";
+		echo "<div class='row justify-content-center'>";
+        echo "<div class='col-lg-10 col-md-7'>";
+	if (mysqli_num_rows($query_free) > 0)
+	{
+	
+					 echo "<div class='apps_most'>";
+						echo "<div class='section-title'>";
+                            echo "<h2>Ứng dụng miễn phí được cài đặt nhiều nhất</h2>";
+                        echo "</div>";
+						echo "<div class='row'>";
+                             echo "<div class='apps_most_slider owl-carousel'>";
+									while ($row_free = mysqli_fetch_assoc($query_free))
+									{
+										?>
+										<?php									
+												
+										echo "<div class='col-lg-4'>";
+											echo "<div class='apps_most_item'>";
+                                        echo "<div class='apps_most_item_pic set-bg'
+                                            data-setbg='img/featured/".$row_free['iconimage']."'>";
+								
+											echo "<div class='apps_most_percent'>TOP</div>";
+                                            echo "<ul class='apps_item_pic_hover'>";
+                                                echo "<li><a><i class='fa fa-heart'></i></a></li>";
+                                                echo "<li><a href='shop-details.php?appName=".$row_free['tenungdung']."'><i class='fa fa-shopping-cart'></i></a></li>";
+                                            echo "</ul>";
+                                        echo "</div>";
+                                        echo "<div class='apps_most_item_text'>";
+                                            echo "<span>".$row_free['theloai']."</span>";
+                                            echo "<h5><a href='shop-details.php?appName=".$row_free['tenungdung']."'>".$row_free['tenungdung']."</a></h5>";
+                                            echo "<div class='apps_item_price'>".$row_free['hinhthucmua']."</div>";
+                                        echo "</div>";
+                                   echo " </div>";
+                               echo " </div>";
+										?>
+										<?php
+									}
+							echo "</div>";
+						echo "</div>";	 
+					 echo "</div>";
+	}
+		 echo "</div>";
+			echo "</div>";
+		echo "</div>";
+	echo "</section>";
+	?>
+	
+	
+            
+	
+    <!-- apps Section End -->
+
+    <!-- Footer Section Begin -->
+    <footer class="footer spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer_about">
+                        <div class="footer_about_logo">
+                            <a href="./index.html"><img src="img/other/logo.png" alt=""></a>
+                        </div>
+                        <ul>
+                            <li>Ứng dụng: AppShopping</li>
+                            <li>Liên hệ: +84 908.834.238</li>
+                            <li>Email: appshop@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 offset-lg-1">
+                    <div class="footer_widget">
+                        <h6>Có thể bạn cần</h6>
+                        <ul>
+                            <li><a href="./index.php">Trang chủ</a></li>
+                            <li><a href="./shop-grid.php">Bảng xếp hạng</a></li>
+							<li><a class="smooth-goto" href="#searchScroll">Tìm kiếm</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-12">
+                    <div class="footer_widget">
+                        <h6>Tham gia bảng tin của chúng tôi</h6>
+                        <p>Để lại E-mail để có thể nhận được những ưu đãi.</p>
+						<form>
+							<input id="sub" type="email" placeholder="Nhập E-mail của bạn">
+							<button onclick="Subcribe()" type="button" class="site-btn">Gửi</button>
+						</form>
+                       
+                    
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="footer_copyright">
+                        <div class="footer_copyright_text">
+							<p><!-- Phần dưới Footer -->
+								&copy;<script>document.write(new Date().getFullYear());</script> AppShopping | Trang web được phát triển <i class="fa fa-heart" aria-hidden="true"></i> bởi Nhóm sinh viên đại học Tôn Đức Thắng
+							</p>
+						</div>
+                        <div class="footer_copyright_payment"><img src="{img/other/payment-item.png}" alt=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Phần dưới Footer -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/jquery.slicknav.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="@{js/main.js}"></script>
+	 
+
+
+</body>
+
+</html>

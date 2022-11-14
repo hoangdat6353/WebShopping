@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="css/style1.css" type="text/css">
+	<meta charset="UTF-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<title> Đăng xuất hệ thống App Shopping </title>
+	
+</head>
+
+<body>
+<a href="index"><img class="logoImg" src="@{img/other/logo.png}" style="width:325px;height:70px"></a>
+
+<div class="container" id="container">
+	<div class="form-container sign-in-container">
+		<form>
+			<h1>Đăng xuất thành công</h1>
+            <p>Tài khoản của bạn đã được đăng xuất khỏi hệ thống.</p>
+            <p>Nhấn <a href="login">vào đây</a> để trở về trang đăng nhập, hoặc trang web sẽ tự động chuyển hướng sau <span id="counter" class="text-danger">10</span> giây nữa.</p>
+		</form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-left">
+				<h1>Chào mừng đến với hệ thống</h1>
+				<p>Để có thể sử dụng những chức năng, vui lòng đăng ký</p>
+				<button class="ghost" id="signIn">Đăng Nhập</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+				<h1>Hẹn gặp lại</h1>
+				<p class="signUpIntroduction">Hi vọng bạn đã có 1 khoảng thời gian vui vẻ ở Website của chúng tôi <3</p>
+				
+			</div>
+		</div>
+	</div>
+	
+	</body>
+		<script>
+		let counter = document.getElementById('counter');
+		let count = 0;
+		let wait = 10;
+		
+		let id = setInterval(() => 
+		{
+			count++;
+			let remain = wait - count;
+			
+			if (remain >= 0)
+			{
+				counter.innerHTML = remain;
+			}
+			else
+			{
+				clearInterval(id);
+				window.location.href = 'login.php'
+			}
+		}, 1000)
+	</script>
+	
+
+</div>
+
+</html>

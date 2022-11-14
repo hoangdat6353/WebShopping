@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+
+		<title>Administator</title>
+
+		<meta username="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+	
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css" />
+		<link rel="stylesheet" href="@{css/ace.min.css}" class="ace-main-stylesheet" id="main-ace-style" />
+		<link rel="stylesheet" href="@{css/style2.css}" />
+
+	</head>
+
+	<body class="no-skin">
+		<div id="navbar" class="navbar navbar-default ace-save-state">
+			<div class="navbar-container ace-save-state" id="navbar-container">
+				<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+					<span class="sr-only"></span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+				</button>
+
+				<div class="navbar-header pull-left">
+					<a href="index.php" class="navbar-brand">
+						<small>
+							<a href="index.php"><img class="logo" src="img/other/logo-admin.png" alt=""></a>
+						</small>
+					</a>
+				</div>
+
+				<div class="navbar-buttons navbar-header pull-right" role="navigation">
+					<ul class="nav ace-nav">
+						<li class="light-blue dropdown-modal">
+							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+								<img class="nav-user-photo" src="images/user.jpg" alt="" />
+								<span class="user-info">
+									<small>Xin chào,</small>
+									admin
+								</span>
+
+								<i class="ace-icon fa fa-caret-down"></i>
+							</a>
+
+							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">							
+								<li>
+									<a href="logout.php">
+										<i class="ace-icon fa fa-power-off"></i>
+										Đăng xuất
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div><!-- /.navbar-container -->
+		</div>
+
+		<div class="main-container ace-save-state" id="main-container">
+			
+
+			<div id="sidebar" class="sidebar responsive ace-save-state">
+				
+				<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+					<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+						<button class="btn btn-success">
+							<i class="ace-icon fa fa-signal"></i>
+						</button>
+
+						<button class="btn btn-info">
+							<i class="ace-icon fa fa-pencil"></i>
+						</button>
+
+						<button class="btn btn-warning">
+							<i class="ace-icon fa fa-users"></i>
+						</button>
+
+						<button class="btn btn-danger">
+							<i class="ace-icon fa fa-cogs"></i>
+						</button>
+					</div>
+
+					<div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+						<span class="btn btn-success"></span>
+
+						<span class="btn btn-info"></span>
+
+						<span class="btn btn-warning"></span>
+
+						<span class="btn btn-danger"></span>
+					</div>
+				</div><!-- /.sidebar-shortcuts -->
+
+				<ul class="nav nav-list">
+					<li class="">
+						<a href="index-admin.php">
+							<i class="menu-icon fa fa-tachometer"></i>
+							<span class="menu-text"> Thống kê tổng quan </span>
+						</a>
+
+						<b class="arrow"></b>
+					</li>
+					<li class="">
+						<a href="appmanage.php">
+							<i class="menu-icon fa fa-list-alt"></i>
+							<span class="menu-text"> Duyệt ứng dụng </span>
+						</a>
+						<b class="arrow"></b>
+					</li>
+					
+					<li class="active">
+						<a href="#" class="dropdown-toggle">
+							<i class="menu-icon fa fa-list"></i>
+							<span class="menu-text"> Chức năng </span>
+
+							<b class="arrow fa fa-angle-down"></b>
+						</a>
+						<b class="arrow"></b>
+						<ul class="submenu">
+							<li class="active">
+								<a href="acc.php">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Quản lý tài khoản
+								</a>
+								<b class="arrow"></b>
+							</li>
+						</ul>
+					
+						<ul class="submenu">
+							<li class="">
+								<a href="categories.php">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Quản lý thể loại
+								</a>
+								<b class="arrow"></b>
+							</li>
+						</ul>
+						<ul class="submenu">
+							<li class="">
+								<a href="cards.php">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Quản lý thẻ nạp
+								</a>
+								<b class="arrow"></b>
+							</li>
+						</ul>
+					</li>
+				</ul><!-- /.nav-list -->
+				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+					<i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+				</div>
+			</div>
+			<div class="main-content">
+				<div class="main-content-inner">
+					<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+						<ul class="breadcrumb">
+							<li>
+								<i class="ace-icon fa fa-home home-icon"></i>
+								<a href="index.php">Trang Chủ</a>
+							</li>
+							<li>
+								<a href="#">Chức năng</a>
+							</li>
+							<li class="active">Quản lý tài khoản</li>
+						</ul>
+					</div>
+						<div class="page-header">
+							<h1>
+								Chức năng
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									Quản lý tài khoản của người dùng
+								</small>
+							</h1>
+						</div><!-- /.page-header -->
+					<div class="container">
+						
+                <div class="col-md-11" id="table">
+                    <table class="table table-hover mt-4">
+                        <thead >
+                            <tr>
+                                <th>id</th>	
+                                <th>Tên tài khoản</th>
+                                <th>Email</th>
+                                <th>Mật khẩu</th>
+								<th>Cấp độ quyền hạn</th>
+                                <th class="text-center">Tùy chọn</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+    </div>
+    <!-- text-danger -->
+    <!-- Hộp thoại cảnh báo -->
+    <div class="modal fade" id="dialog" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id="dialog-header" class="modal-header">
+                    <h4 id="dialog-title" class="modal-title"></h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-body-message"></p>
+                </div>
+            </div>
+        </div>
+    </div><!-- Hộp thoại cảnh báo -->
+
+    <!-- Hộp thoại xác nhận xóa tài khoản -->
+    <div class="modal fade" id="confirm-removal-modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Xóa tài khoản</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc chắn muốn xóa tài khoản?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="delete-button" class="btn btn-danger" data-dismiss="modal"
+                        onclick="remove()">Xóa</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Không</button>
+                </div>
+            </div>
+        </div>
+    </div><!-- Hộp thoại xác nhận xóa tài khoản -->
+
+    <!-- Hộp thoại cập nhật tài khoản -->
+    <div class="modal fade" id="confirm-edit-modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-primary">Cập nhật thông tin tài khoản</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Cập nhật thông tin</p>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="username">Tên tài khoản:</label>
+                        <input style="width:100%" type="text" class="form-control" id="name_update" name="username" placeholder="Nhập tên tài khoản">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Email:</label>
+                        <input style="width:100%" type="email" class="form-control" id="email_update" name="email"
+                            placeholder="Nhập Email">
+                    </div>
+                   
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="update-button" class="btn btn-primary" data-dismiss="modal"
+                        onclick="update()">Cập
+                        nhật</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
+                </div>
+            </div>
+        </div>
+    </div><!-- Hộp thoại cập nhật tài khoản -->
+						
+					</div><!-- /.page-content -->
+				</div>
+			</div><!-- /.main-content -->
+
+			<div class="footer">
+				<div class="footer-inner">
+					<div class="footer-content">
+						<span class="bigger-120">
+							AppShopping &copy; 2021
+						</span>
+
+						&nbsp; &nbsp;
+						<span class="action-buttons">
+							<a>
+								<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>
+							</a>
+
+							<a>
+								<i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>
+							</a>
+
+							<a>
+								<i class="ace-icon fa fa-rss-square orange bigger-150"></i>
+							</a>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+				<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+			</a>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<script src="js/ace.min.js"></script>
+		<script src="js/main4.js"></script>
+
+		
+
+		
+				
+	</body>
+</html>

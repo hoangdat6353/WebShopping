@@ -1,0 +1,41 @@
+#table {
+    height: 350px;
+    overflow: auto;
+}
+
+.add-categories,
+.remove-all {
+    width: 50%;
+}
+
+#username,
+#email,
+#password {
+    width: 50%;
+}
+
+.logo {
+    height: 100px;
+    margin: -10px -20px -10px -50px;
+}
+
+.label,
+sub,
+sup {
+    vertical-align: baseline
+}
+
+hr,
+img {
+    border: 0;
+}
+
+.no-skin,
+figure {
+    margin: 0
+}
+
+.form-group {
+    margin-bottom: 30px;
+    padding-right: 30px;
+}

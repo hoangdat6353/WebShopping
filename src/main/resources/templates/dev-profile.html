@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	
+    <title>Thông tin cá nhân</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="icon" href="img/other/favicon.png" type="image/png">
+	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" type="text/css">
+    <link rel="stylesheet" href="@{css/style.css}" type="text/css">
+	
+  
+</head>
+
+<body class="acc">
+    <!-- option Begin -->
+    <div class="option_menu_overlay"></div>
+    <div class="option_menu_wrapper">
+        <div class="option_menu_logo">
+            <a><img src="@{img/other/logo.png}" alt=""></a>
+        </div>
+        <div class="option_menu_cart">
+            <ul>
+				<li><i class="fa fa-heart"></i></li>
+				<div class="header_cart_price">Số tiền bạn có: <?php echo $money ?></div>
+			</ul>
+        </div>
+        <div class="option_menu_widget">
+            
+            <div class="header_top_right_auth">
+                <a href="logout.php"><i class="fa fa-user"></i> Đăng xuất</a>
+            </div>
+        </div>
+		<!-- Navigation mobile -->
+        <nav class="option_menu_nav mobile-menu">
+            <ul>
+                <li class=""><a href="index.php">Trang Chủ</a></li>
+                <li><a href="shop-grid.php">Bảng xếp hạng</a></li>
+                
+            </ul>
+        </nav>
+        <div id="mobile-menu-wrap"></div>
+        <div class="header_top_right_social">
+            <a><i class="fa fa-facebook"></i></a>
+            <a><i class="fa fa-twitter"></i></a>
+            <a><i class="fa fa-linkedin"></i></a>
+            <a><i class="fa fa-pinterest-p"></i></a>
+        </div>
+		<div class="option_menu_contact">
+            <ul>
+                <li><i class="fa fa-envelope"></i> appshop@gmail.com</li>
+                <li>Luôn luôn phong cách!</li>
+            </ul>
+        </div>
+        
+    </div>
+    <!-- option End -->
+
+    <!-- Khung Header -->
+    <header class="header">
+        <div class="header_top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header_top_left">
+                            <ul>
+                                <li><i class="fa fa-envelope"></i> appshop@gmail.com</li>
+                                <li>Luôn luôn phong cách!</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header_top_right">
+                            <div class="header_top_right_social">
+                                <a><i class="fa fa-facebook"></i></a>                 
+                                <a href="index-dev.php"><i class='fa fa-user'></i> Trang quản lý nhà phát triển </a>	         
+								<a><i class='fa fa-user'></i> Cấp độ tài khoản: Developer </a>															
+							</div>
+                           
+                            <div class="header_top_right_auth">
+                                <a href="logout.php"><i class="fa fa-user"></i> Đăng xuất</a>
+                            </div>
+							
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="header_logo">
+                        <a href="index.php"><img src="@{img/other/logo.png}" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <nav class="header_menu">
+                        <ul>
+                            <li class=""><a href="index.php">Trang Chủ</a></li>
+							<li><a href="shop-grid.php">Bảng xếp hạng</a></li>			
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3">
+                    <div class="header_cart">
+                        <ul>
+                            <li><i class="fa fa-heart"></i></li>
+							<div class="header_cart_price">Số tiền bạn có: <?php echo $money ?> vnđ</div>
+                        </ul>
+						
+                    </div>
+                </div>
+            </div>
+            <div class="option_open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Khung Header -->
+
+<div class="container">
+<div class="row gutters">
+<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+	<div class="card-body">
+		<div class="account-settings">
+			<div class="user-profile">
+				<div class="user-avatar">
+					<?php		
+						$sql = "SELECT * FROM devimageprofile WHERE id=(SELECT max(id) FROM devimageprofile) and username = '$Username'";
+						$result = mysqli_query($mysqli,$sql);
+						$row = mysqli_fetch_assoc($result);
+						if (mysqli_num_rows($result) > 0)
+						{
+							echo "<div id='img_div' >";
+								echo "<img src=' images/".$row['imagename']."'>";
+							echo "</div>";
+						}
+					?>
+					
+				</div>
+				<h5 class="user-name"><?php echo $row_dev['devname'] ?></h5>
+				
+				<div id="content">
+					<form method="POST" action ="dev-image-upload.php" enctype = "multipart/form-data">
+						<div>
+							<label for="uploadImage">Bấm vào đây để chọn ảnh </label>
+							<input id="uploadImage" type="file" name="image" style="display:none">
+							<div class="text-center">
+							<button type="submit" id="submitDevImageProfile" name="submitDevImageProfile" class="btn btn-danger">Cập nhật logo nhà phát triển</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+
+
+	<div class="card-body">
+		<form action="update-dev-profile.php" method ="POST">
+		<div class="row gutters">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<h6 class="mb-2 text-primary">Thông tin cá nhân</h6>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="fullName">Họ tên:</label>
+					<input name="fullname" type="text" class="form-control" id="fullName" placeholder="<?php echo $row_dev['devname'] ?> ">
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="phone">Số điện thoại:</label>
+					<input name="phone" type="text" class="form-control" id="phone" placeholder="<?php echo $row_dev['devphone'] ?> ">
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="address">Địa chỉ:</label>
+					<input name="address" type="text" class="form-control" id="address" placeholder="<?php echo $row_dev['devaddress'] ?>">
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="email">Email:</label>
+					<input type="text" id="email" placeholder="<?php echo $row_dev['devemail'] ?>" name="email" class="form-control">
+				</div>
+			</div>
+		</div>
+		<div class="row gutters">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<div class="text-right">
+					<button type="submit" id="submitUpdateDevProfile" name="submitUpdateDevProfile" class="btn btn-primary">Cập nhật thông tin</button>
+				</div>
+			</div>
+		</div>
+		</form>
+		<div class="row gutters">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<h6 class="mb-2 text-danger">Thông tin chứng minh thư:</h6>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="uploadCmtFront">Mặt trước:</label><br>
+					<?php		
+						$sql = "SELECT * FROM nhaphattrien WHERE username = '$Username'";
+						$result = mysqli_query($mysqli,$sql);
+						$row = mysqli_fetch_assoc($result);
+						if (mysqli_num_rows($result) > 0)
+						{
+							echo "<div id='imgCmtFront_div' >";
+								echo "<img src=' images/".$row['imagecmt1']."'>";
+							echo "</div>";
+						}
+					?>
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="uploadCmtBack"> Mặt sau:</label><br>
+					<?php		
+						$sql = "SELECT * FROM nhaphattrien WHERE username = '$Username'";
+						$result = mysqli_query($mysqli,$sql);
+						$row = mysqli_fetch_assoc($result);
+						if (mysqli_num_rows($result) > 0)
+						{
+							echo "<div id='img_CmtBackdiv' >";
+								echo "<img src=' images/".$row['imagecmt2']."'>";
+							echo "</div>";
+						}
+					?>
+				</div>
+			</div>
+		</div>
+	
+	
+		
+			
+	
+	</div>
+</div>
+</div>
+</div>
+</div>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="@{js/main.js}"></script>>
+</body>
+</html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>Administator</title>
+    <meta username="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css" />
+    <link rel="stylesheet" href="@{css/ace.min.css}" class="ace-main-stylesheet" id="main-ace-style" />
+	<link rel="stylesheet" href="@{css/style2.css}" />
+
+    
+</head>
+
+<body class="no-skin">
+    <div id="navbar" class="navbar navbar-default ace-save-state">
+        <div class="navbar-container ace-save-state" id="navbar-container">
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+					<span class="sr-only"></span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+				</button>
+
+            <div class="navbar-header pull-left">
+                <a href="index.php" class="navbar-brand">
+                    <small>
+							<a href="index.php"><img class="logo" src="@{./img/other/logo-dev-UI.png}" alt=""></a>
+						</small>
+                </a>
+            </div>
+
+            <div class="navbar-buttons navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav">
+                    <li class="light-blue dropdown-modal">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <img class="nav-user-photo" src="@{images/user.jpg}" alt="" />
+                            <span class="user-info">
+									<small>Xin chào,</small>
+									<?php echo $devName ?>
+								</span>
+
+                            <i class="ace-icon fa fa-caret-down"></i>
+                        </a>
+
+                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                            <li>
+                                <a href="dev-profile.php">
+                                    <i class="ace-icon fa fa-user"></i> Hồ sơ cá nhân
+                                </a>
+                            </li>
+
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="logout.php">
+                                    <i class="ace-icon fa fa-power-off"></i> Đăng xuất
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-container -->
+    </div>
+
+    <div class="main-container ace-save-state" id="main-container">
+        <div id="sidebar" class="sidebar responsive ace-save-state">
+            <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+                <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+                    <button class="btn btn-success">
+							<i class="ace-icon fa fa-signal"></i>
+						</button>
+
+                    <button class="btn btn-info">
+							<i class="ace-icon fa fa-pencil"></i>
+						</button>
+
+                    <button class="btn btn-warning">
+							<i class="ace-icon fa fa-users"></i>
+						</button>
+
+                    <button class="btn btn-danger">
+							<i class="ace-icon fa fa-cogs"></i>
+						</button>
+                </div>
+
+                <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+                    <span class="btn btn-success"></span>
+
+                    <span class="btn btn-info"></span>
+
+                    <span class="btn btn-warning"></span>
+
+                    <span class="btn btn-danger"></span>
+                </div>
+            </div>
+            <!-- /.sidebar-shortcuts -->
+
+            <ul class="nav nav-list">
+                <li class="">
+                    <a href="index-dev.php">
+                        <i class="menu-icon fa fa-tachometer"></i>
+                        <span class="menu-text"> Thống kê tổng quan </span>
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+                <li class="">
+                    <a href="approval.php">
+                        <i class="menu-icon fa fa-list-alt"></i>
+                        <span class="menu-text"> Đăng tải ứng dụng </span>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+
+                <li class="active">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-list"></i>
+                        <span class="menu-text"> Chức năng </span>
+
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                    <ul class="submenu">
+                        <li class="active">
+                            <a href="#">
+                                <i class="menu-icon fa fa-caret-right"></i> Quản lý danh sách ứng dụng
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- /.nav-list -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="main-content-inner">
+                <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="ace-icon fa fa-home home-icon"></i>
+                            <a href="index.php">Trang Chủ</a>
+                        </li>
+                        <li>
+                            <a href="#">Chức năng</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="page-header">
+                    <h1>
+                        Chức năng
+                        <small>
+								<i class="ace-icon fa fa-angle-double-right"></i>
+								Quản lý danh sách ứng dụng
+							</small>
+                    </h1>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="row">
+                           
+						<div class="col-sm-12">
+                                    <div class="widget-box transparent">
+                                        <div class="widget-header widget-header-flat">
+                                            <h4 class="widget-title lighter">
+                                                <i class="ace-icon fa fa-star orange"></i> DANH SÁCH ỨNG DỤNG ĐANG CHỜ XÉT DUYỆT - PENDING
+                                            </h4>
+                                            <div class="widget-toolbar">
+                                                <a href="#" data-action="collapse">
+                                                    <i class="ace-icon fa fa-chevron-up"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="widget-body">
+                                            <div class="widget-main no-padding">
+                                                <table class="table table-bordered table-striped">
+                                                    <thead class="thin-border-bottom">
+                                                        <tr>
+                                                            <th>
+                                                                <i class="ace-icon fa fa-caret-right blue"></i>Icon
+                                                            </th>
+
+                                                            <th>
+                                                                <i class="ace-icon fa fa-caret-right blue"></i>Tên
+                                                            </th>
+															<th>
+																 <i class="ace-icon fa fa-caret-right blue"></i>Thể loại
+															</th>														
+                                                            <th>
+																<i class="ace-icon fa fa-caret-right blue"></i>Hình thức mua
+															</th>
+															
+															<th>
+                                                                <i class="ace-icon fa fa-caret-right blue"></i>Giá
+                                                            </th>
+															                                                 
+                                                        </tr>
+                                                    </thead>
+													<tbody>
+														<?php
+														$sql_pay = "SELECT * FROM ungdungchoduyet WHERE tinhtrang ='Chờ duyệt' AND nhaphattrien = '$devName'";
+														$query_pay = mysqli_query($mysqli,$sql_pay);
+														$doanhThu = 0;
+																												
+														if (mysqli_num_rows($query_pay) >0 )
+														{
+														while ($row_pay = mysqli_fetch_assoc($query_pay))
+														{
+															
+															?>
+														<tr>                                                         
+                                                            <?php echo "<td>" ."<img src='img/featured/".$row_pay['iconimage']." ' width='62' height='52'>" ."</td>";?>
+                                                           
+                                                            <td><?php echo $row_pay['tenungdung']?></td>
+															
+															<td><?php echo $row_pay['theloai']?></td>
+																
+                                                            <td><?php echo $row_pay['hinhthucmua']?></td>
+															
+															<td>
+                                                                <b class="green"><?php echo $row_pay['giatien'] ?></b>
+                                                            </td>																																													                                                 
+                                                        </tr>
+														<?php
+														}
+														}
+														
+                                                    ?>
+													</tbody>
+                                                </table>											
+                                            </div>
+                                            <!-- /.widget-main -->
+                                        </div>
+                                        <!-- /.widget-body -->
+                                    </div>
+                                    <!-- /.widget-box -->
+                                </div>
+								 <div class="col-sm-12">
+                                    <div class="widget-box transparent">
+                                        <div class="widget-header widget-header-flat">
+                                            <br>
+                                            <h4 class="widget-title lighter">
+                                                <i class="ace-icon fa fa-star orange"></i> ỨNG DỤNG ĐÃ ĐƯỢC XÉT DUYỆT - PUBLISHSED
+                                            </h4>
+
+                                            <div class="widget-toolbar">
+                                                <a href="#" data-action="collapse">
+                                                    <i class="ace-icon fa fa-chevron-up"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="widget-body">
+                                            <div class="widget-main no-padding">
+                                                <table class="table table-bordered table-striped">
+                                                    <thead class="thin-border-bottom">
+                                                        <tr>
+                                                            <th>
+																<i class="ace-icon fa fa-caret-right blue"></i>Icon
+															</th>
+															<th>
+                                                                <i class="ace-icon fa fa-caret-right blue"></i>App ID
+                                                            </th>
+
+                                                            <th>
+                                                                <i class="ace-icon fa fa-caret-right blue"></i>Tên
+                                                            </th>
+
+                                                            <th>
+                                                                <i class="ace-icon fa fa-caret-right blue"></i>Giá
+                                                            </th>
+															
+															<th>
+																<i class="ace-icon fa fa-caret-right blue"></i>Cập nhật trạng thái 
+															</th>
+															
+                                                        
+                                                        </tr>
+                                                    </thead>
+													<tbody>
+														<?php
+														$sql_pay = "SELECT * FROM ungdung WHERE nhaphattrien = '$devName' AND trangthai ='Publish'";
+														$query_pay = mysqli_query($mysqli,$sql_pay);
+														if (mysqli_num_rows($query_pay) >0 )
+														{
+														while ($row_pay = mysqli_fetch_assoc($query_pay))
+														{
+															?>
+														<tr>
+                                                           
+                                                            <?php echo "<td>" ."<img src='img/featured/".$row_pay['iconimage']." ' width='62' height='52'>" ."</td>";?>
+                                                           
+                                                           <td><?php echo $row_pay['id']?></td>
+														   <td><?php echo $row_pay['tenungdung']?></td>
+                                                            <td><b class="green"><?php echo $row_pay['giatien'] ?></b></td>														
+															<td class="text-center">
+																<form action="change-status.php?appId=<?php echo $row_pay['id']; ?>" method ="POST">
+																<button class="btn btn-success" type="submit" name="submitStatusUn">Unpublished</button>
+																</form>	
+															</td>
+																														
+                                                        </tr>
+														<?php
+														}
+														}														
+                                                    ?>
+													</tbody>
+                                                </table>
+                                            </div>
+                                            <!-- /.widget-main -->
+                                        </div>
+                                        <!-- /.widget-body -->
+                                    </div>
+                                    <!-- /.widget-box -->
+                                </div>
+								
+								 <div class="col-sm-12">
+                                    <div class="widget-box transparent">
+                                        <div class="widget-header widget-header-flat">
+                                            <br>
+                                            <h4 class="widget-title lighter">
+                                                <i class="ace-icon fa fa-star orange"></i> ỨNG DỤNG ĐÃ ĐƯỢC XÉT DUYỆT - UNPUBLISHSED
+                                            </h4>
+
+                                            <div class="widget-toolbar">
+                                                <a href="#" data-action="collapse">
+                                                    <i class="ace-icon fa fa-chevron-up"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="widget-body">
+                                            <div class="widget-main no-padding">
+                                                <table class="table table-bordered table-striped">
+                                                    <thead class="thin-border-bottom">
+                                                        <tr class="text-center">
+                                                            <th>
+																<i class="ace-icon fa fa-caret-right blue"></i>Icon
+															</th>
+															<th>
+                                                                <i class="ace-icon fa fa-caret-right blue"></i>App ID
+                                                            </th>
+
+                                                            <th>
+                                                                <i class="ace-icon fa fa-caret-right blue"></i>Tên
+                                                            </th>
+
+                                                            <th>
+                                                                <i class="ace-icon fa fa-caret-right blue"></i>Giá
+                                                            </th>
+															
+															<th>
+																<i class="ace-icon fa fa-caret-right blue"></i>Cập nhật trạng thái
+															</th>
+															<th>
+																<i class="ace-icon fa fa-caret-right blue"></i>Xóa ứng dụng 
+															</th>
+                                                        
+                                                        </tr>
+                                                    </thead>
+													<tbody>
+														<?php
+														$sql_pay = "SELECT * FROM ungdung WHERE nhaphattrien = '$devName' AND trangthai ='Unpublish'";
+														$query_pay = mysqli_query($mysqli,$sql_pay);
+														if (mysqli_num_rows($query_pay) >0 )
+														{
+														while ($row_pay = mysqli_fetch_assoc($query_pay))
+														{
+															?>
+														<tr>
+                                                           
+                                                            <?php echo "<td>" ."<img src='img/featured/".$row_pay['iconimage']." ' width='62' height='52'>" ."</td>";?>
+                                                           
+                                                           <td><?php echo $row_pay['id']?></td>
+														   <td><?php echo $row_pay['tenungdung']?></td>
+                                                            <td><b class="green"><?php echo $row_pay['giatien'] ?></b></td>														
+															<td class="text-center">
+																<form action="change-status.php?appId=<?php echo $row_pay['id']; ?>" method ="POST">
+																<button class="btn btn-success" type="submit" name="submitStatusPub">Published</button>
+																</form>	
+															</td> 
+															<td class="text-center">
+																<form action="change-status.php?appId=<?php echo $row_pay['id']; ?>" method ="POST">
+																<button class="btn btn-danger" type="submit" name="submitStatusDelete">Xóa vĩnh viễn</button>
+																</form>	
+															</td> 
+                                                        </tr>
+														<?php
+														}
+														}														
+                                                    ?>
+													</tbody>
+                                                </table>
+                                            </div>
+                                            <!-- /.widget-main -->
+                                        </div>
+                                        <!-- /.widget-body -->
+                                    </div>
+                                    <!-- /.widget-box -->
+                                </div>
+								
+								 <div class="col-sm-12">
+                                    <div class="widget-box transparent">
+                                        <div class="widget-header widget-header-flat">
+                                            <br>
+                                            <h4 class="widget-title lighter">
+                                                <i class="ace-icon fa fa-star orange"></i> ỨNG DỤNG ĐÃ BỊ ADMIN TỪ CHỐI
+                                            </h4>
+
+                                            <div class="widget-toolbar">
+                                                <a href="#" data-action="collapse">
+                                                    <i class="ace-icon fa fa-chevron-up"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="widget-body">
+                                            <div class="widget-main no-padding">
+                                                <table class="table table-bordered table-striped">
+                                                    <thead class="thin-border-bottom">
+                                                        <tr class="text-center">
+                                                            <th>
+																<i class="ace-icon fa fa-caret-right blue"></i>Icon
+															</th>
+															<th>
+                                                                <i class="ace-icon fa fa-caret-right blue"></i>App ID
+                                                            </th>
+
+                                                            <th>
+                                                                <i class="ace-icon fa fa-caret-right blue"></i>Tên
+                                                            </th>
+                                                         															
+														
+															<th>
+																<i class="ace-icon fa fa-caret-right blue"></i>Xóa ứng dụng 
+															</th>
+                                                        
+                                                        </tr>
+                                                    </thead>
+													<tbody>
+														<?php
+														$sql_pay = "SELECT * FROM ungdungchoduyet WHERE nhaphattrien = '$devName' AND tinhtrang ='Yêu cầu bị từ chối'";
+														$query_pay = mysqli_query($mysqli,$sql_pay);
+														if (mysqli_num_rows($query_pay) >0 )
+														{
+														while ($row_pay = mysqli_fetch_assoc($query_pay))
+														{
+															?>
+														<tr>
+                                                           
+                                                            <?php echo "<td>" ."<img src='img/featured/".$row_pay['iconimage']." ' width='62' height='52'>" ."</td>";?>
+                                                           
+                                                           <td><?php echo $row_pay['id']?></td>
+														   <td><?php echo $row_pay['tenungdung']?></td>
+                                                           																										
+															<td class="text-center">
+																<form action="change-status.php?appId=<?php echo $row_pay['id']; ?>" method ="POST">
+																<button class="btn btn-danger" type="submit" name="submitStatusDenied">Xóa vĩnh viễn</button>
+																</form>	
+															</td> 
+                                                        </tr>
+														<?php
+														}
+														}														
+                                                    ?>
+													</tbody>
+                                                </table>
+                                            </div>
+                                            <!-- /.widget-main -->
+                                        </div>
+                                        <!-- /.widget-body -->
+                                    </div>
+                                    <!-- /.widget-box -->
+                                </div>
+
+                        </div>
+                        <!-- /.row -->
+
+                        <!-- /.row -->
+
+                        <div class="hr hr32 hr-dotted"></div>
+
+
+
+                        <!-- PAGE CONTENT ENDS -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.page-content -->
+        </div>
+    </div>
+    <!-- /.main-content -->
+
+    <div class="footer">
+        <div class="footer-inner">
+            <div class="footer-content">
+                <span class="bigger-120">
+							AppShopping &copy; 2021
+						</span> &nbsp; &nbsp;
+                <span class="action-buttons">
+							<a>
+								<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>
+							</a>
+
+							<a>
+								<i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>
+							</a>
+
+							<a>
+								<i class="ace-icon fa fa-rss-square orange bigger-150"></i>
+							</a>
+						</span>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+    </a>
+    </div>
+    <!-- /.main-container -->
+
+
+    <script src="https://code.jquery.com/jquery-2.1.4.js" integrity="sha256-siFczlgw4jULnUICcdm9gjQPZkw/YPDqhQ9+nAOScE4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="@{js/ace.min.js}"></script>
+</body>
+
+</html>

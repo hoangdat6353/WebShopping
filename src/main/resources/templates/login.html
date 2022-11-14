@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" th:href="@{/css/style1.css}" type="text/css">
+	<meta charset="UTF-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<title> Đăng nhập hệ thống App Shopping </title>
+	
+	
+	
+</head>
+
+<body>
+<a href="/"><img class="logoImg" th:src="@{/img/other/logo.png}" style="width:325px;height:70px"></a>
+
+<div class="container" id="container">
+	<div class="form-container sign-up-container">
+		<form action="#" th:action="@{/register}" method="POST" onsubmit="check_pass(event)">
+			<h1>Tạo Tài Khoản</h1>
+			<input name="username" type="text" placeholder="Tên tài khoản" />
+			<input name="email" type="email" placeholder="Email" />
+			<input id="password" name="password" type="password" placeholder="Mật khẩu" />
+			<input id="confirm_password" type="password" placeholder="Nhập lại mật khẩu" />
+			<span id="messageMatch"> </span>
+			<button type="submit" name="submitRegister">Đăng Ký</button>
+		</form>
+	</div>
+	<div class="form-container sign-in-container">
+		<form action="login_connect.php" method="POST">
+			<h1 class="headerLogin">Đăng Nhập</h1>
+			<input name="username" type="text" placeholder="Tên tài khoản" />
+			<input name="password" type="password" placeholder="Mật khẩu" />
+			<div class="passwordFind">
+			<a href="forgotpassword.php">Quên mật khẩu? </a>
+			<a href="change_pass.php">Thay đổi mật khẩu</a>
+			</div>
+			<button type="submit" name="submitLogin">Đăng Nhập</button>
+		</form>
+		
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-left">
+				<h1>Chào mừng đến với Website AppShopping</h1>
+				<p>Để có thể sử dụng những chức năng, vui lòng đăng ký</p>
+				<button class="ghost" id="signIn">Đăng Nhập</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+				<h1>Xin chào</h1>
+				<p class="signUpIntroduction">Vui lòng đăng nhập để có thể thực hiện những chức năng trong hệ thống</p>
+				<button class="ghost" id="signUp">Đăng Ký</button>
+			</div>
+		</div>
+	</div>
+	
+	</body>
+	
+	<script>
+		const signUpButton = document.getElementById('signUp');
+		const signInButton = document.getElementById('signIn');
+		const container = document.getElementById('container');
+
+		signUpButton.addEventListener('click', () => 
+		{
+		container.classList.add("right-panel-active");
+		});
+
+		signInButton.addEventListener('click', () => 
+		{
+		container.classList.remove("right-panel-active");
+		});
+		
+		$('#password, #confirm_password').on('keyup', function () 
+		{
+			if ($('#password').val() == $('#confirm_password').val()) 
+			{
+				$('#messageMatch').html('Mật khẩu hợp lệ').css('color', 'green');
+			} 
+			else 
+			$('#messageMatch').html('Mật khẩu không khớp').css('color', 'red');
+		});
+		
+		function check_pass(e) 
+		{
+			if (document.getElementById('password').value == document.getElementById('confirm_password').value) 
+			{
+        		return true;
+			} 
+			else 
+			{
+				e.preventDefault();
+				return false;
+			}
+		}
+	</script>
+</div>
+
+</html>
