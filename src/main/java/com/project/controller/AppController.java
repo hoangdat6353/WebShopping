@@ -24,7 +24,7 @@ public class AppController {
     @Autowired
     private ProductService service;
         
-    @RequestMapping("/")
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String viewHomePage(Model model) {
         List<Product> listProducts = service.listAll();
         model.addAttribute("listProducts", listProducts);

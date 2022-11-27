@@ -29,7 +29,7 @@ public class App {
 	 //Thể loại
 	 private String category;
 	 //Đường dẫn file cài đặt
-	 private String installFilePath;
+	 private String installpath;
 	 //Filter
 	 private String filter;
 	 //Nhà phát triển
@@ -37,7 +37,7 @@ public class App {
 	 //Giá tiền
 	 private float price;
 	 //Mô tả ngắn
-	 private String shortDescription;
+	 private String shortdescription;
 	 //Dung lượng
 	 private String size;
 	 //Ngày đăng tải

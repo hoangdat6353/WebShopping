@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" type="text/css">
-    <link rel="stylesheet" href="@{css/style.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{css/style.css}" type="text/css">
 	
   
 </head>
@@ -29,7 +29,7 @@
         <div class="option_menu_cart">
             <ul>
 				<li><i class="fa fa-heart"></i></li>
-				<div class="header_cart_price">Số tiền bạn có: <?php echo $money ?></div>
+				<div class="header_cart_price">Số tiền bạn có: </div>
 			</ul>
         </div>
         <div class="option_menu_widget">

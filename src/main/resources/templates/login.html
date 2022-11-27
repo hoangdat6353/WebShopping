@@ -26,13 +26,13 @@
 		</form>
 	</div>
 	<div class="form-container sign-in-container">
-		<form action="login_connect.php" method="POST">
+		<form th:action="@{/loginHandler}" method="POST">
 			<h1 class="headerLogin">Đăng Nhập</h1>
 			<input name="username" type="text" placeholder="Tên tài khoản" />
 			<input name="password" type="password" placeholder="Mật khẩu" />
 			<div class="passwordFind">
-			<a href="forgotpassword.php">Quên mật khẩu? </a>
-			<a href="change_pass.php">Thay đổi mật khẩu</a>
+			<a href="forgotpassword.html">Quên mật khẩu? </a>
+			<a href="change_pass.html">Thay đổi mật khẩu</a>
 			</div>
 			<button type="submit" name="submitLogin">Đăng Nhập</button>
 		</form>

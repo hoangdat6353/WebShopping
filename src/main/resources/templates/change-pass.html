@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="@{css/style1.css}" type="text/css">
+	<link rel="stylesheet" th:href="@{css/style1.css}" type="text/css">
 	<meta charset="UTF-8">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<title> Giao Diện Thay Đổi Mật Khẩu </title>
@@ -9,11 +9,11 @@
 </head>
 
 <body>
-<a href="index.php"><img class="logoImg" src="@{/img/other/logo.png}" style="width:325px;height:70px"></a>
+<a href="index"><img class="logoImg" src="@{/img/other/logo.png}" style="width:325px;height:70px"></a>
 
 <div class="container" id="container">
 	<div class="form-container sign-in-container">
-		<form action="change_pass_connect.php" method="POST" onsubmit="return check_pass(event)">
+		<form action="change_pass_connect.php" method="POST" onsubmit="check_pass(event)">
 			<h1 class="headerLogin">Thay đổi mật khẩu</h1>
 			<input name="username" type="text" placeholder="Nhập tài khoản" />
 			<input name="password" type="password" placeholder="Nhập mật khẩu cũ"/>

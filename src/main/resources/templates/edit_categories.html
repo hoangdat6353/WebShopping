@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>Edit Product</title>
+</head>
+<body>
+<div class="modal fade" id="confirm-edit-modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-primary">Cập nhật thông tin thể loại</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Cập nhật thông tin</p>				
+					<div class="form-group">
+					<form th:action="@{/addcategories}" method = "POST" th:object="${categories}">
+                        <label class="control-label col-sm-2" for="tentheloai">Tên thể loại:</label>
+                        <input type="text" class="form-control" name="tentheloai" placeholder="Nhập tên thể loại">
+						 <input type='hidden' th:field="*{id}" name="id" readonly="readonly"> </input>                    
+					</div>                 
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="update-button" name="submitUpdateCategories"class="btn btn-primary">Cập nhật</button>
+					</form>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>		
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

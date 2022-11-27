@@ -13,8 +13,8 @@
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css" />
-    <link rel="stylesheet" href="@{css/ace.min.css}" class="ace-main-stylesheet" id="main-ace-style" />
-	<link rel="stylesheet" href="@{css/style2.css}" />
+    <link rel="stylesheet" th:href="@{css/ace.min.css}" class="ace-main-stylesheet" id="main-ace-style" />
+	<link rel="stylesheet" th:href="@{css/style2.css}" />
 
    
 </head>
@@ -33,9 +33,9 @@
 				</button>
 
             <div class="navbar-header pull-left">
-                <a href="index.php" class="navbar-brand">
+                <a href="index" class="navbar-brand">
                     <small>
-							<a href="index.php"><img class="logo" src="@{img/other/logo-dev-UI.png}" alt=""></a>
+							<a href="index"><img class="logo" src="@{img/other/logo-dev-UI.png}" alt=""></a>
 						</small>
                 </a>
             </div>
@@ -47,7 +47,6 @@
                             <img class="nav-user-photo" src="@{images/user.jpg}" alt="Jason's Photo">
                             <span class="user-info">
 									<small>Xin chào,</small>
-									<?php echo $devName ?>
 								</span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
