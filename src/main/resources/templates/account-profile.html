@@ -6,12 +6,11 @@
     <title>Thông tin cá nhân</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="icon" th:href="@{img/other/favicon.png}" type="image/png">
+	<link rel="icon" th:href="@{/img/other/favicon.png}" type="image/png">
 
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" type="text/css">
@@ -82,8 +81,8 @@
                             <div class="header_top_right_social">
                                 <a><i class="fa fa-facebook"></i></a>
                                 <a><i class="fa fa-twitter"></i></a>
-                               <a href='account-profile' th:if="${User.role == 'ROLE_USER'}"><i class='fa fa-user'></i> Cấp độ tài khoản: Người dùng </a>
-                               <a href='dev-profile' th:if="${User.role == 'ROLE_DEV'}"><i class='fa fa-user'></i> Cấp độ tài khoản: Nhà phát triển </a>
+                               <a href='accountProfile' th:if="${User.role == 'ROLE_USER'}"><i class='fa fa-user'></i> Cấp độ tài khoản: Người dùng </a>
+                               <a href='devProfile' th:if="${User.role == 'ROLE_DEV'}"><i class='fa fa-user'></i> Cấp độ tài khoản: Nhà phát triển </a>
 
 							</div>
                            
@@ -138,15 +137,16 @@
 			<div class="user-profile">
 				<div class="user-avatar">
 					<div id='img_div' >
-					</div>				
+						<img th:src="@{'/uploads/'+${User.avatar}}">
+					</div>
 				</div>
-				<h5 class="user-name"></h5>
+				<h5 class="user-name" th:text="${User.username}"></h5>
 				
 				<div id="content">
-					<form method="POST" action ="profile-image-upload.php" enctype = "multipart/form-data">
+					<form method="POST" th:action ="@{uploadAvatar}" th:object="${user}" enctype = "multipart/form-data">
 						<div>
 							<label for="uploadImage">Bấm vào đây để chọn ảnh </label>
-							<input id="uploadImage" type="file" name="image" style="display:none">
+							<input id="uploadImage" type="file" name="image" style="display:none" accept="image/png, image/jpg, image/jpeg">
 							<div class="text-center">
 							<button type="submit" id="submitImageProfile" name="submitImageProfile" class="btn btn-primary">Cập nhật ảnh đại diện</button>
 							</div>
@@ -238,24 +238,13 @@
 				<th> Mệnh giá </th>
 			</thead>
 			<tbody>
-				<?php
-					$sql_info = "SELECT * FROM thecao WHERE nguoinap = '$Username'";
-					$query = mysqli_query($mysqli,$sql_info);
-					if (mysqli_num_rows($query) > 0)
-					{
-						while($row = mysqli_fetch_assoc($query))
-						{
-								?>
-						<tr>
-							<td> <?php echo $row['mathecao']; ?> </td>
-							<td> <?php echo $row['soseri']; ?> </td>
-							<td> <?php echo $row['ngaynap']; ?> </td>
-							<td> <?php echo $row['menhgia']; ?> </td>
-						</tr>
-				<?php
-						}
-					}
-				?>
+			 <tr th:each="card : ${listCards}">
+                <td th:text="${card.mathecao}"></td>
+                <td th:text="${card.soseri}"></td>
+                <td th:text="${card.ngaynap}"></td>
+                <td th:text="${card.menhgia}"></td>
+            </tr>
+				
 			</tbody>
 		</table>
 		
@@ -290,9 +279,9 @@
 		<div class="row gutters">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 				<div class="text-right">
-					<form action="upgrade.php" onsubmit="check_info(event)">
+					<a href="upgrade">
 					<button type='submit' id='upgradeDevButton' class='btn btn-success' th:if="${User.role == 'ROLE_USER'}"> Nâng cấp thành nhà phát triển </button>
-					</form>
+					</a>
 				</div>
 			</div>
 		</div>

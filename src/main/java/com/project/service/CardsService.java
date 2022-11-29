@@ -37,4 +37,8 @@ public class CardsService {
     {
     	return repo.findCardsByCodeAndSeri(mathecao, soseri);
     }
+    
+    public List<Cards> listAllCardsByUsername(String username) {
+        return repo.findAllCardsByUsername(username);
+    }
 }

@@ -47,15 +47,22 @@ public class User {
 	 private String address;
 	 @Nullable
 	 private String dateofbirth;
+	 @Nullable
+	 private String avatar; 
+	 @Nullable
+	 private String devavatar;
 	 
 	 private int balance;
 
 	public User() {
 	 }
 
-	 
 	 public Long getId() {
 	     return id;
 	 }
 	 
+	 public String getAvatarImagePath() {
+	  if (avatar == null || id == null) return null;
+	         return "/images/" + avatar;
+	  }
 }
