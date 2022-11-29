@@ -47,7 +47,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	// Trang /userInfo yêu cầu phải login với vai trò ROLE_USER hoặc ROLE_ADMIN.
         // Nếu chưa login, nó sẽ redirect tới trang /login.sau Mình dung hasAnyRole để cho phép ai được quyền vào
         // 2  ROLE_USER và ROLEADMIN thì ta lấy từ database ra cái mà mình chèn vô ở bước 1 (chuẩn bị database)
-        http.authorizeRequests().antMatchers("/index").access("hasRole('ROLE_USER')");
+        //http.authorizeRequests().antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+
+        http.authorizeRequests().antMatchers("/accountProfile").access("hasAnyRole('ROLE_USER', 'ROLE_DEV')");
 
         // Trang chỉ dành cho ADMIN
         //http.authorizeRequests().antMatchers("/admin").access("hasRole('ROLE_ADMIN')");
@@ -56,12 +58,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	
         http.authorizeRequests().and().formLogin()
         	.loginPage("/login")
-        	.defaultSuccessUrl("/index",true)
+        	.defaultSuccessUrl("/accountProfile",true)
         	.loginProcessingUrl("/loginHandler")
         	.failureUrl("/login?error=true")
         	.usernameParameter("username")
         	.passwordParameter("password")
-        	.and().logout().logoutUrl("/logout").logoutSuccessUrl("/logout");
+        	.and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
             
     }
 }

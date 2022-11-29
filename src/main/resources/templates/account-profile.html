@@ -6,7 +6,7 @@
     <title>Thông tin cá nhân</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="icon" href="img/other/favicon.png" type="image/png">
+	<link rel="icon" th:href="@{img/other/favicon.png}" type="image/png">
 
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" type="text/css">
@@ -28,25 +28,25 @@
     <div class="option_menu_overlay"></div>
     <div class="option_menu_wrapper">
         <div class="option_menu_logo">
-            <a><img src="@{/img/other/logo.png}" alt=""></a>
+            <a><img th:src="@{img/other/logo.png}" alt=""></a>
         </div>
         <div class="option_menu_cart">
             <ul>
 				<li><i class="fa fa-heart"></i></li>
-				<div class="header_cart_price">Số tiền bạn có: <?php echo $money ?></div>
+				<div class="header_cart_price">Số tiền bạn có: </div>
 			</ul>
         </div>
         <div class="option_menu_widget">
             
             <div class="header_top_right_auth">
-                <a href="logout.php"><i class="fa fa-user"></i> Đăng xuất</a>
+                <a href="logout"><i class="fa fa-user"></i> Đăng xuất</a>
             </div>
         </div>
 		<!-- Navigation mobile -->
         <nav class="option_menu_nav mobile-menu">
             <ul>
-                <li class="active"><a href="index.php">Trang Chủ</a></li>
-                <li><a href="shop-grid.php">Bảng xếp hạng</a></li>
+                <li class="active"><a href="index">Trang Chủ</a></li>
+                <li><a href="shop-grid">Bảng xếp hạng</a></li>
           
             </ul>
         </nav>
@@ -82,16 +82,13 @@
                             <div class="header_top_right_social">
                                 <a><i class="fa fa-facebook"></i></a>
                                 <a><i class="fa fa-twitter"></i></a>
-                                <?php
-								if ($_SESSION['rank'] == 'Developer')
-									echo "<a href='dev-profile.php'><i class='fa fa-user'></i> Cấp độ tài khoản: Developer </a>";
-								else
-									echo "<a><i class='fa fa-user'></i> Cấp độ tài khoản: Người dùng </a>";
-								?>
+                               <a href='account-profile' th:if="${User.role == 'ROLE_USER'}"><i class='fa fa-user'></i> Cấp độ tài khoản: Người dùng </a>
+                               <a href='dev-profile' th:if="${User.role == 'ROLE_DEV'}"><i class='fa fa-user'></i> Cấp độ tài khoản: Nhà phát triển </a>
+
 							</div>
                            
                             <div class="header_top_right_auth">
-                                <a href="logout.php"><i class="fa fa-user"></i> Đăng xuất</a>
+                                <a href="logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Đăng xuất</a>
                             </div>
 							
                         </div>
@@ -103,14 +100,14 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header_logo">
-                        <a href="index.php"><img src="img/other/logo.png" alt=""></a>
+                        <a href="index"><img th:src="@{img/other/logo.png}" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <nav class="header_menu">
                         <ul>
-                            <li class=""><a href="index.php">Trang Chủ</a></li>
-							<li><a href="shop-grid.php">Bảng xếp hạng</a></li>
+                            <li class=""><a href="index">Trang Chủ</a></li>
+							<li><a href="shop-grid">Bảng xếp hạng</a></li>
 						
                         </ul>
                     </nav>
@@ -119,7 +116,7 @@
                     <div class="header_cart">
                         <ul>
                             <li><i class="fa fa-heart"></i></li>
-							<div class="header_cart_price">Số tiền bạn có: <?php echo $money ?> vnđ</div>
+							<div class="header_cart_price" th:text="'Số tiền bạn có: ' + ${User.balance} + ' vnđ'"></div>
                         </ul>
 						
                     </div>
@@ -140,20 +137,10 @@
 		<div class="account-settings">
 			<div class="user-profile">
 				<div class="user-avatar">
-					<?php		
-						$sql = "SELECT * FROM imageprofile WHERE id=(SELECT max(id) FROM imageprofile) and username = '$Username'";
-						$result = mysqli_query($mysqli,$sql);
-						$row = mysqli_fetch_assoc($result);
-						if (mysqli_num_rows($result) > 0)
-						{
-							echo "<div id='img_div' >";
-								echo "<img src=' images/".$row['image']."'>";
-							echo "</div>";
-						}
-					?>
-					
+					<div id='img_div' >
+					</div>				
 				</div>
-				<h5 class="user-name"><?php echo $Username ?></h5>
+				<h5 class="user-name"></h5>
 				
 				<div id="content">
 					<form method="POST" action ="profile-image-upload.php" enctype = "multipart/form-data">
@@ -175,33 +162,34 @@
 <div class="card h-100">
 
 	<div class="card-body">
-		<form action="update-profile.php" method ="POST">
+		<form th:action="@{/updateProfile}" th:object="${updateProfile}" method ="POST">
 		<div class="row gutters">
+		<input class="form-control" type="text" id="id" th:field="${User.id}" hidden> </input>
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 				<h6 class="mb-2 text-primary">Thông tin cá nhân</h6>
 			</div>
 			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
 				<div class="form-group">
 					<label for="fullName">Họ tên:</label>
-					<input name="fullName" type="text" class="form-control" id="fullName" placeholder="<?php echo $name ?>">
+					<input name="fullName" type="text" class="form-control" id="fullName" th:field="*{fullname}" th:placeholder="${User.fullname}" required>
 				</div>
 			</div>
 			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
 				<div class="form-group">
 					<label for="phone">Số điện thoại:</label>
-					<input name="phone" type="text" class="form-control" id="phone" placeholder="<?php echo $phone ?> ">
+					<input name="phone" type="text" class="form-control" id="phone" th:field="*{phone}" th:placeholder="${User.phone}" required>
 				</div>
 			</div>
 			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
 				<div class="form-group">
 					<label for="address">Địa chỉ:</label>
-					<input name="address" type="text" class="form-control" id="address" placeholder="<?php echo $address ?>">
+					<input name="address" type="text" class="form-control" id="address" th:field="*{address}" th:placeholder="${User.address}" required >
 				</div>
 			</div>
 			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
 				<div class="form-group">
 					<label for="bornDate">Ngày sinh</label>
-					<input  onfocus="(this.type='date')" id="bornDate" placeholder="<?php echo $bornDate ?>" name="bornDate" class="form-control">
+					<input onfocus="(this.type='date')" id="bornDate" name="bornDate" class="form-control" th:field="*{dateofbirth}" th:placeholder="${User.dateofbirth}" required>
 				</div>
 			</div>
 		</div>
@@ -214,7 +202,7 @@
 		</div>
 		</form>
 		
-		<form action = "naptien.php" method = "POST">
+		<form th:action="@{/topup}" th:object="${topupInfo}" method = "POST">
 		<div class="row gutters">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 				<h6 class="mb-2 text-primary">Nạp tiền vào hệ thống</h6>
@@ -222,13 +210,13 @@
 			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
 				<div class="form-group">
 					<label for="mathe">Nhập mã thẻ cào:</label>
-					<input name="mathe" type="text" class="form-control" id="mathe" placeholder="Nhập mã thẻ cào">
+					<input name="mathe" type="number" class="form-control" id="mathe" placeholder="Nhập mã thẻ cào" minlength="4" maxlength="5" th:field="*{mathe}" >
 				</div>
 			</div>
 			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
 				<div class="form-group">
 					<label for="soseri">Nhập số seri thẻ cào:</label>
-					<input name = "soseri" type="text" class="form-control" id="soseri" placeholder="Nhập số seri thẻ cào">
+					<input name = "soseri" type="number" class="form-control" id="soseri" placeholder="Nhập số seri thẻ cào"  minlength="4" maxlength="5" th:field="*{soseri}">
 				</div>
 			</div>
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -281,25 +269,7 @@
 				<th> Thể loại </th>
 			</thead>
 			<tbody>
-				<?php
-					$sql_appBuy = "SELECT * FROM appdownload WHERE username = '$Username' and hinhthucmua = 'Trả phí'";
-					$query_appBuy = mysqli_query($mysqli,$sql_appBuy);
-					
-					
-					if (mysqli_num_rows($query_appBuy) > 0)
-					{
-						while($row_appBuy = mysqli_fetch_assoc($query_appBuy))
-						{
-								?>
-						<tr>
-							<td> <?php echo "<img src='img/featured/".$row_appBuy['iconimage']."' width='70' height='60px'> </img>"; ?> </td>
-							<td> <?php echo "<a href='shop-details.php?appName=".$row_appBuy['appdatai']."'>".$row_appBuy['appdatai']."</a>"; ?> </td>
-							<td> <?php echo $row_appBuy['theloai']; ?> </td>
-						</tr>
-				<?php
-						}
-					}
-				?>
+				
 			</tbody>
 		</table>
 		
@@ -313,23 +283,7 @@
 				<th> Thể loại </th>
 			</thead>
 			<tbody>
-				<?php
-					$sql_appBuy = "SELECT * FROM appdownload WHERE username = '$Username' and hinhthucmua = 'Miễn phí'";
-					$query_appBuy = mysqli_query($mysqli,$sql_appBuy);
-					if (mysqli_num_rows($query_appBuy) > 0)
-					{
-						while($row_appBuy = mysqli_fetch_assoc($query_appBuy))
-						{
-								?>
-						<tr>
-							<td> <?php echo "<img src='img/featured/".$row_appBuy['iconimage']."' width='70' height='60px'> </img>"; ?> </td>
-							<td> <?php echo "<a href='shop-details.php?appName=".$row_appBuy['appdatai']."'>".$row_appBuy['appdatai']."</a>"; ?> </td>
-							<td> <?php echo $row_appBuy['theloai']; ?> </td>
-						</tr>
-				<?php
-						}
-					}
-				?>
+			
 			</tbody>
 		</table>
 			
@@ -337,10 +291,7 @@
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 				<div class="text-right">
 					<form action="upgrade.php" onsubmit="check_info(event)">
-					<?php
-						if ($_SESSION['rank'] == 'User')
-					echo "<button type='submit' id='upgradeDevButton' class='btn btn-success'>Nâng cấp thành nhà phát triển</button>";
-					?>
+					<button type='submit' id='upgradeDevButton' class='btn btn-success' th:if="${User.role == 'ROLE_USER'}"> Nâng cấp thành nhà phát triển </button>
 					</form>
 				</div>
 			</div>
@@ -355,7 +306,7 @@
 
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script src="js/main.js"></script>
+<script th:src="@{js/main.js}"></script>
 
 </body>
 </html>

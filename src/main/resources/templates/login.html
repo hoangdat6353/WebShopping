@@ -12,6 +12,7 @@
 
 <body>
 <a href="/"><img class="logoImg" th:src="@{/img/other/logo.png}" style="width:325px;height:70px"></a>
+<h3 th:if="${message != null}" th:text="${message}" style="color: red;"></h3>
 
 <div class="container" id="container">
 	<div class="form-container sign-up-container">
@@ -19,8 +20,8 @@
 			<h1>Tạo Tài Khoản</h1>
 			<input name="username" type="text" placeholder="Tên tài khoản" />
 			<input name="email" type="email" placeholder="Email" />
-			<input id="password" name="password" type="password" placeholder="Mật khẩu" />
-			<input id="confirm_password" type="password" placeholder="Nhập lại mật khẩu" />
+			<input id="password" name="password" type="password" placeholder="Mật khẩu" minlength="8" maxlength="12"/>
+			<input id="confirm_password" type="password" placeholder="Nhập lại mật khẩu" minlength="8" maxlength="12" />
 			<span id="messageMatch"> </span>
 			<button type="submit" name="submitRegister">Đăng Ký</button>
 		</form>
@@ -31,8 +32,8 @@
 			<input name="username" type="text" placeholder="Tên tài khoản" />
 			<input name="password" type="password" placeholder="Mật khẩu" />
 			<div class="passwordFind">
-			<a href="forgotpassword.html">Quên mật khẩu? </a>
-			<a href="change_pass.html">Thay đổi mật khẩu</a>
+			<a href="forgotPassword">Quên mật khẩu? </a>
+			<a href="changePassword">Thay đổi mật khẩu</a>
 			</div>
 			<button type="submit" name="submitLogin">Đăng Nhập</button>
 		</form>

@@ -48,7 +48,7 @@ public class User {
 	 @Nullable
 	 private String dateofbirth;
 	 
-	 private float balance;
+	 private int balance;
 
 	public User() {
 	 }

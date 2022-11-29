@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.project.model.User;
  
-public class MyUserDetails implements UserDetails {
+public class MyUserDetails extends User implements UserDetails {
  
     /**
 	 * 
