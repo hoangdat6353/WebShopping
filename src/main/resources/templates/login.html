@@ -5,14 +5,12 @@
 	<meta charset="UTF-8">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<title> Đăng nhập hệ thống App Shopping </title>
-	
-	
-	
+	<link rel="icon" th:href="@{img/other/icon.png}" type="image/png">	
 </head>
 
 <body>
 <a href="/"><img class="logoImg" th:src="@{/img/other/logo.png}" style="width:325px;height:70px"></a>
-<h3 th:if="${message != null}" th:text="${message}" style="color: red;"></h3>
+<h3 th:if="${message != null}" th:text="${message}" style="color: red; text-align:center; "></h3>
 
 <div class="container" id="container">
 	<div class="form-container sign-up-container">
@@ -20,7 +18,7 @@
 			<h1>Tạo Tài Khoản</h1>
 			<input name="username" type="text" placeholder="Tên tài khoản" />
 			<input name="email" type="email" placeholder="Email" />
-			<input id="password" name="password" type="password" placeholder="Mật khẩu" minlength="8" maxlength="12"/>
+			<input id="registerPassword" name="password" type="password" placeholder="Mật khẩu" minlength="8" maxlength="12"/>
 			<input id="confirm_password" type="password" placeholder="Nhập lại mật khẩu" minlength="8" maxlength="12" />
 			<span id="messageMatch"> </span>
 			<button type="submit" name="submitRegister">Đăng Ký</button>
@@ -71,14 +69,17 @@
 		container.classList.remove("right-panel-active");
 		});
 		
-		$('#password, #confirm_password').on('keyup', function () 
+		$('#registerPassword, #confirm_password').on('keyup', function () 
 		{
-			if ($('#password').val() == $('#confirm_password').val()) 
+			if ($('#registerPassword').val() != null && $('#confirm_password').val() != null)
 			{
-				$('#messageMatch').html('Mật khẩu hợp lệ').css('color', 'green');
-			} 
-			else 
-			$('#messageMatch').html('Mật khẩu không khớp').css('color', 'red');
+				if ($('#registerPassword').val() == $('#confirm_password').val()) 
+				{
+					$('#messageMatch').html('Mật khẩu trùng khớp').css('color', 'green');
+				} 
+				else 
+					$('#messageMatch').html('Mật khẩu không khớp').css('color', 'red');
+			}
 		});
 		
 		function check_pass(e) 

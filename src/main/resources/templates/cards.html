@@ -6,6 +6,7 @@
 		
 		<title>Administator</title>
 		<meta username="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />	
+		<link rel="icon" th:href="@{/img/other/icon.png}" type="image/png">
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -30,9 +31,9 @@
 					<span class="icon-bar"></span>
 				</button>
 				<div class="navbar-header pull-left">
-					<a href="index-admin.php" class="navbar-brand">
+					<a href="index-admin" class="navbar-brand">
 						<small>
-							<a href="index-admin.php"><img class="logo" src="img/other/logo-admin.png" alt=""></a>
+							<a href="index-admin"><img class="logo" th:src="@{img/other/logo-admin.png}" alt=""></a>
 						</small>
 					</a>
 				</div>
@@ -40,16 +41,16 @@
 					<ul class="nav ace-nav">
 						<li class="light-blue dropdown-modal">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
-								<img class="nav-user-photo" src="images/user.jpg" alt="" />
+								<img class="nav-user-photo" th:src="@{img/other/user.jpg}" alt="" />
 								<span class="user-info">
 									<small>Xin chào,</small>
-									<?php echo $_SESSION['userLogin'] ?>
+										Admin
 								</span>
 								<i class="ace-icon fa fa-caret-down"></i>
 							</a>
 							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">							
 								<li>
-									<a href="logout.php">
+									<a href="logout">
 										<i class="ace-icon fa fa-power-off"></i>
 										Đăng xuất
 									</a>
@@ -96,14 +97,14 @@
 
 				<ul class="nav nav-list">
 					<li class="">
-						<a href="index-admin.php">
+						<a href="index-admin">
 							<i class="menu-icon fa fa-tachometer"></i>
 							<span class="menu-text"> Thống kê tổng quan </span>
 						</a>
 						<b class="arrow"></b>
 					</li>
 					<li class="">
-						<a href="appmanage.php">
+						<a href="verify-apps">
 							<i class="menu-icon fa fa-list-alt"></i>
 							<span class="menu-text"> Duyệt ứng dụng </span>
 						</a>
@@ -118,7 +119,7 @@
 						<b class="arrow"></b>
 						<ul class="submenu">
 							<li class="">
-								<a href="acc.php">
+								<a href="accounts">
 									<i class="menu-icon fa fa-caret-right"></i>
 									Quản lý tài khoản
 								</a>
@@ -127,7 +128,7 @@
 						</ul>					
 						<ul class="submenu">
 							<li class="">
-								<a href="categories.php">
+								<a href="categories">
 									<i class="menu-icon fa fa-caret-right"></i>
 									Quản lý thể loại
 								</a>
@@ -136,7 +137,7 @@
 						</ul>
 						<ul class="submenu">
 							<li class="active">
-								<a href="cards.php">
+								<a href="cards">
 									<i class="menu-icon fa fa-caret-right"></i>
 									Quản lý thẻ nạp
 								</a>
@@ -155,7 +156,7 @@
 						<ul class="breadcrumb">
 							<li>
 								<i class="ace-icon fa fa-home home-icon"></i>
-								<a href="index.php">Trang Chủ</a>
+								<a href="">Trang Chủ</a>
 							</li>
 							<li>
 								<a href="#">Chức năng</a>
@@ -177,40 +178,47 @@
 						<p>Nhập thông tin thẻ cào cần thêm vào hệ thống</p>
 							<div class="formInfo">
 								<div class="col-md-10">
-									<form id="account-form" class="form-horizontal w-100">
+									<form  th:action="@{/addcards}" method="POST" id="account-form" class="form-horizontal w-100" onsubmit="check_pass(event)" th:object="${cards}">
 										<div class="form-group">
-											<label class="control-label" for="username">Mã thẻ:</label>
-											<input style="width:100%" name="username" type="text" class="form-control" id="username" placeholder="Nhập mã thẻ cào">
+											<label class="control-label" for="mathecao" >Mã thẻ:</label>
+											<input  th:field="*{mathecao}" style="width:100%" name="mathecao" type="text" class="form-control" id="mathecao" placeholder="Nhập mã thẻ cào">
 										</div>
 										<div class="form-group">
-											<label class="control-label" for="email">Số seri thẻ:</label>
-											<input style="width:100%"name="email" type="text" class="form-control" id="email" placeholder="Nhập số seri thẻ cào">
+											<label class="control-label" for="soseri">Số seri thẻ:</label>
+											<input  th:field="*{soseri}" style="width:100%" name="soseri" type="text" class="form-control" id="soseri" placeholder="Nhập số seri thẻ cào">
 										</div>
 										<div class="form-group">
-											<label class="control-label" for="password">Mệnh giá:</label>
+											<label class="control-label" for="menhgia">Mệnh giá:</label>
 											<div>
-												<select style="width:100%" id="password" class="form-select">
-												<option selected>Chọn mệnh giá thẻ cào</option>
-												<option value="20000">20.000 vnđ</option>
-												<option value="50000">50.000 vnđ</option>
-												<option value="100000">100.000 vnđ</option>
-												<option value="200000">200.000vnđ</option>
-												<option value="500000">500.000vnđ</option>
+												<select  th:field="*{menhgia}" style="width:100%" name="menhgia" id="menhgia" class="form-select">
+												 <!-- <option selected value = "">Chọn mệnh giá thẻ cào</option>  -->
+												<option th:value="'20000'" value="">20.000 vnđ</option>
+												<option th:value="'50000'" value="">50.000 vnđ</option>
+												<option th:value="'100000'" value="">100.000 vnđ</option>
+												<option th:value="'200000'" value="">200.000 vnđ</option>
+												<option th:value="'500000'" value="" >500.000 vnđ</option>
+												<!-- <option  value="20000">20.000 vnđ</option>
+												<option  value="50000">50.000 vnđ</option>
+												<option  value="100000">100.000 vnđ</option>
+												<option value="200000">200.000 vnđ</option>
+												<option value="500000" >500.000 vnđ</option>-->
 												</select>
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="control-label" for="status">Trạng thái thẻ:</label>
+											<label class="control-label" for="trangthai">Trạng thái thẻ:</label>
 											<div>
-												<select style="width:100%" name="status" id="status" class="form-select">
-												<option selected>Chọn trạng thái thẻ</option>
-												<option value="Ready">Thẻ khả dụng</option>
-												<option value="Used">Thẻ đã được sử dụng</option>
+												<select  th:field="*{trangthai}"  style="width:100%" name="trangthai" id="trangthai" class="form-select">
+												<!-- <option selected value="Chọn trạng thái thẻ">Chọn trạng thái thẻ</option>  -->
+												<option th:value="'Ready'" value="">Thẻ khả dụng</option>
+												<option th:value="'Used'"  value="">Thẻ đã được sử dụng</option>
+												<!--<option value="Ready">Thẻ khả dụng</option>
+												<option  value="Used">Thẻ đã được sử dụng</option>-->
 												</select>
 											</div>
 										</div>
 										<div class="form-group row">
-											<div class="col"><button type="button" class="btn btn-success add-account">Thêm</button>
+											<div class="col"><button type="submit" name="submitCards" class="btn btn-success add-account">Thêm</button>
 											</div>
                            
 										</div>
@@ -228,7 +236,20 @@
                                 <th>Tùy chọn</th>
                             </tr>
                         </thead>
-                        <tbody id="table-body"></tbody>
+                        <tbody id="table-body">
+	                        <tr th:each="cards : ${listCards}">
+				                <td th:text="${cards.id}">ID</td>
+				                <td th:text="${cards.mathecao}">Mã thẻ cào</td>
+				                <td th:text="${cards.soseri}">Số seri</td>
+				                <td th:text="${cards.menhgia}">Mệnh giá</td>
+				                <td th:text="${cards.trangthai}">Trạng thái</td>
+				                <td>
+				                    <a th:href="@{/editcards/{id}(id=${cards.id})}">Edit</a>
+				                    &nbsp;&nbsp;&nbsp;
+				                    <a th:href="@{/deletecards/{id}(id=${cards.id})}">Delete</a>
+				                </td>
+				            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -349,8 +370,8 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
-		<script src="@{js/ace.min.js}"></script>
-		<script src="@{js/main3.js}"></script>
+		<script th:src="@{js/ace.min.js}"></script>
+		<script th:src="@{js/main3.js}"></script>
 
 		
 		

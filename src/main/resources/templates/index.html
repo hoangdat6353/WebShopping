@@ -1,41 +1,354 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
 <head>
-<meta charset="utf-8"/>
-<title>Product Manager</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="App Shopping">
+    <meta name="keywords" content="App, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AppShopping</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+	<link rel="icon" th:href="@{img/other/icon.png}" type="image/png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" type="text/css">
+
+    <link rel="stylesheet" th:href="@{css/style.css}" type="text/css">
+	
+	
+	
 </head>
+
 <body>
-<div align="center">
-    <h1>Product List</h1>
-    <a href="/new">Create New Product</a>
-    <br/><br/>
-    <table border="1" cellpadding="10">
-        <thead>
-            <tr>
-                <th>Product ID</th>
-                <th>Name</th>
-                <th>Brand</th>
-                <th>Made In</th>
-                <th>Price</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="product : ${listProducts}">
-                <td th:text="${product.id}">Product ID</td>
-                <td th:text="${product.name}">Name</td>
-                <td th:text="${product.brand}">Brand</td>
-                <td th:text="${product.madein}">Made in</td>
-                <td th:text="${product.price}">Price</td>
-                <td>
-                    <a th:href="@{/edit/{id}(id=${product.id})}">Edit</a>
-                    &nbsp;&nbsp;&nbsp;
-                    <a th:href="@{/delete/{id}(id=${product.id})}">Delete</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>   
+    
+
+    <!-- option Begin -->
+    <div class="option_menu_overlay"></div>
+    <div class="option_menu_wrapper">
+    <div th:switch="${Role}">
+         <div class="header_logo" th:case="'User'">
+              <a href="index"><img th:src="@{img/other/logo.png}" alt=""></a>
+         </div>              
+         <div class="header_logo" th:case="Developer">
+              <a href="index-dev"><img src="@{img/other/logo-dev.png}" alt=""></a>
+         </div>
+         <div class="header_logo" th:case="*">
+             <a href="index"><img src="@{img/other/logo.png}" alt=""></a>
+         </div> 
+     </div>     
+            
+        <div class="option_menu_cart">
+            <ul>
+				<li><i class='fa fa-heart'></i></li>";
+				<div class='header_cart_price' th:if="${User != null}" th:text="'Số tiền bạn có: ' + ${User.balance} + ' vnđ'"></div>
+			</ul>
+        </div>
+        <div class="option_menu_widget">
+            
+            <div class="header_top_right_auth">
+                 <div th:if="${User != null}"> 
+				 <a href="login"><i class="fa fa-user"></i> Đăng nhập</a> 
+				 </div>
+				 <div th:unless="${User != null}"> <a href="logout"><i class="fa fa-user"></i> Đăng xuất</a> </div>
+            </div>
+        </div>
+		<!-- Navigation mobile -->
+        <nav class="option_menu_nav mobile-menu">
+            <ul>
+                <li class="active"><a href="index">Trang Chủ</a></li>
+                <li><a href="shop-grid">Bảng xếp hạng</a></li>
+                
+            </ul>
+        </nav>
+        <div id="mobile-menu-wrap"></div>
+        <div class="header_top_right_social" th:if="${User != null}">
+          <a href='accountProfile' th:text="'Xin chào, ' + ${User.username}"><i class='fa fa-user'></i></a>	
+        </div>
+		<div class="option_menu_contact">
+            <ul>
+                <li><i class="fa fa-envelope"></i> appshop@gmail.com</li>
+                <li>Luôn luôn phong cách!</li>
+            </ul>
+        </div>
+        
+    </div>
+    <!-- option End -->
+
+    <!-- Khung Header -->
+    <header class="header">
+        <div class="header_top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header_top_left">
+                            <ul>
+                                <li><i class="fa fa-envelope"></i> appshop@gmail.com</li>
+                                <li>Luôn luôn phong cách!</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header_top_right">
+                            <div class="header_top_right_social" th:if="${User != null}">
+          						<a href='accountProfile'><i class='fa fa-user' th:text="' Xin chào, ' + ${User.username}"></i></a>	
+							</div>
+                           
+                            <div class="header_top_right_auth">
+                 				<div th:if="${User == null}"> 
+				 					<a href="login"><i class="fa fa-sign-in"></i> Đăng nhập</a> 
+				 				</div>
+				 				<div th:unless="${User == null}"> 
+				 					<a href="logout"><i class="fa fa-sign-out"></i> Đăng xuất</a> 
+				 				</div>
+            				</div>
+							
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                <div th:switch="${Role}">
+         			<div class="header_logo" th:case="'User'">
+              			<a href="index"><img th:src="@{img/other/logo.png}" alt=""></a>
+         			</div>              
+         			<div class="header_logo" th:case="Developer">
+              			<a href="index-dev"><img th:src="@{img/other/logo-dev.png}" alt=""></a>
+         			</div>
+         			<div class="header_logo" th:case="*">
+             			<a href="index"><img th:src="@{img/other/logo.png}" alt=""></a>
+         			</div> 
+     			</div> 
+                </div>
+                <div class="col-lg-6">
+                    <nav class="header_menu">
+                        <ul>
+                            <li class="active"><a href="index">Trang Chủ</a></li>
+							<li><a href="shop-grid">Bảng xếp hạng</a></li>
+							
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3">
+                    <div class="header_cart">
+                        <ul>             
+							<div class='header_cart_price' th:if="${User != null}" th:text="'Số tiền bạn có: ' + ${User.balance} + ' vnđ'"></div>
+                        </ul>
+						
+                    </div>
+                </div>
+            </div>
+            <div class="option_open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Khung Header -->
+
+    <!-- brave Section Begin -->
+    <section class="brave ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="brave_categories">
+                        <div class="brave_categories_all">
+                            <i class="fa fa-bars"></i>
+                            <span>Thể loại<span class="fa fa-angle-down pull-right pt-1"></span></span>
+                        </div>
+                        <ul>
+                        <div th:each="category : ${listCategories}"> 
+                        	<li><a class="smooth-goto" th:href="@{/shop-type/{filter}(filter=${category.tentheloai})}" th:text="${category.tentheloai}"></a></li>
+                        </div>
+            			<li><a class="smooth-goto" th:href="@{/shop-type/{filter}(filter='Free')}">Miễn phí</a></li>
+                        <li><a class="smooth-goto" th:href="@{/shop-type/{filter}(filter='Paid')}">Trả phí</a></li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="brave_search">
+                        <div class="brave_search_form">
+                            <form th:action="@{/search-apps}" method="POST">
+                                <input id="searchScroll" type="text" name="search" placeholder="Tìm kiếm trên AppShopping">
+                                <button type="submit" name="submitSearch" class="site-btn">TÌM KIẾM</button>
+                            </form>
+                        </div>
+                        <div class="brave_search_phone">
+                            <div class="brave_search_phone_icon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <div class="brave_search_phone_text">
+                                <h5>+84 908.834.238</h5>
+                                <span>Hỗ trợ 24/7</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="brave_item set-bg" th:attr="data-setbg='img/other/banner.jpg'">
+                        <div class="brave_text">
+                            <span style="font-weight: bold;">Trò chơi</span>
+                            <h2>LIÊN QUÂN <br />MOBILE</h2>
+                            <p class="winlosse">Thắng   bại   tại   kỹ   năng</p>
+                            <a th:href="@{/shop-details/{appname}(appname='Liên Quân Mobile')}" class="primary-btn">Tải ngay</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+	<section class='categories'>
+        <div class='container'>
+            <div class='row'>
+                <div class='categories_slider owl-carousel'>
+					<div th:each="appIndex : ${listAppsIndex}">
+						<div class='col-lg-3'>
+                        	<div class='categories_item set-bg' th:attr="data-setbg='img/categories/' + ${appIndex.imagename}">
+                            	<h5><a th:href="@{/shop-details/{appname}(appname=${appIndex.appname})}" th:text="${appIndex.appname}"></a></h5>
+                        	</div>                  
+				   		</div>
+					</div> 
+               </div>
+            </div>
+        </div>
+    </section>
+ 
+  <section class='featured spad'>
+        <div class='container'>          
+			<div class='row'>
+                <div class='col-lg-12'>
+                    <div class='section-title'>
+                       <h2>DANH MỤC ỨNG DỤNG</h2>
+                    </div>
+                    <div class='featured_controls'>
+                        <ul>
+                             <li data-filter='*'>Tất cả</li>                        
+							 <li id='freeScroll' data-filter='.Free'>Miễn phí</li>
+							 <li id='feeScroll' data-filter='.Paid'>Tính phí</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+				<div class='row featured_filter justify-content-center'>
+				<div th:each="app : ${listApps}" th:attr="class='col-lg-3 col-md-4 col-sm-6 mix ' + ${app.payment}">
+                   <div class='featured_item'>
+                        <div class='featured_item_pic set-bg' th:attr="data-setbg='img/featured/' + ${app.iconimage}">
+                           <ul class='featured_item_pic_hover'>
+                                <li><a><i class='fa fa-heart'></i></a></li>
+                                <li><a th:href="@{/shop-details/{appname}(appname=${app.appname})}"><i class='fa fa-shopping-cart'></i></a></li>
+                            </ul>
+                       </div>
+                       <div class='featured_item_text'>
+                          <h6><a th:href="@{/shop-details/{appname}(appname=${app.appname})}" th:text="${app.appname}" ></a></h6>
+                           <div th:if="${app.price == 0}"> 
+				 				<h5>MIỄN PHÍ</h5>
+				 			</div>
+				 			<div th:unless="${app.price == 0}"> 
+								<h5 th:text="${app.price} + ' VNĐ'"></h5>            				
+							</div>              
+                        </div>
+                    </div>
+                </div>
+		 		</div>
+        </div>
+		</section>
+    <!-- Featured Section End -->
+
+    <!-- Banner Begin -->
+    <div class="banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="banner_pic">
+                        <img th:src="@{img/banner/banner-1.jpg}" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="banner_pic">
+                        <img th:src="@{img/banner/banner-2.jpg}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Banner End -->
+
+    
+    
+
+    <!-- Footer Section Begin -->
+    <footer class="footer spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer_about">
+                        <div class="footer_about_logo">
+                            <a href="index"><img th:src="@{img/other/logo.png}" alt=""></a>
+                        </div>
+                        <ul>
+                            <li>Ứng dụng: AppShopping</li>
+                            <li>Liên hệ: +84 908.834.238</li>
+                            <li>Email: appshop@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 offset-lg-1">
+                    <div class="footer_widget">
+                        <h6>Có thể bạn cần</h6>
+                        <ul>
+                            <li><a href="index">Trang chủ</a></li>
+                            <li><a href="shop-grid">Bảng xếp hạng</a></li>
+                            
+							<li><a class="smooth-goto" href="#searchScroll">Tìm kiếm</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-12">
+                    <div class="footer_widget">
+                        <h6>Tham gia bảng tin của chúng tôi</h6>
+                        <p>Để lại E-mail để có thể nhận được những ưu đãi.</p>
+                       <form>
+							<input id="sub" type="email" placeholder="Nhập E-mail của bạn">
+							<button onclick="Subcribe()" type="button" class="site-btn">Gửi</button>
+						</form>
+                     
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="footer_copyright">
+                        <div class="footer_copyright_text">
+							<p><!-- Phần dưới Footer -->
+								&copy;<script>document.write(new Date().getFullYear());</script> AppShopping | Trang web được phát triển <i class="fa fa-heart" aria-hidden="true"></i> bởi Nhóm sinh viên đại học Tôn Đức Thắng
+							</p>
+						</div>
+                        <div class="footer_copyright_payment"><img th:src="@{img/other/payment-item.png}" alt=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Phần dưới Footer -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/jquery.slicknav.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script th:src="@{js/main.js}"></script>
+	
+
+
 </body>
+
 </html>

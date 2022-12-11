@@ -6,6 +6,7 @@
     <meta charset="utf-8" />
     <title>Administator</title>
     <meta username="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+	<link rel="icon" th:href="@{img/other/icon.png}" type="image/png">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -35,7 +36,7 @@
             <div class="navbar-header pull-left">
                 <a href="index" class="navbar-brand">
                     <small>
-							<a href="index"><img class="logo" src="@{img/other/logo-dev-UI.png}" alt=""></a>
+							<a href="index"><img class="logo" th:src="@{img/other/logo-dev-UI.png}" alt=""></a>
 						</small>
                 </a>
             </div>
@@ -44,9 +45,10 @@
                 <ul class="nav ace-nav">
                     <li class="light-blue dropdown-modal">
                         <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                            <img class="nav-user-photo" src="@{images/user.jpg}" alt="Jason's Photo">
+                            <img class="nav-user-photo" th:src="@{'/uploads/'+${User.devavatar}}" alt="Developer Avatar">
                             <span class="user-info">
 									<small>Xin chào,</small>
+									<div th:text="${Developer.devname}"> </div>
 								</span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -54,7 +56,7 @@
 
                         <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                             <li>
-                                <a href="dev-profile.php">
+                                <a href="devProfile">
                                     <i class="ace-icon fa fa-user"></i> Hồ sơ cá nhân
                                 </a>
                             </li>
@@ -62,7 +64,7 @@
                             <li class="divider"></li>
 
                             <li>
-                                <a href="logout.php">
+                                <a href="logout">
                                     <i class="ace-icon fa fa-power-off"></i> Đăng xuất
                                 </a>
                             </li>
@@ -109,7 +111,7 @@
 
             <ul class="nav nav-list">
                 <li class="active">
-                    <a href="index-dev.php">
+                    <a href="index-dev">
                         <i class="menu-icon fa fa-tachometer"></i>
                         <span class="menu-text"> Thống kê tổng quan </span>
                     </a>
@@ -117,7 +119,7 @@
                     <b class="arrow"></b>
                 </li>
                 <li class="">
-                    <a href="approval.php">
+                    <a href="approval">
                         <i class="menu-icon fa fa-list-alt"></i>
                         <span class="menu-text"> Đăng tải ứng dụng </span>
                     </a>
@@ -134,7 +136,7 @@
                     <b class="arrow"></b>
                     <ul class="submenu">
                         <li>
-                            <a href="dev-apps.php">
+                            <a href="dev-apps">
                                 <i class="menu-icon fa fa-caret-right"></i> Quản lý danh sách ứng dụng
                             </a>
                             <b class="arrow"></b>
@@ -153,10 +155,10 @@
                     <ul class="breadcrumb">
                         <li>
                             <i class="ace-icon fa fa-home home-icon"></i>
-                            <a href="index.php">Trang Chủ</a>
+                            <a href="index">Trang Chủ</a>
                         </li>
                         <li>
-                            <a href="index-dev.php">Thống kê tổng quan</a>
+                            <a href="index-dev">Thống kê tổng quan</a>
                         </li>
                     </ul>
                 </div>
@@ -210,41 +212,21 @@
                                                         </tr>
                                                     </thead>
 													<tbody>
-														<?php
-														$sql_pay = "SELECT * FROM ungdung WHERE hinhthucmua ='Trả phí' AND nhaphattrien = '$devName'";
-														$query_pay = mysqli_query($mysqli,$sql_pay);
-														$doanhThu = 0;
-																												
-														if (mysqli_num_rows($query_pay) >0 )
-														{
-														while ($row_pay = mysqli_fetch_assoc($query_pay))
-														{
-															$doanhThu = $doanhThu +($row_pay['luottai'] * $row_pay['giatien']);
-															?>
-														<tr>
+														<tr th:each="app : ${listAppsSold}">
                                                            
-                                                            <?php echo "<td>" ."<img src='img/featured/".$row_pay['iconimage']." ' width='62' height='52'>" ."</td>";?>
+                                                            <td><img th:src="@{'/img/featured/'+${app.iconimage}}" width='62' height='52'></td>
                                                            
-                                                            <td><?php echo $row_pay['tenungdung']?></td>
-
+                                                            <td th:text="${app.appname}"></td>
                                                             <td>
-                                                                <b class="green"><?php echo $row_pay['giatien'] ?></b>
+                                                                <b class="green" th:text="${app.price}"></b>
                                                             </td>
-
-                                                            <td><?php echo $row_pay['luottai'] ?></td>
-                                                        </tr>
-														<?php
-														}
-														}
-														else
-														{
-														}
-                                                    ?>
+                                                            <td th:text="${app.downloads}"></td>
+                                                        </tr>												
 													</tbody>
                                                 </table>
 												<div class="widget-header widget-header-flat">
                                             <h4 class="widget-title lighter">
-                                                <i class="ace-icon fa fa-star orange"></i> TỔNG DOANH THU: <?php echo $doanhThu; ?>
+                                                <i class="ace-icon fa fa-star orange" th:text="'TỔNG DOANH THU: ' + ${Revenue}+ ' VNĐ' "></i>
                                             </h4>
                                             <div class="widget-toolbar">
                                                 <a href="#" data-action="collapse">
@@ -313,7 +295,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="@{js/ace.min.js}"></script>
+    <script th:src="@{js/ace.min.js}"></script>
 </body>
 
 </html>

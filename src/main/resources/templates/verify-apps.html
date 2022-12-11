@@ -7,6 +7,7 @@
     <title>Adminastrator</title>
     <meta name="description" content="overview &amp; stats" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+	<link rel="icon" th:href="@{img/other/icon.png}" type="image/png">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -33,9 +34,9 @@
 				</button>
 
             <div class="navbar-header pull-left">
-                <a href="index-admin.php" class="navbar-brand">
+                <a href="index-admin" class="navbar-brand">
                     <small>
-							<a href="index-admin.php"><img class="logo" src="img/other/logo-admin.png" alt=""></a>
+							<a href="index-admin"><img class="logo" th:src="@{img/other/logo-admin.png}" alt=""></a>
 					</small>
                 </a>
             </div>
@@ -44,10 +45,10 @@
                 <ul class="nav ace-nav">
                     <li class="light-blue dropdown-modal">
                         <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                            <img class="nav-user-photo" src="images/user.jpg" alt="" />
+                            <img class="nav-user-photo" th:src="@{/img/other/user.jpg}" alt="" />
                             <span class="user-info">
 									<small>Xin chào,</small>
-									<?php echo $_SESSION['userLogin'] ?>
+										Admin
 								</span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -56,7 +57,7 @@
                         <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                          
                             <li>
-                                <a href="logout.php">
+                                <a href="logout">
                                     <i class="ace-icon fa fa-power-off"></i> Đăng xuất
                                 </a>
                             </li>
@@ -103,7 +104,7 @@
 
             <ul class="nav nav-list">
                 <li class="">
-                    <a href="index-admin.php">
+                    <a href="index-admin">
                         <i class="menu-icon fa fa-tachometer"></i>
                         <span class="menu-text"> Thống kê tổng quan </span>
                     </a>
@@ -112,7 +113,7 @@
                 </li>
 
                 <li class="active">
-                    <a href="appmanage.php">
+                    <a href="verify-apps">
                         <i class="menu-icon fa fa-list-alt"></i>
                         <span class="menu-text"> Duyệt ứng dụng </span>
                     </a>
@@ -132,7 +133,7 @@
 
                     <ul class="submenu">
                         <li class="">
-                            <a href="acc.php">
+                            <a href="accounts">
                                 <i class="menu-icon fa fa-caret-right"></i> Quản lý tài khoản
                             </a>
 
@@ -142,7 +143,7 @@
 
                     <ul class="submenu">
                         <li class="">
-                            <a href="categories.php">
+                            <a href="categories">
                                 <i class="menu-icon fa fa-caret-right"></i> Quản lý thể loại
                             </a>
 
@@ -152,7 +153,7 @@
 
                     <ul class="submenu">
                         <li class="">
-                            <a href="cards.php">
+                            <a href="cards">
                                 <i class="menu-icon fa fa-caret-right"></i> Quản lý thẻ nạp
                             </a>
 
@@ -175,7 +176,7 @@
                     <ul class="breadcrumb">
                         <li>
                             <i class="ace-icon fa fa-home home-icon"></i>
-                            <a href="./index.php">Trang chủ</a>
+                            <a href="">Trang chủ</a>
                         </li>
                         <li class="">Duyệt ứng dụng</li>
                     </ul>
@@ -185,6 +186,7 @@
                 </div>
 
                 <div class="page-content">
+                <h3 th:if="${message != null}" th:text="${message}" style="color: red;text-align:center;"></h3>
 
                     <div class="page-header">
                         <h1>
@@ -207,45 +209,36 @@
                                 <th class="text-center">Tên ứng dụng</th>
                                 <th class="text-center">Thể loại</th>
                                 <th class="text-center">Hình thức mua</th>
+                                <th class="text-center">Giá (đơn vị VNĐ)</th>
 								<th class="text-center">Mô tả ngắn</th>								
                                 <th class="text-center" colspan = '2'>Xét duyệt</th>						
                             </tr>
-                        </thead>                     
-							<?php
-								$sql = "SELECT * FROM ungdungchoduyet WHERE tinhtrang='Chờ duyệt'";
-								$result = mysqli_query($mysqli,$sql);
-								
-								if (mysqli_num_rows($result) > 0)
-								{
-									while ($row = mysqli_fetch_assoc($result))
-									{
-										?>
-											
+                        </thead>                     											
 										<tbody id="table-body">
-											<tr>
-												<td><?php echo $row['id']?></td>					
-												<td> <?php echo "<img src='img/featured/".$row['iconimage']."' width='60' height='50' alt='' "; ?></td>
-												<td class="text-center"><?php echo $row['tenungdung']?></td>
-												<td class="text-center"><?php echo $row['theloai']?></td>
-												<td class="text-center"><?php echo $row['hinhthucmua']?></td>
-												<td class="text-center"><?php echo $row['motangan']?></td>
+											<tr th:each="app : ${listPendingApps}">
+												<td th:text="${app.id}"></td>					
+                                                <td><img th:src="@{'/img/featured/'+${app.iconimage}}" width='60' height='50'></td>
+												<td class="text-center" th:text="${app.appname}"></td>
+												<td class="text-center" th:text="${app.category}"></td>
+												<td class="text-center" th:text="${app.price == 0} ? 'Miễn phí' : 'Trả phí'"></td>
+												<td class="text-center" th:text="${app.price}"></td>
+												<td class="text-center" th:text="${app.shortdescription}"></td>
 												<td>
-													<form action="xetduyet.php?appId=<?php echo $row['id']; ?>" method ="POST">
+													<form th:action="@{/verify-app}" method ="POST">
+													<input name="id" th:value="${app.id}" id="id" type="number" hidden>
+													<input name="approval" value="accepted" id="approval" type="text" hidden>
 													<button class="btn btn-success" type="submit" name="submitChapThuan">CHẤP THUẬN</button>
 													</form>												
 												</td>
 												<td> 
-													<form action="xetduyet.php?appId=<?php echo $row['id']; ?>" method ="POST">
+													<form th:action="@{/verify-app}" method ="POST">
+													<input name="id" th:value="${app.id}" id="id" type="number" hidden>
+													<input name="approval" value="denied" id="approval" type="text" hidden>
 													<button class="btn btn-danger text-right" type="submit" name="submitTuChoi">TỪ CHỐI</button>
 													</form>	
 												</td>
 											</tr>
-										</tbody>
-										<?php
-									}
-								}
-							?>
-																
+										</tbody>				
                     </table>
                 </div>
             </div>
@@ -290,7 +283,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="@{js/ace.min.js}"></script>
+    <script th:src="@{js/ace.min.js}"></script>
 </body>
 
 </html>

@@ -5,7 +5,8 @@
 	<meta charset="UTF-8">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<title> Giao Diện Thay Đổi Mật Khẩu </title>
-	
+	<link rel="icon" th:href="@{img/other/icon.png}" type="image/png">
+
 </head>
 
 <body>
@@ -45,7 +46,7 @@
 
 			if ($('#newPassword').val() == $('#confirm_password').val()) 
 			{
-				$('#messageMatch').html('Mật khẩu hợp lệ').css('color', 'green');
+				$('#messageMatch').html('Mật khẩu trùng khớp').css('color', 'green');
 			} 
 			else 
 			$('#messageMatch').html('Mật khẩu không khớp').css('color', 'red');

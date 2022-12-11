@@ -1,12 +1,7 @@
 package com.project.util;
 
-import java.util.Collection;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-
 public class WebUtils {
-
+ 
     public static String toString(com.project.model.User loginedUser) {
         StringBuilder sb = new StringBuilder();
 
@@ -20,5 +15,5 @@ public class WebUtils {
         }
         return sb.toString();
     }
-
+    
 }

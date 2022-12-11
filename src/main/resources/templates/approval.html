@@ -6,6 +6,7 @@
     <meta charset="utf-8" />
 
     <title>Developer</title>
+	<link rel="icon" th:href="@{img/other/icon.png}" type="image/png">
 
     <meta username="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -20,7 +21,7 @@
 </head>
 
 <body class="no-skin">
-    <div id="navbar" class="navbar navbar-default          ace-save-state">
+    <div id="navbar" class="navbar navbar-default ace-save-state">
         <div class="navbar-container ace-save-state" id="navbar-container">
             <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
 					<span class="sr-only"></span>
@@ -33,9 +34,9 @@
 				</button>
 
             <div class="navbar-header pull-left">
-                <a href="index.php" class="navbar-brand">
+                <a href="index" class="navbar-brand">
                     <small>
-							<a href="#"><img class="logo" src="img/other/logo-dev-UI.png" alt=""></a>
+							<a href="#"><img class="logo" th:src="@{img/other/logo-dev-UI.png}" alt=""></a>
 						</small>
                 </a>
             </div>
@@ -43,11 +44,11 @@
             <div class="navbar-buttons navbar-header pull-right" role="navigation">
                 <ul class="nav ace-nav">
                     <li class="light-blue dropdown-modal">
-                        <a class="profilebar" data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" src="images/user.jpg" alt="" />
+                        <a class="profilebar dropdown-toggle" data-toggle="dropdown" href="#">
+                        <img class="nav-user-photo" th:src="@{'/uploads/'+${User.devavatar}}" alt="" />
                             <span class="user-info">
 									<small>Xin chào,</small>
-									<?php echo $devName ?>
+									<div th:text="${Developer.devname}"> </div>
 								</span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -55,7 +56,7 @@
 
                         <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                             <li>
-                                <a href="dev-profile.php">
+                                <a href="devProfile">
                                     <i class="ace-icon fa fa-user"></i> Hồ sơ cá nhân
                                 </a>
                             </li>
@@ -63,7 +64,7 @@
                             <li class="divider"></li>
 
                             <li>
-                                <a href="logout.php">
+                                <a href="logout">
                                     <i class="ace-icon fa fa-power-off"></i> Đăng xuất
                                 </a>
                             </li>
@@ -110,7 +111,7 @@
 
             <ul class="nav nav-list">
                 <li class="">
-                    <a href="index-dev.php">
+                    <a href="index-dev">
                         <i class="menu-icon fa fa-tachometer"></i>
                         <span class="menu-text"> Thống kê tổng quan </span>
                     </a>
@@ -118,7 +119,7 @@
                     <b class="arrow"></b>
                 </li>
                 <li class="active">
-                    <a href="approval.php">
+                    <a href="approval">
                         <i class="menu-icon fa fa-list-alt"></i>
                         <span class="menu-text"> Đăng tải ứng dụng </span>
                     </a>
@@ -135,7 +136,7 @@
                     <b class="arrow"></b>
                     <ul class="submenu">
                         <li class="">
-                            <a href="dev-apps.php">
+                            <a href="dev-apps">
                                 <i class="menu-icon fa fa-caret-right"></i> Quản lý danh sách ứng dụng
                             </a>
                             <b class="arrow"></b>
@@ -154,10 +155,10 @@
                     <ul class="breadcrumb">
                         <li>
                             <i class="ace-icon fa fa-home home-icon"></i>
-                            <a href="index.php">Trang Chủ</a>
+                            <a href="index">Trang Chủ</a>
                         </li>
                         <li>
-                            <a href="approval.php">Đăng tải ứng dụng</a>
+                            <a href="approval">Đăng tải ứng dụng</a>
                         </li>
                     </ul>
                 </div>
@@ -171,77 +172,59 @@
                     </h1>
                 </div>
                 <!-- /.page-header -->
+                <h3 th:if="${message != null}" th:text="${message}" style="color: red;"></h3>
+				
                 <div class="container">
                     <h3 class="text-primary mt-3">Thông Tin Ứng Dụng</h3>
                     <div class="formInfo">
                         <div class="col-md-10">
-                            <form action="uploadapp.php" method="POST" id="account-form" enctype = "multipart/form-data" class="form-horizontal w-100">
+                            <form th:action="@{/uploadApp}" th:object="${PendingApp}" method="POST" id="account-form" enctype = "multipart/form-data" class="form-horizontal w-100">
                                 <div class="row gutters">
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
                                             <label for="iconImage">Icon (728x642):</label>
-                                            <input class="form-control" id="iconImage" type="file" name="iconImage">
+                                            <input class="form-control" id="iconImage" type="file" name="iconImage" accept="image/png, image/jpg, image/jpeg">
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="appFile">Tệp ứng dụng (file *zip):</label>
-                                            <input class="form-control" id="appFile" type="file" name="appFile">
-											 <h6 class="text-danger pt-2">Lưu ý chỉ chọn tệp có định dạng .zip</h6>
+                                            <label for="installFile">Tệp ứng dụng (file .zip hoặc .rar):</label>
+                                            <input class="form-control" id="installFile" type="file" name="installFile" accept=".zip,.rar">
+											 <h6 class="text-danger pt-2">Lưu ý chỉ chọn tệp có định dạng .zip hoặc .rar</h6>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row gutters">
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="appName">Tên ứng dụng:</label>
-                                            <input name="appName" type="text" class="form-control" id="appName" placeholder="Nhập tên ứng dụng">
+                                            <label for="appname">Tên ứng dụng:</label>
+                                            <input name="appname" type="text" class="form-control" id="appname" placeholder="Nhập tên ứng dụng" th:field="*{appname}" required>
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                        <div class="form-group">                                                      
-                                                <?php
-												$sql_theloai = "SELECT * FROM theloai";
-												$query_theloai = mysqli_query($mysqli,$sql_theloai);
-												
-												if (mysqli_num_rows($query_theloai) > 0)
-												{
-													?>
-														<label for="appType">Thể loại ứng dụng:</label>             
-														<select class="form-control" name="appType" id="appType">
-													<?php
-													
-													while ($row_theloai = mysqli_fetch_assoc($query_theloai))
-													{
-														?>									
-															<option value="<?php echo $row_theloai['tentheloai']; ?>"><?php echo $row_theloai['tentheloai']; ?> </option> 		
-															
-														<?php												
-													}
-														echo "</select>";
-												}
-												else
-												{
-													
-												}
-												?>                                          
+                                        <div class="form-group">   
+                                        <label for="appType">Thể loại ứng dụng:</label>             
+                                       <select class="form-control" name="category" id="category" th:field="*{category}" required>
+    									<option th:each="theloai : ${listCategories}" th:value="${theloai.tentheloai}" th:text="${theloai.tentheloai}">
+    									</option>
+										</select>								
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row gutters">
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="appMethod">Hình thức:</label>
-                                            <select class="form-control" name="appMethod" id="appMethod">
-                                                <option value="free">Miễn phí</option>
-                                                <option value="fee">Tính phí</option>
+                                            <label for="payment">Hình thức:</label>
+                                            <select class="form-control" name="payment" id="payment" th:field="*{payment}" required>
+                                                <option value="Free">Miễn phí</option>
+                                                <option value="Paid">Tính phí</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="appPrice">Giá tiền:</label>
-                                            <input name="appPrice" type="number" class="form-control" id="appPrice" placeholder="Nhập giá tiền của ứng dụng (đơn vị vnđ)">
+                                            <label for="price">Giá tiền:</label>
+                                            <input name="price" type="number" class="form-control" id="price" placeholder="Nhập giá tiền của ứng dụng (đơn vị vnđ)" th:field="*{price}">
                                             <h6 class="text-danger pt-2">*Hình thức miễn phí vui lòng nhập vào " 0 " ở đây!</h6>
                                         </div>
                                     </div>
@@ -249,49 +232,52 @@
                                 <div class="row gutters">
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="appShortdesc">Mô tả ngắn:</label>
-                                            <textarea name="appShortdesc" class="form-control" id="appShortdesc" placeholder="Nhập mô tả ngắn"></textarea>
+                                            <label for="shortdescription">Mô tả ngắn:</label>
+                                            <textarea name="shortdescription" class="form-control" id="shortdescription" placeholder="Nhập mô tả ngắn" th:field="*{shortdescription}" required></textarea>
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="screen1">Ảnh ScreenShot 1:</label>
-                                            <input class="form-control" id="screen1" type="file" name="screen1">
+                                            <label for="detaildescription">Mô tả chi tiết:</label>
+                                            <textarea name="detaildescription" class="form-control" id="detaildescription" placeholder="Nhập mô tả chi tiết (giới thiệu, tính năng...)" th:field="*{detaildescription}" required></textarea>
                                         </div>
                                     </div>
+                                   
+                                    
                                 </div>
 								<div class="row gutters">
-                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+								 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="screen2">Ảnh ScreenShot 2:</label>
-                                            <input class="form-control" id="screen2" type="file" name="screen2">
+                                            <label for="screenShot1">Ảnh ScreenShot 1:</label>
+                                            <input class="form-control" id="screenshot1" type="file" name="screenShot1" accept="image/png, image/jpg, image/jpeg" required>
                                         </div>
                                     </div>
-                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">                             
                                         <div class="form-group">
-                                            <label for="screen1">Ảnh ScreenShot 3:</label>
-                                            <input class="form-control" id="screen3" type="file" name="screen3">
+                                            <label for="screenShot2">Ảnh ScreenShot 2:</label>
+                                            <input class="form-control" id="screenshot2" type="file" name="screenShot2" accept="image/png, image/jpg, image/jpeg" required>
                                         </div>
                                     </div>
+                                    
                                 </div>
                                 <div class="row gutters">
                                      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="screen4">Ảnh ScreenShot 4:</label>
-                                            <input class="form-control" id="screen4" type="file" name="screen4">
+                                            <label for="screenShot3">Ảnh ScreenShot 3:</label>
+                                            <input class="form-control" id="screenShot3" type="file" name="screenShot3" accept="image/png, image/jpg, image/jpeg" required>
                                         </div>
                                     </div>
+									
 									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div class="form-group">
-                                            <label for="detailsDesc">Mô tả chi tiết:</label>
-                                            <textarea name="appLongDesc" class="form-control" id="detailsDesc" placeholder="Nhập mô tả chi tiết (giới thiệu, tính năng...)"></textarea>
+                                            <label for="screenShot4">Ảnh ScreenShot 4:</label>
+                                            <input class="form-control" id="screenshot4" type="file" name="screenShot4" accept="image/png, image/jpg, image/jpeg" required>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col buton">
                                         <button type="submit" id="submitUploadApp" name="submitUploadApp" class="btn btn-primary approval">Đăng tải để chờ xét duyệt</button>
-                                        <button type="submit" id="waitUploadApp" name="waitUploadApp" class="btn btn-success refuse">Lưu bản nháp</button>
                                     </div>
                                 </div>
                             </form>
@@ -341,7 +327,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="@{js/ace.min.js}"></script>
+    <script th:src="@{js/ace.min.js}"></script>
 
  
 

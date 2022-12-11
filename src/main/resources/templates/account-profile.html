@@ -6,7 +6,7 @@
     <title>Thông tin cá nhân</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="icon" th:href="@{/img/other/favicon.png}" type="image/png">
+	<link rel="icon" th:href="@{/img/other/icon.png}" type="image/png">
 
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" type="text/css">
@@ -249,7 +249,7 @@
 		</table>
 		
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-			<h6 class="mb-2 text-primary">Danh sách ứng dụng đã mua</h6>
+			<h6 class="mb-2 text-primary">Danh sách ứng dụng miễn phí đã mua</h6>
 		</div>
 		<table class="table table-bordered" id="dataTable">
 			<thead>
@@ -258,12 +258,16 @@
 				<th> Thể loại </th>
 			</thead>
 			<tbody>
-				
+				<tr th:each="app : ${listFreeApps}">
+                	<td><img th:src="'/img/featured/' + ${app.iconimage}" width='70' height='60px'> </img></td>
+                	<td th:text="${app.appname}"></td>
+                	<td th:text="${app.category}"></td>
+            	</tr>
 			</tbody>
 		</table>
 		
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-			<h6 class="mb-2 text-primary">Danh sách ứng dụng đã cài đặt</h6>
+			<h6 class="mb-2 text-primary">Danh sách ứng dụng trả phí đã mua</h6>
 		</div>
 		<table class="table table-bordered" id="dataTable">
 			<thead>
@@ -272,7 +276,11 @@
 				<th> Thể loại </th>
 			</thead>
 			<tbody>
-			
+				<tr th:each="app : ${listPaidApps}">
+                	<td><img th:src="'/img/featured/' + ${app.iconimage}" width='70' height='60px'> </img></td>
+                	<td th:text="${app.appname}"></td>
+                	<td th:text="${app.category}"></td>
+            	</tr>
 			</tbody>
 		</table>
 			

@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
-import org.springframework.lang.Nullable;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +20,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @Builder
+@Table(name = "app")
 public class App {
 	 @Id
 	 private Long id;
@@ -29,29 +30,33 @@ public class App {
 	 //Thể loại
 	 private String category;
 	 //Đường dẫn file cài đặt
-	 private String installpath;
-	 //Filter
-	 private String filter;
+	 private String installfile;
+	 //Phương thức trả phí
+	 private String payment;
 	 //Nhà phát triển
 	 private String developer;
 	 //Giá tiền
-	 private float price;
+	 private int price;
 	 //Mô tả ngắn
 	 private String shortdescription;
 	 //Dung lượng
-	 private String size;
+	 private String filesize;
 	 //Ngày đăng tải
-	 private String uploadDate;
+	 private String uploaddate;
 	 //Lượt tải
 	 private int downloads;
 	 //Đường dẫn icon hình ảnh của ứng dụng
-	 private String iconImage;
-	 //Phương thức mua (trả phí hoặc miễn phí)
-	 private String buyMethod;
+	 private String iconimage;
 	 //Mô tả chi tiết
-	 private String detailDescription;
+	 private String detaildescription;
 	 //Trạng thái
-	 private String state;
+	 private String status;
+	 //Ảnh screenshot từ 1 > 4
+	 private String screenshot1;
+	 private String screenshot2;
+	 private String screenshot3;
+	 private String screenshot4;
+	 
 	 
 	 public App() {
 	 }

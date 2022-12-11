@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.model.Developer;
-import com.project.model.User;
 import com.project.repository.DeveloperRepository;
  
 @Service

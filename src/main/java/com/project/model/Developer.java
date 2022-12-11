@@ -24,6 +24,7 @@ public class Developer {
  private String devemail;
  private String credentialfront;
  private String credentialback;
+ private int revenue;
 
 public Developer() {
  }

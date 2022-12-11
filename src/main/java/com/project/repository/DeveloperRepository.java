@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.project.model.Developer;
-import com.project.model.User;
 
 public interface DeveloperRepository extends JpaRepository<Developer, Long> {
 	@Query("SELECT u FROM Developer u WHERE u.username = :username")

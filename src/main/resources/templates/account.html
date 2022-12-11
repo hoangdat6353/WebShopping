@@ -7,8 +7,9 @@
 		<title>Administator</title>
 
 		<meta username="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-	
+		<link rel="icon" th:href="@{/img/other/icon.png}" type="image/png">
 
+		<link rel="icon" th:href="@{img/other/icon.png}" type="image/png">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -34,9 +35,9 @@
 				</button>
 
 				<div class="navbar-header pull-left">
-					<a href="index.php" class="navbar-brand">
+					<a href="index" class="navbar-brand">
 						<small>
-							<a href="index.php"><img class="logo" src="img/other/logo-admin.png" alt=""></a>
+							<a href="index"><img class="logo" th:src="@{img/other/logo-admin.png}" alt=""></a>
 						</small>
 					</a>
 				</div>
@@ -45,10 +46,10 @@
 					<ul class="nav ace-nav">
 						<li class="light-blue dropdown-modal">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
-								<img class="nav-user-photo" src="images/user.jpg" alt="" />
+								<img class="nav-user-photo" th:src="@{img/other/user.jpg}" alt="" />
 								<span class="user-info">
 									<small>Xin chào,</small>
-									admin
+									Admin
 								</span>
 
 								<i class="ace-icon fa fa-caret-down"></i>
@@ -56,7 +57,7 @@
 
 							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">							
 								<li>
-									<a href="logout.php">
+									<a href="logout">
 										<i class="ace-icon fa fa-power-off"></i>
 										Đăng xuất
 									</a>
@@ -105,7 +106,7 @@
 
 				<ul class="nav nav-list">
 					<li class="">
-						<a href="index-admin.php">
+						<a href="index-admin">
 							<i class="menu-icon fa fa-tachometer"></i>
 							<span class="menu-text"> Thống kê tổng quan </span>
 						</a>
@@ -113,7 +114,7 @@
 						<b class="arrow"></b>
 					</li>
 					<li class="">
-						<a href="appmanage.php">
+						<a href="verify-apps">
 							<i class="menu-icon fa fa-list-alt"></i>
 							<span class="menu-text"> Duyệt ứng dụng </span>
 						</a>
@@ -130,7 +131,7 @@
 						<b class="arrow"></b>
 						<ul class="submenu">
 							<li class="active">
-								<a href="acc.php">
+								<a href="accounts">
 									<i class="menu-icon fa fa-caret-right"></i>
 									Quản lý tài khoản
 								</a>
@@ -140,7 +141,7 @@
 					
 						<ul class="submenu">
 							<li class="">
-								<a href="categories.php">
+								<a href="categories">
 									<i class="menu-icon fa fa-caret-right"></i>
 									Quản lý thể loại
 								</a>
@@ -149,7 +150,7 @@
 						</ul>
 						<ul class="submenu">
 							<li class="">
-								<a href="cards.php">
+								<a href="cards">
 									<i class="menu-icon fa fa-caret-right"></i>
 									Quản lý thẻ nạp
 								</a>
@@ -168,7 +169,7 @@
 						<ul class="breadcrumb">
 							<li>
 								<i class="ace-icon fa fa-home home-icon"></i>
-								<a href="index.php">Trang Chủ</a>
+								<a href="">Trang Chủ</a>
 							</li>
 							<li>
 								<a href="#">Chức năng</a>
@@ -191,15 +192,29 @@
                     <table class="table table-hover mt-4">
                         <thead >
                             <tr>
-                                <th>id</th>	
+                                <th>ID</th>	
                                 <th>Tên tài khoản</th>
                                 <th>Email</th>
                                 <th>Mật khẩu</th>
 								<th>Cấp độ quyền hạn</th>
-                                <th class="text-center">Tùy chọn</th>
+                                <th class="text-center" colspan="2">Tùy chọn</th>
                             </tr>
                         </thead>
-                        <tbody id="table-body"></tbody>
+                        <tbody id="table-body">
+                        	<tr th:each="user : ${listUsers}">
+                        		<td th:text="${user.id}"> </td>
+                        		<td th:text="${user.username}"> </td>
+                        		<td th:text="${user.email}"> </td>
+                        		<td th:text="${user.password}"> </td>
+                        		<td th:text="${user.role}"> </td>
+								<td class="text-center">
+									<button class="btn btn-success" type="submit" name="submitStatusPub">SỬA</button>
+								</td> 
+								<td class="text-center">
+									<button class="btn btn-danger" type="submit" name="submitStatusDelete">Xóa</button>
+								</td> 
+                        	</tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -309,10 +324,6 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
 		<script src="js/ace.min.js"></script>
 		<script src="js/main4.js"></script>
-
-		
-
-		
-				
+							
 	</body>
 </html>

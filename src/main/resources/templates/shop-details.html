@@ -11,7 +11,7 @@
 
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-	<link rel="icon" href="img/other/favicon.png" type="image/png">
+	<link rel="icon" th:href="@{/img/other/icon.png}" type="image/png">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" th:href="@{css/style.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
 </head>
 
 <body>
@@ -27,49 +27,36 @@
     <div class="option_menu_overlay"></div>
     <div class="option_menu_wrapper">
         <div class="option_menu_logo">
-            <a><img src="@{img/other/logo.png}" alt=""></a>
+            <a><img th:src="@{/img/other/logo.png}" alt=""></a>
         </div>
         <div class="option_menu_cart">
             <ul>
 				<li><i id="searchScroll" class="fa fa-heart"></i></li>
-				<?php
-				if (isset($_SESSION['userLogin']))
-				echo "<div class='header_cart_price'>Số tiền bạn có: ".$row_nguoidung['sodu']."  vnđ </div>";
-				?>
+				<div class='header_cart_price' th:if="${User != null}" th:text="'Số tiền bạn có: ' + ${User.balance} + ' vnđ'"></div>
 			</ul>
         </div>
         <div class="option_menu_widget">
             
             <div class="header_top_right_auth">
-               <?php
-					if (!isset($_SESSION['userLogin']))
-						{
-							echo '<a href="login"><i class="fa fa-user"></i> Đăng nhập</a>';
-						}
-					else
-						{
-							echo'<a href="logout"><i class="fa fa-user"></i> Đăng xuất</a>';
-						}
-				?>
+               <div th:if="${User == null}"> 
+				 	<a href="/login"><i class="fa fa-sign-in"></i> Đăng nhập</a> 
+				</div>
+				<div th:unless="${User == null}"> 
+				 	<a href="/logout"><i class="fa fa-sign-out"></i> Đăng xuất</a> 
+				</div>
             </div>
         </div>
 		<!-- Navigation mobile -->
         <nav class="option_menu_nav mobile-menu">
             <ul>
-                <li><a href="index.php">Trang Chủ</a></li>
-                <li class="active"><a href="shop-grid.php">Bảng xếp hạng</a></li>
+                <li><a href="/index">Trang Chủ</a></li>
+                <li class="active"><a href="/shop-grid">Bảng xếp hạng</a></li>
                 
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
-        <div class="header_top_right_social">
-         
-            <?php
-			if (isset($_SESSION['userLogin']))
-				{
-					echo "<a href='account-profile.php'><i class='fa fa-user'></i> Xin chào, ".$Username."</a>";
-				}
-			?>
+         <div class="header_top_right_social" th:if="${User != null}">
+          <a href='/accountProfile' th:text="'Xin chào, ' + ${User.username}"><i class='fa fa-user'></i></a>	
         </div>
 		<div class="option_menu_contact">
             <ul>
@@ -96,29 +83,17 @@
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="header_top_right">
-                            <div class="header_top_right_social">
-                            
-                                 <?php
-									if (isset($_SESSION['userLogin']))
-									{
-										echo "<a href='account-profile.php'><i class='fa fa-user'></i>Xin chào, ".$Username."</a>";
-									}
-								?>
-                            </div>
-                           
+                            <div class="header_top_right_social" th:if="${User != null}">
+          						<a href='/accountProfile' th:text="'Xin chào, ' + ${User.username}"><i class='fa fa-user'></i></a>	
+       						 </div>                    
                             <div class="header_top_right_auth">
-                                 <?php
-									if (!isset($_SESSION['userLogin']))
-									{
-										echo '<a href="login.php"><i class="fa fa-user"></i> Đăng nhập</a>';
-									}
-									else
-									{
-										echo'<a href="logout.php"><i class="fa fa-user"></i> Đăng xuất</a>';
-									}
-								?>
-                            </div>
-							
+               				<div th:if="${User == null}"> 
+				 				<a href="/login"><i class="fa fa-sign-in"></i> Đăng nhập</a> 
+							</div>
+							<div th:unless="${User == null}"> 
+				 				<a href="/logout"><i class="fa fa-sign-out"></i> Đăng xuất</a> 
+							</div>
+            				</div>					
                         </div>
                     </div>
                 </div>
@@ -128,14 +103,14 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header_logo">
-                        <a href="index"><img src="@{img/other/logo.png}" alt=""></a>
+                        <a href="/index"><img th:src="@{/img/other/logo.png}" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <nav class="header_menu">
                         <ul>
-                            <li><a href="index.php">Trang Chủ</a></li>
-							<li><a href="shop-grid.php">Bảng xếp hạng</a></li>
+                            <li><a href="/index">Trang Chủ</a></li>
+							<li><a href="/shop-grid">Bảng xếp hạng</a></li>
 							
                         </ul>
                     </nav>
@@ -143,13 +118,8 @@
                 <div class="col-lg-3">
                     <div class="header_cart">
                         <ul>
-							<?php
-							if (isset($_SESSION['userLogin']))
-							{
-							echo "<li><i class='fa fa-heart'></i></li>";
-							echo "<div class='header_cart_price'>Số tiền bạn có: ".$row_nguoidung['sodu']."  vnđ </div>";
-							}
-							?>
+							<li><i class='fa fa-heart'></i></li>
+							<div class='header_cart_price' th:if="${User != null}" th:text="'Số tiền bạn có: ' + ${User.balance} + ' vnđ'"></div>
                         </ul>
 						
                     </div>
@@ -172,23 +142,13 @@
                             <i class="fa fa-bars"></i>
                             <span>Thể loại<span class="fa fa-angle-down pull-right pt-1"></span></span>
                         </div>
-                         <?php
-						$sql_cate = "SELECT * FROM theloai";
-						$query_cate = mysqli_query($mysqli,$sql_cate);
-											
-						if (mysqli_num_rows($query_cate) > 0)
-						{	echo '<ul>';
-							while ($row_cate = mysqli_fetch_assoc($query_cate))
-							{
-								echo '<li><a class="smooth-goto" href="shop-type.php?theloai='.$row_cate['tentheloai'].'">'.$row_cate['tentheloai'].'</a></li>';
-							}
-						}
-							echo '
-							<li><a class="smooth-goto" href="shop-type.php?hinhthucmua=Miễn phí">Miễn phí</a></li>
-                            <li><a class="smooth-goto" href="shop-type.php?hinhthucmua=Trả phí">Tính phí</a></li>
-                        </ul> ';
-						
-						?>
+                        <ul>
+                        <div th:each="category : ${listCategories}"> 
+                        	<li><a class="smooth-goto" th:href="@{/shop-type/{filter}(filter=${category.tentheloai})}" th:text="${category.tentheloai}"></a></li>
+                        </div>
+            			<li><a class="smooth-goto" th:href="@{/shop-type/{filter}(filter='Free')}">Miễn phí</a></li>
+                        <li><a class="smooth-goto" th:href="@{/shop-type/{filter}(filter='Paid')}">Trả phí</a></li>
+                        </ul>
                     </div>
                 </div>
                 <div class="col-lg-9">
@@ -216,14 +176,14 @@
     <!-- brave Section End -->
 
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="@{img/other/breadcrumb.jpg}">
+    <section class="breadcrumb-section set-bg" th:attr="data-setbg='/img/other/breadcrumb.jpg'">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb_text">
                         <h2>Ứng Dụng</h2>
                         <div class="breadcrumb_option">
-                            <a href="index">Trang chủ</a>
+                            <a href="/index">Trang chủ</a>
                             <span>Chi tiết ứng dụng</span>
                         </div>
                     </div>
@@ -234,6 +194,8 @@
     <!-- Breadcrumb Section End -->
 
     <!-- apps Details Section Begin -->
+    <h3 th:if="${message != null}" th:text="${message}" style="color: red; text-align:center;padding-top: 10px;"></h3>
+
     <section class="apps-details spad">
         <div class="container">
             <div class="row">
@@ -241,144 +203,82 @@
                     <div class="apps_details_pic">
 						
                         <div class="apps_details_pic_item">
-                            <?php
-							echo "<img class='apps_details_pic_item--large' src='img/details/".$row_images['screenshot1']." ' alt=''>";
-							?>
+                            <img class='apps_details_pic_item--large' th:src="@{'/img/details/'+${App.screenshot1}}" alt=''>
                         </div>
                         <div class="apps_details_pic_slider owl-carousel">
-                            <?php
-							echo "<img data-imgbigurl='img/details/".$row_images['screenshot1']." ' src='img/details/".$row_images['screenshot1']." 'alt=''>";
-							echo "</img>";
-							echo "<img data-imgbigurl='img/details/".$row_images['screenshot2']." ' src='img/details/".$row_images['screenshot2']." 'alt=''>";
-							echo "</img>";
-							echo "<img data-imgbigurl='img/details/".$row_images['screenshot3']." ' src='img/details/".$row_images['screenshot3']." 'alt=''>";
-							echo "</img>";
-							echo "<img data-imgbigurl='img/details/".$row_images['screenshot4']." ' src='img/details/".$row_images['screenshot4']." 'alt=''>";
-							echo "</img>";                  
-							?>
+                            <img th:attr="data-imgbigurl='/img/details/' + ${App.screenshot1}" th:src="@{'/img/details/'+${App.screenshot1}}" alt=''>
+							</img>
+							<img th:attr="data-imgbigurl='/img/details/' + ${App.screenshot2}" th:src="@{'/img/details/'+${App.screenshot2}}" alt=''>
+							</img>
+							<img th:attr="data-imgbigurl='/img/details/' + ${App.screenshot3}" th:src="@{'/img/details/'+${App.screenshot3}}" alt=''>
+							</img>
+							<img th:attr="data-imgbigurl='/img/details/' + ${App.screenshot4}" th:src="@{'/img/details/'+${App.screenshot4}}" alt=''>
+							</img>            
+							
 						</div>
 						
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
                   <div class="apps_details_text">
-						<?php
-						echo "<div class='d-flex flex-row user-info'>" . "<img src='img/featured/".$row_images['iconimage']." ' width='70' height='60px'>";
-						echo "<div class='d-flex flex-column justify-content-start ml-2'>";
-						echo "<span>"."<h3 class='font-weight-bold'>" .$row_app['tenungdung']. "</h3>" ."</span>" ."<span class='date text-black-50'>"."<a class='text-muted smooth-goto href='#gerenaScroll'>". $row_app['nhaphattrien']. "</a>" ."</span>";
-						echo "</div>";
-						echo "</div>";
-						?>
-					
+						<div class='d-flex flex-row user-info'> <img th:src="@{'/img/featured/'+${App.iconimage}}" width='70' height='60px'>
+							<div class='d-flex flex-column justify-content-start ml-2'>
+							<span>
+								<h3 class='font-weight-bold' th:text="${App.appname}"></h3>
+							</span>
+							<span class='date text-black-50'>
+								<a class='text-muted smooth-goto' href='#gerenaScroll' th:text="${App.developer}"></a>
+							</span>
+							</div>
+						</div>
+						
 						<div class="pb-1"></div>
-                        <?php 
-						if (isset($_SESSION['userLogin']))
-						{
-						$sql_showfee = "SELECT * FROM appdownload WHERE username = '$Username' and appdatai ='$appName'";
-						$query_showfee = mysqli_query($mysqli,$sql_showfee);
-						
-						if (mysqli_num_rows($query_showfee) > 0)
-						{
-								echo "<div class='apps_details_price'>Đã được thêm vào thư viện</div>";	
-						}
-						else 
-						{
-							if ($row_app['giatien'] == 0)
-							{
-								echo "<div class='apps_details_price'>Miễn phí</div>";
-							}
-							else
-							{
-								echo "<div class='apps_details_price'>"."Trả Phí:"." ". $row_app['giatien']." "."VNĐ";
-								echo "</div>";
-							}
-						}
-						echo "<p>"."Thể loại: "." ". $row_app['theloai']. "</p>". "<p>". $row_app['motangan']. "</p>";
-						}
-						else
-						{
-							if ($row_app['giatien'] == 0)
-							{
-								echo "<div class='apps_details_price'>Miễn phí</div>";
-								echo "<p>"."Thể loại: "." ". $row_app['theloai']. "</p>". "<p>". $row_app['motangan']. "</p>";
-							}
-							else
-							{
-								echo "<div class='apps_details_price'>"."Trả Phí:"." ". $row_app['giatien']." "."VNĐ";
-								echo "<p>"."Thể loại: "." ". $row_app['theloai']. "</p>". "<p>". $row_app['motangan']. "</p>";
-								echo "</div>";
-							}
-						}
-						?>
+						<div th:if="${User != null}">
+						<div class='apps_details_price' th:if="${appDownloaded != null}">Đã được thêm vào thư viện</div>
+						<div class='apps_details_price' th:text="${App.price == 0} ? 'Miễn phí' : 'Trả phí: ' + ${App.price} "}> </div>
+						</div>
+						<div th:unless="${User != null}"> 
+							<div class='apps_details_price' th:text="${App.price == 0} ? 'Miễn phí' : 'Trả phí: ' + ${App.price} "}> </div>
+						</div>
+                        
                         <div class="apps_details_quantity">
-                            
                         </div>
-                        <?php
-						if (isset($_SESSION['userLogin']))
-						{
-						$sql_appdatai = "SELECT * FROM appdownload WHERE username = '$Username' and appdatai ='$appName'";
-						$query_appdatai = mysqli_query($mysqli,$sql_appdatai);
-						
-						if (mysqli_num_rows($query_appdatai) > 0)
-						{					
-								echo "<form action ='download.php?appName=".$appName."&giatien=".$giatien."&theloai=".$row_app['theloai']." ' method ='POST'>";
-								echo "<button type='submit' name='downloadAppFree' class='primary-btn'>CÀI ĐẶT</button>";
-								echo "</form>";						
-						}
-						else 
-						{
-							if ($row_app['giatien'] == 0)
-							{
-								echo "<form action ='download.php?appName=".$appName."&giatien=".$giatien."&theloai=".$row_app['theloai']." ' method ='POST'>";
-								echo "<button type='submit' name='downloadAppFree' class='primary-btn'>CÀI ĐẶT</button>";
-								echo "</form>";
-							}
-							else
-							{
-								echo "<form action = 'download.php?appName=".$appName."&giatien=".$giatien."&theloai=".$row_app['theloai']."' method = 'POST'>";
-								echo "<button type='submit' name='downloadAppPay' class='primary-btn'>MUA</button>";
-								echo "</form>";
-							}
-						}
-						}
-						else
-						{
-							echo "<button type='button' class='primary-btn' disabled>ĐĂNG NHẬP ĐỂ TẢI ỨNG DỤNG</button>";
-						}
-                        ?>
+                        
+                        <div th:if="${User != null}">
+						<div th:if="${appDownloaded != null}"> 
+                        	<form th:action ="@{/download-app}" method ='POST'>
+                        			<input type="text" th:value="${App.appname}" name="appName" hidden>
+                        			<input type="number" th:value="${App.price}" name="price" hidden>
+									<button type='submit' name='downloadAppFree' class='btn-lg btn btn-success'>CÀI ĐẶT</button>
+							</form>	
+						</div>
+						<div th:unless="${appDownloaded != null}"> 
+							<div th:if="${App.price == 0}">
+									<form th:action ="@{/download-app}" method ='POST'>
+                        				<input type="text" th:value="${App.appname}" name="appName" hidden>
+                        				<input type="number" th:value="${App.price}" name="price" hidden>
+									<button type='submit' name='downloadAppFree' class='btn-lg btn btn-success'>CÀI ĐẶT</button>
+							</form>	
+							</div>
+							<div th:unless="${App.price == 0}">
+									<form th:action ="@{/download-app}" method ='POST'>
+                        				<input type="text" th:value="${App.appname}" name="appName" hidden>
+                        				<input type="number" th:value="${App.price}" name="price" hidden>
+										<button type='submit' name='downloadAppFree' class='btn-lg btn btn-success'>MUA</button>
+									</form>	
+							</div>
+						</div>			
+						</div>
+						<div th:unless="${User != null}"> 
+							<button type='button' class='btn-lg btn btn-success' disabled>ĐĂNG NHẬP ĐỂ TẢI ỨNG DỤNG</button>
+                        </div>
+
                         <ul>
-							<?php
-							echo "<li>"."<b>Lượt tải</b>"."<span>".$row_app['luottai']."</span></li>";
-							?>
+							<li><b>Lượt tải</b><span th:text="${App.downloads}"></span></li>
                             <li><b>Có sẵn trên</b> <span>Ios và Android</span></li>
-                            <?php
-							echo "<li>";
-							echo "<b>";
-							echo "Dung lượng: "." ";
-							echo "</b>";
-							echo "<span>";
-							echo $row_app['dungluong'];
-							echo "</span>";
-							echo "</li>";
-							echo "<li>";
-							echo "<b>";
-							echo "Ngày đăng tải: "." ";
-							echo "</b>";
-							echo "<span>";
-							echo $row_app['ngaydangtai'];
-							echo "</span>";
-							echo "</li>";					
-							?>
-                            <?php
-							echo "<li>";
-							echo "<b>";
-							echo "Nhà phát triển: "." ";
-							echo "</b>";
-							echo "<span>";
-							echo $row_app['nhaphattrien'];
-							echo "</span>";
-							echo "</li>";
-							?>
+                            <li><b> Dung lượng: </b><span th:text="${App.filesize}"></span></li>
+							<li><b> Ngày đăng tải: </b><span th:text="${App.uploaddate}"></span></li>
+							<li><b> Nhà phát triển: </b><span th:text="${App.developer}"></span></li>
                         </ul>
 						</div>
                     </div>
@@ -396,113 +296,18 @@
                                     aria-selected="true">Mô tả</a>
                             </li>
                           
-							<li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
-                                    aria-selected="false">Bình luận & Đánh giá <span></span></a>
-                            </li>
+							
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                 <div class="apps_details_tab_desc">
                                     <h6>Giới thiệu</h6>
-                                  <?php
-									echo "<p> ".$row_app['motachitiet']." </p>";
-								  ?>
+                                  <p th:text="${App.detaildescription}"> </p>
+								  
                                 </div>
                             </div>
                            
-						   <div class="tab-pane" id="tabs-2" role="tabpanel">
-                                <div class="apps_details_tab_desc">
-									<h6>Bình luận</h6>
-									<?php
-									$nameApp = $row_app['tenungdung'];
-									$sql = "SELECT *  FROM `binhluan` WHERE tenungdung = '$nameApp'" ;
-									$query = mysqli_query($mysqli,$sql);
-									while($row = mysqli_fetch_assoc($query)){
-										
-								
-									echo '
-									<div class="container mt-2 p-0">
-										<div class="d-flex">
-											<div class="col-lg-12 col-md-12 pl-0">
-												<div class="d-flex comment-section">
-													<div class="bg-white">
-														<div class="d-flex flex-row user-info"><img class="rounded-circle" src="https://iconape.com/wp-content/png_logo_vector/user-circle.png" width="80">
-															<div class="d-flex flex-column justify-content-start ml-2">
-																<span class="star" class="d-block font-weight-bold name">'.$row['username'].'</span><span class="date text-black-50">'.$row['ngaycomment'].'</span>
-																<div>';
-																
-																$i=0;
-																for(;$i<$row['saodanhgia'];$i++){
-																	echo '<span id="" class="fa fa-star checked"></span>';
-																}
-																for(;$i<5;$i++){
-																	echo '<span id="" class="fa fa-star "></span>';
-																}
-															echo '</div>
-															</div>
-														</div>
-														<div class="mt-2">
-															<p>'.$row['noidung'].'</p>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>';
-									}
-									?>
-									<h2 class="comment">Bình luận</h2>
-                                    <span onmouseover="starmark(this)" onclick="starmark(this)" id="1one" class="fa fa-star checked"></span>
-									<span onmouseover="starmark(this)" onclick="starmark(this)" id="2one" class="fa fa-star "></span>
-									<span onmouseover="starmark(this)" onclick="starmark(this)" id="3one" class="fa fa-star "></span>
-									<span onmouseover="starmark(this)" onclick="starmark(this)" id="4one" class="fa fa-star"></span>
-									<span onmouseover="starmark(this)" onclick="starmark(this)" id="5one" class="fa fa-star"></span>
-									<br/>
-									<?php
-										if (!isset($_SESSION['userLogin']))
-										{
-											echo "<button type ='button' class='send'>Vui lòng đăng nhập để có thể thực hiện bình luận</button>";
-											echo "<br></br>";
-										}
-										else {
-										$sql_checkDown = "SELECT * FROM appdownload WHERE username ='$Username' AND appdatai = '$nameApp'";
-										$query_checkDown = mysqli_query($mysqli,$sql_checkDown);
-										
-										if(mysqli_num_rows($query_checkDown) == 0 )
-										{											
-											echo "<button type ='button' class='send'>Mua hoặc tải ứng dụng để có thể bình luận và đánh giá</button>";
-											echo "<br></br>";
-																			
-										}
-										else{
-											$user = $_SESSION['userLogin'];
-											$nameApp = $row_app['tenungdung'];
-											$sql = "SELECT *  FROM `binhluan` WHERE tenungdung = '$nameApp' AND username = '$user'";
-											$query = mysqli_query($mysqli,$sql);
-											
-											
-											if (mysqli_num_rows($query)>0){
-												$row = mysqli_fetch_assoc($query);
-												echo "<form onsubmit='result()'action='comment.php?appName=" .$nameApp."' method ='POST' id='commentForm'>";	
-												echo "<input id='starRating' type='hidden' name='starRating'> </input>";
-												echo "<textarea form='commentForm' name='commentInfo' class='form-control t-5' rows='3' id='comment' placeholder='Nhập bình luận mới'></textarea>";
-												echo "<button type ='submit' class='send' name='changeComment'>change</button>";
-												echo "</form>";
-												
-											}
-											else{
-												echo "<form onsubmit='result()'action='comment.php?appName=" .$nameApp."' method ='POST' id='commentForm'>";	
-												echo "<input id='starRating' type='hidden' name='starRating'> </input>";
-												echo "<textarea form='commentForm' name='commentInfo' class='form-control t-5' rows='3' id='comment' placeholder='Nhập bình luận của bạn'></textarea>";
-												echo "<button type ='submit' class='send' name='submitComment'>Gửi</button>";
-												echo "</form>";
-											}
-										}
-										}
-									?>
-									
-                                </div>
+						   
                             </div>
                         </div>
                     
@@ -513,97 +318,61 @@
 		   
     <!-- apps Details Section End -->
 	
-		<?php
-		$nhaphattrien = $row_app['nhaphattrien'];
+		<section class='related-apps'>
+			<div class='container'>
+				<div class='row'>
+						<div class='col-lg-12'>
+							<div class='section-title related_apps_title'>
+								<h2 th:text="${App.developer}"></h2>
+							</div>
+						</div>
+				</div>
+				<div class='row justify-content-center'> 
+					<div th:each="app : ${listAppsSameDeveloper}" class='col-lg-3 col-md-4 col-sm-6'>
+						<div class='apps_item'>
+						<div class='apps_item_pic set-bg' th:attr="data-setbg='/img/featured/' + ${app.iconimage}">
+							<ul class='apps_item_pic_hover'>
+								<li><a><i class='fa fa-heart'></i></a></li>
+								<li><a th:href="@{/shop-details/{appname}(appname=${app.appname})}"><i class='fa fa-shopping-cart'></i></a></li>
+							</ul>
+						</div>
+					<div class='apps_item_text'>
+						<h6><a th:href="@{/shop-details/{appname}(appname=${app.appname})}" th:text="${app.appname}"></a></h6>
+						<h5 th:text="${app.payment}"></h5>
+					</div>
+				</div>
+				</div>		
+			</div>
+		</div>
+	</section>
 		
-		$sql_related = "SELECT * FROM ungdung WHERE nhaphattrien = '$nhaphattrien' and trangthai ='Publish'";
-		$query_related = mysqli_query($mysqli,$sql_related);
-		
-		if (mysqli_num_rows($query_related) > 0)
-		{	
-			echo "<section class='related-apps'>"; 
-			echo "<div class='container'>";
-			echo "<div class='row'>";
-							echo "<div class='col-lg-12'>";
-								echo "<div class='section-title related_apps_title'>";
-							echo "<h2>" .$row_app['nhaphattrien']. "</h2>";
-						echo "</div>";
-					echo "</div>";
-			echo "</div>";
-			echo "<div class='row justify-content-center'>"; 
-			while ($row_related = mysqli_fetch_assoc($query_related))
-			{
-			?>
-			
-				<?php echo "<div class='col-lg-3 col-md-4 col-sm-6'>"; ?>
-				<?php echo "<div class='apps_item'>"; ?>
-				<?php echo "<div class='apps_item_pic set-bg' data-setbg='img/featured/" .$row_related['iconimage']." '>"; ?>
-				<?php echo "<ul class='apps_item_pic_hover'>"; ?>
-				<?php echo "<li>". "<a>". "<i class='fa fa-heart'>" ."</i>" ."</a>" ."</li>"; ?>
-				<?php echo "<li>". "<a href='shop-details.php?appName=".$row_related['tenungdung']."'>" ."<i class='fa fa-shopping-cart'>". "</i>" ."</a>" ."</li>";?>
-				<?php echo "</ul>";?>
-				<?php echo "</div>";?>
-				<?php echo "<div class='apps_item_text'>";?>
-				<?php echo "<h6>" ."<a href='shop-details.php?appName=".$row_related['tenungdung']."'>". $row_related['tenungdung']. "</a>" ."</h6>";?>
-				<?php echo "<h5>".$row_related['hinhthucmua']."</h5>";?>
-								<?php echo "</div>";?>
-						<?php echo "</div>";?>
-					<?php echo "</div>";?>				
-			<?php
-			}
-			echo "</div>";
-			echo "</div>";
-			echo "</section>"; 
-		}
-		else {
-			
-		}
-		?>
-		<?php
-		$theloai = $row_app['theloai'];
-		$sql_type = "SELECT * FROM ungdung WHERE theloai = '$theloai' AND trangthai='Publish'";
-		$query_type = mysqli_query($mysqli,$sql_type);
-		
-		if (mysqli_num_rows($query_type) > 0)
-		{	
-			echo "<section class='related-apps'>"; 
-			echo "<div class='container'>";
-			echo "<div class='row'>";
-							echo "<div class='col-lg-12'>";
-								echo "<div class='section-title related_apps_title'>";
-							echo "<h2>" .$row_app['theloai']. "</h2>";
-						echo "</div>";
-					echo "</div>";
-			echo "</div>";
-			echo "<div class='row justify-content-center'>"; 
-		while ($row_type = mysqli_fetch_assoc($query_type))
-			{
-			?>
-			
-				<?php echo "<div class='col-lg-3 col-md-4 col-sm-6'>"; ?>
-				<?php echo "<div class='apps_item'>"; ?>
-				<?php echo "<div class='apps_item_pic set-bg' data-setbg='img/featured/" .$row_type['iconimage']." '>"; ?>
-				<?php echo "<ul class='apps_item_pic_hover'>"; ?>
-				<?php echo "<li>". "<a>". "<i class='fa fa-heart'>" ."</i>" ."</a>" ."</li>"; ?>
-				<?php echo "<li>". "<a href='shop-details.php?appName=".$row_type['tenungdung']."'>" ."<i class='fa fa-shopping-cart'>". "</i>" ."</a>" ."</li>";?>
-				<?php echo "</ul>";?>
-				<?php echo "</div>";?>
-				<?php echo "<div class='apps_item_text'>";?>
-				<?php echo "<h6>" ."<a href='shop-details.php?appName=".$row_type['tenungdung']."'>". $row_type['tenungdung']. "</a>" ."</h6>";?>
-				<?php echo "<h5>".$row_type['hinhthucmua']."</h5>";?>
-								<?php echo "</div>";?>
-						<?php echo "</div>";?>
-					<?php echo "</div>";?>				
-			<?php
-			}
-			echo "</div>";
-			echo "</div>";
-			echo "</section>"; 
-		}
-		else {
-			
-		}
-		?>
+	<section class='related-apps'> 
+			<div class='container'>
+				<div class='row'>
+					<div class='col-lg-12'>
+						<div class='section-title related_apps_title'>
+							<h2 th:text="${App.category}"></h2>
+						</div>
+					</div>
+			</div>
+		<div class='row justify-content-center'>
+			<div th:each="app : ${listAppsSameCategory}" class='col-lg-3 col-md-4 col-sm-6'>
+				<div class='apps_item'>
+				<div class='apps_item_pic set-bg' th:attr="data-setbg='/img/featured/' + ${app.iconimage}">
+					<ul class='apps_item_pic_hover'>
+						<li><a><i class='fa fa-heart'></i></a></li>
+						<li><a th:href="@{/shop-details/{appname}(appname=${app.appname})}"><i class='fa fa-shopping-cart'></i></a></li>
+					</ul>
+				</div>
+			<div class='apps_item_text'>
+				<h6><a th:href="@{/shop-details/{appname}(appname=${app.appname})}" th:text="${app.appname}"></a></h6>
+				<h5 th:text="${app.payment}"></h5>
+			</div>
+			</div>
+		</div>		
+		</div>
+	</div>
+</section>
 				
     <!-- Related apps Section End -->
 
@@ -614,7 +383,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer_about">
                         <div class="footer_about_logo">
-                            <a href="./index.html"><img src="@{img/other/logo.png}" alt=""></a>
+                            <a href="index"><img th:src="@{/img/other/logo.png}" alt=""></a>
                         </div>
                         <ul>
                             <li>Ứng dụng: AppShopping</li>
@@ -627,7 +396,7 @@
                     <div class="footer_widget">
                         <h6>Có thể bạn cần</h6>
                         <ul>
-                            <li><a href="index.php">Trang chủ</a></li>
+                            <li><a href="index">Trang chủ</a></li>
                             <li><a href="shop-grid">Bảng xếp hạng</a></li>                        
 							<li><a class="smooth-goto" href="#searchScroll">Tìm kiếm</a></li>
                         </ul>
@@ -653,7 +422,7 @@
 								&copy;<script>document.write(new Date().getFullYear());</script> AppShopping | Trang web được phát triển <i class="fa fa-heart" aria-hidden="true"></i> bởi Nhóm sinh viên đại học Tôn Đức Thắng
 							</p>
 						</div>
-                        <div class="footer_copyright_payment"><img src="@{img/other/payment-item.png}" alt=""></div>
+                        <div class="footer_copyright_payment"><img th:src="@{/img/other/payment-item.png}" alt=""></div>
                     </div>
                 </div>
             </div>
@@ -668,7 +437,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/jquery.slicknav.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-    <script src="@{js/main.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
 	
 
 

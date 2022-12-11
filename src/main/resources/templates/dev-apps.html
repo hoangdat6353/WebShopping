@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css" />
     <link rel="stylesheet" th:href="@{css/ace.min.css}" class="ace-main-stylesheet" id="main-ace-style" />
 	<link rel="stylesheet" th:href="@{css/style2.css}" />
+	<link rel="icon" th:href="@{img/other/icon.png}" type="image/png">
 
     
 </head>
@@ -33,9 +34,9 @@
 				</button>
 
             <div class="navbar-header pull-left">
-                <a href="index.php" class="navbar-brand">
+                <a href="index" class="navbar-brand">
                     <small>
-							<a href="index.php"><img class="logo" src="@{./img/other/logo-dev-UI.png}" alt=""></a>
+							<a href="index"><img class="logo" th:src="@{img/other/logo-dev-UI.png}" alt=""></a>
 						</small>
                 </a>
             </div>
@@ -43,11 +44,11 @@
             <div class="navbar-buttons navbar-header pull-right" role="navigation">
                 <ul class="nav ace-nav">
                     <li class="light-blue dropdown-modal">
-                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" src="@{images/user.jpg}" alt="" />
+                       <a class="profilebar dropdown-toggle" data-toggle="dropdown" href="#">
+                        <img class="nav-user-photo" th:src="@{'/uploads/'+${User.devavatar}}" alt="" />
                             <span class="user-info">
 									<small>Xin chào,</small>
-									<?php echo $devName ?>
+									<div th:text="${Developer.devname}"> </div>
 								</span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -55,7 +56,7 @@
 
                         <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                             <li>
-                                <a href="dev-profile.php">
+                                <a href="devProfile">
                                     <i class="ace-icon fa fa-user"></i> Hồ sơ cá nhân
                                 </a>
                             </li>
@@ -63,7 +64,7 @@
                             <li class="divider"></li>
 
                             <li>
-                                <a href="logout.php">
+                                <a href="logout">
                                     <i class="ace-icon fa fa-power-off"></i> Đăng xuất
                                 </a>
                             </li>
@@ -110,7 +111,7 @@
 
             <ul class="nav nav-list">
                 <li class="">
-                    <a href="index-dev.php">
+                    <a href="index-dev">
                         <i class="menu-icon fa fa-tachometer"></i>
                         <span class="menu-text"> Thống kê tổng quan </span>
                     </a>
@@ -118,7 +119,7 @@
                     <b class="arrow"></b>
                 </li>
                 <li class="">
-                    <a href="approval.php">
+                    <a href="approval">
                         <i class="menu-icon fa fa-list-alt"></i>
                         <span class="menu-text"> Đăng tải ứng dụng </span>
                     </a>
@@ -154,7 +155,7 @@
                     <ul class="breadcrumb">
                         <li>
                             <i class="ace-icon fa fa-home home-icon"></i>
-                            <a href="index.php">Trang Chủ</a>
+                            <a href="index">Trang Chủ</a>
                         </li>
                         <li>
                             <a href="#">Chức năng</a>
@@ -170,6 +171,7 @@
 							</small>
                     </h1>
                 </div>
+                <h3 th:if="${message != null}" th:text="${message}" style="color: red; text-align:center;padding-top: 10px;"></h3>
 
                 <div class="row">
                     <div class="col-xs-12">
@@ -213,35 +215,15 @@
                                                         </tr>
                                                     </thead>
 													<tbody>
-														<?php
-														$sql_pay = "SELECT * FROM ungdungchoduyet WHERE tinhtrang ='Chờ duyệt' AND nhaphattrien = '$devName'";
-														$query_pay = mysqli_query($mysqli,$sql_pay);
-														$doanhThu = 0;
-																												
-														if (mysqli_num_rows($query_pay) >0 )
-														{
-														while ($row_pay = mysqli_fetch_assoc($query_pay))
-														{
-															
-															?>
-														<tr>                                                         
-                                                            <?php echo "<td>" ."<img src='img/featured/".$row_pay['iconimage']." ' width='62' height='52'>" ."</td>";?>
-                                                           
-                                                            <td><?php echo $row_pay['tenungdung']?></td>
-															
-															<td><?php echo $row_pay['theloai']?></td>
-																
-                                                            <td><?php echo $row_pay['hinhthucmua']?></td>
-															
-															<td>
-                                                                <b class="green"><?php echo $row_pay['giatien'] ?></b>
-                                                            </td>																																													                                                 
-                                                        </tr>
-														<?php
-														}
-														}
-														
-                                                    ?>
+													<tr th:each="app : ${listUnapprovedApps}">
+                										<td> <img width='62' height='52' th:src="@{'/img/featured/'+${app.iconimage}}"> </img> </td>
+                										<td th:text="${app.appname}"></td>
+                										<td th:text="${app.category}"></td>
+                										<td th:text="${app.payment}"></td>
+                										<td>
+															<b class="green" th:text="${app.price}"></b>
+                                                         </td>	
+            										</tr>
 													</tbody>
                                                 </table>											
                                             </div>
@@ -274,9 +256,7 @@
                                                             <th>
 																<i class="ace-icon fa fa-caret-right blue"></i>Icon
 															</th>
-															<th>
-                                                                <i class="ace-icon fa fa-caret-right blue"></i>App ID
-                                                            </th>
+															
 
                                                             <th>
                                                                 <i class="ace-icon fa fa-caret-right blue"></i>Tên
@@ -293,33 +273,19 @@
                                                         
                                                         </tr>
                                                     </thead>
-													<tbody>
-														<?php
-														$sql_pay = "SELECT * FROM ungdung WHERE nhaphattrien = '$devName' AND trangthai ='Publish'";
-														$query_pay = mysqli_query($mysqli,$sql_pay);
-														if (mysqli_num_rows($query_pay) >0 )
-														{
-														while ($row_pay = mysqli_fetch_assoc($query_pay))
-														{
-															?>
-														<tr>
-                                                           
-                                                            <?php echo "<td>" ."<img src='img/featured/".$row_pay['iconimage']." ' width='62' height='52'>" ."</td>";?>
-                                                           
-                                                           <td><?php echo $row_pay['id']?></td>
-														   <td><?php echo $row_pay['tenungdung']?></td>
-                                                            <td><b class="green"><?php echo $row_pay['giatien'] ?></b></td>														
-															<td class="text-center">
-																<form action="change-status.php?appId=<?php echo $row_pay['id']; ?>" method ="POST">
-																<button class="btn btn-success" type="submit" name="submitStatusUn">Unpublished</button>
+													<tbody>																																				
+														<tr th:each="app : ${listPublishApps}">                                                          
+                                                           <td><img th:src="@{'/img/featured/'+${app.iconimage}}" width='62' height='52'></td>                                                    
+														   <td th:text="${app.appname}"></td>
+                                                           <td><b class="green" th:text="${app.price}"></b></td>														
+														   <td class="text-center">
+																<form th:action="@{/update-app-status}" method ="POST">
+																<input name="id" id="id" type="number" th:value="${app.id}" hidden> </input>
+																<input name="filter" id="filter" type="text" value="private" hidden> </input>
+																	<button class="btn btn-success" type="submit" name="submitStatusUn">Riêng tư</button>
 																</form>	
-															</td>
-																														
-                                                        </tr>
-														<?php
-														}
-														}														
-                                                    ?>
+														   </td>																														
+                                                        </tr>														
 													</tbody>
                                                 </table>
                                             </div>
@@ -335,7 +301,7 @@
                                         <div class="widget-header widget-header-flat">
                                             <br>
                                             <h4 class="widget-title lighter">
-                                                <i class="ace-icon fa fa-star orange"></i> ỨNG DỤNG ĐÃ ĐƯỢC XÉT DUYỆT - UNPUBLISHSED
+                                                <i class="ace-icon fa fa-star orange"></i> ỨNG DỤNG Ở TRẠNG THÁI ẨN - PRIVATE
                                             </h4>
 
                                             <div class="widget-toolbar">
@@ -353,10 +319,7 @@
                                                             <th>
 																<i class="ace-icon fa fa-caret-right blue"></i>Icon
 															</th>
-															<th>
-                                                                <i class="ace-icon fa fa-caret-right blue"></i>App ID
-                                                            </th>
-
+														
                                                             <th>
                                                                 <i class="ace-icon fa fa-caret-right blue"></i>Tên
                                                             </th>
@@ -374,37 +337,26 @@
                                                         
                                                         </tr>
                                                     </thead>
-													<tbody>
-														<?php
-														$sql_pay = "SELECT * FROM ungdung WHERE nhaphattrien = '$devName' AND trangthai ='Unpublish'";
-														$query_pay = mysqli_query($mysqli,$sql_pay);
-														if (mysqli_num_rows($query_pay) >0 )
-														{
-														while ($row_pay = mysqli_fetch_assoc($query_pay))
-														{
-															?>
-														<tr>
-                                                           
-                                                            <?php echo "<td>" ."<img src='img/featured/".$row_pay['iconimage']." ' width='62' height='52'>" ."</td>";?>
-                                                           
-                                                           <td><?php echo $row_pay['id']?></td>
-														   <td><?php echo $row_pay['tenungdung']?></td>
-                                                            <td><b class="green"><?php echo $row_pay['giatien'] ?></b></td>														
+													<tbody>																											
+														<tr th:each="app : ${listPrivateApps}">                                                        
+                                                           <td><img th:src="@{'/img/featured/'+${app.iconimage}}" width='62' height='52'></td>                                                                                                              
+														   <td th:text="${app.appname}"></td>
+                                                           <td><b class="green" th:text="${app.price}"></b></td>														
 															<td class="text-center">
-																<form action="change-status.php?appId=<?php echo $row_pay['id']; ?>" method ="POST">
-																<button class="btn btn-success" type="submit" name="submitStatusPub">Published</button>
+																<form th:action="@{/update-app-status}" method ="POST">
+																<input name="id" id="id" type="number" th:value="${app.id}" hidden> </input>
+																<input name="filter" id="filter" type="text" value="publish" hidden> </input>
+																<button class="btn btn-success" type="submit" name="submitStatusPub">Công khai</button>
 																</form>	
 															</td> 
 															<td class="text-center">
-																<form action="change-status.php?appId=<?php echo $row_pay['id']; ?>" method ="POST">
+																<form th:action="@{/update-app-status}" method ="POST">
+																<input name="id" id="id" type="number" th:value="${app.id}" hidden> </input>
+																<input name="filter" id="filter" type="text" value="deleteStore" hidden> </input>
 																<button class="btn btn-danger" type="submit" name="submitStatusDelete">Xóa vĩnh viễn</button>
 																</form>	
 															</td> 
-                                                        </tr>
-														<?php
-														}
-														}														
-                                                    ?>
+                                                        </tr>														
 													</tbody>
                                                 </table>
                                             </div>
@@ -454,31 +406,19 @@
                                                         </tr>
                                                     </thead>
 													<tbody>
-														<?php
-														$sql_pay = "SELECT * FROM ungdungchoduyet WHERE nhaphattrien = '$devName' AND tinhtrang ='Yêu cầu bị từ chối'";
-														$query_pay = mysqli_query($mysqli,$sql_pay);
-														if (mysqli_num_rows($query_pay) >0 )
-														{
-														while ($row_pay = mysqli_fetch_assoc($query_pay))
-														{
-															?>
-														<tr>
-                                                           
-                                                            <?php echo "<td>" ."<img src='img/featured/".$row_pay['iconimage']." ' width='62' height='52'>" ."</td>";?>
-                                                           
-                                                           <td><?php echo $row_pay['id']?></td>
-														   <td><?php echo $row_pay['tenungdung']?></td>
-                                                           																										
-															<td class="text-center">
-																<form action="change-status.php?appId=<?php echo $row_pay['id']; ?>" method ="POST">
-																<button class="btn btn-danger" type="submit" name="submitStatusDenied">Xóa vĩnh viễn</button>
-																</form>	
-															</td> 
-                                                        </tr>
-														<?php
-														}
-														}														
-                                                    ?>
+													<tr th:each="app : ${listRejectedApps}">
+                										<td> <img width='62' height='52' th:src="@{'/img/featured/'+${app.iconimage}}"> </img> </td>
+                										<td th:text="${app.id}"></td>
+                										<td th:text="${app.appname}"></td>
+                										<td class="text-center">
+															<form th:action="@{/update-app-status}" method ="POST">
+															<input name="id" id="id" type="number" th:value="${app.id}" hidden> </input>
+															<input name="filter" id="filter" type="text" value="delete" hidden> </input>
+															<button class="btn btn-danger" type="submit" name="submitStatusDenied">Xóa vĩnh viễn</button>
+															</form>	
+														</td> 
+            										</tr>
+													
 													</tbody>
                                                 </table>
                                             </div>
@@ -543,7 +483,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="@{js/ace.min.js}"></script>
+    <script th:src="@{js/ace.min.js}"></script>
 </body>
 
 </html>

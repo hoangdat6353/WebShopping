@@ -7,6 +7,7 @@
     <title>Adminastrator</title>
     <meta name="description" content="overview &amp; stats" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+	<link rel="icon" th:href="@{img/other/icon.png}" type="image/png">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -35,7 +36,7 @@
             <div class="navbar-header pull-left">
                 <a href="index-admin" class="navbar-brand">
                     <small>
-							<a href="index-admin"><img class="logo" src="@{img/other/logo-admin.png}" alt=""></a>
+							<a href="index-admin"><img class="logo" th:src="@{img/other/logo-admin.png}" alt=""></a>
 						</small>
                 </a>
             </div>
@@ -44,10 +45,10 @@
                 <ul class="nav ace-nav">
                     <li class="light-blue dropdown-modal">
                         <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                            <img class="nav-user-photo" src="@{images/user.jpg}" alt="" />
+                            <img class="nav-user-photo" th:src="@{/img/other/user.jpg}" alt="" />
                             <span class="user-info">
 									<small>Xin chào,</small>
-									<?php echo $_SESSION['userLogin'] ?>
+										Admin
 								</span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -102,7 +103,7 @@
 
             <ul class="nav nav-list">
                 <li class="active">
-                    <a href="index-admin.php">
+                    <a href="index-admin">
                         <i class="menu-icon fa fa-tachometer"></i>
                         <span class="menu-text"> Thống kê tổng quan </span>
                     </a>
@@ -111,7 +112,7 @@
                 </li>
 
                 <li class="">
-                    <a href="appmanage.php">
+                    <a href="verify-apps">
                         <i class="menu-icon fa fa-list-alt"></i>
                         <span class="menu-text"> Duyệt ứng dụng </span>
                     </a>
@@ -131,7 +132,7 @@
 
                     <ul class="submenu">
                         <li class="">
-                            <a href="acc.php">
+                            <a href="accounts">
                                 <i class="menu-icon fa fa-caret-right"></i> Quản lý tài khoản
                             </a>
 
@@ -141,7 +142,7 @@
 
                     <ul class="submenu">
                         <li class="">
-                            <a href="categories.php">
+                            <a href="categories">
                                 <i class="menu-icon fa fa-caret-right"></i> Quản lý thể loại
                             </a>
 
@@ -151,7 +152,7 @@
 
                     <ul class="submenu">
                         <li class="">
-                            <a href="cards.php">
+                            <a href="cards">
                                 <i class="menu-icon fa fa-caret-right"></i> Quản lý thẻ nạp
                             </a>
 
@@ -173,7 +174,7 @@
                     <ul class="breadcrumb">
                         <li>
                             <i class="ace-icon fa fa-home home-icon"></i>
-                            <a href="./index.php">Trang chủ</a>
+                            <a href="">Trang chủ</a>
                         </li>
                         <li class="active">Thống kê tổng quan</li>
                     </ul>
@@ -206,19 +207,10 @@
 								<th> Số lượng người dùng </th>
 								<th> Tổng số ứng dụng </th>								
 							</thead>
-							<tbody>	
-								<?php
-									$sql_user = "SELECT * FROM nguoidung";
-									$query_user = mysqli_query($mysqli,$sql_user);
-									$numberUser = mysqli_num_rows($query_user);
-									
-									$sql_app = "SELECT * FROM ungdung";
-									$query_app = mysqli_query($mysqli,$sql_app);
-									$numberApp = mysqli_num_rows($query_app);								
-									?>
+							<tbody>								
 									<tr>
-										<td><?php echo $numberUser; ?> </td> 
-										<td><?php echo $numberApp; ?> </td> 
+										<td th:text="${totalUsers}"></td> 
+										<td th:text="${totalApps}"></td> 
 									</tr>						
 							</tbody>
 							</table>
@@ -230,38 +222,24 @@
 								<th> Danh sách thể loại </th>
 								<th> Số ứng dụng của từng thể loại </th>
 							</thead>
-							<tbody>	
-								<?php									
-									$sql_cate = "SELECT * FROM theloai";
-									$query_cate = mysqli_query($mysqli,$sql_cate);
-									
-									while ($row_cate = mysqli_fetch_assoc($query_cate))
-									{
-										?>								
-									<tr>
-										<td><?php echo $row_cate['tentheloai']; ?> </td> 
-										<td><?php echo $row_cate['soluong']; ?> </td> 
+							<tbody>																
+									<tr th:each="category : ${listCategories}">
+										<td th:text="${category.tentheloai}"></td> 
+										<td th:text="${category.soluong}"></td> 
 									</tr>
-									<?php
-									}
-							?>
+									
 							</tbody>
-							</table>
-					
-
+							</table>					
                             </div>
 
                             <div class="hr hr32 hr-dotted"></div>
 
                             <div class="row">
-
-
-
                                 <div class="col-sm-6">
                                     <div class="widget-box transparent">
                                         <div class="widget-header widget-header-flat">
                                             <h4 class="widget-title lighter">
-                                                <i class="ace-icon fa fa-star orange"></i> Ứng dụng được mua nhiều nhất
+                                                <i class="ace-icon fa fa-star orange"></i> Ứng dụng trả phí được tải nhiều nhất
                                             </h4>
 
                                             <div class="widget-toolbar">
@@ -294,31 +272,19 @@
 
                                                         </tr>
                                                     </thead>
-													<tbody>
-														<?php
-														$sql_pay = "SELECT * FROM ungdung WHERE hinhthucmua ='Trả phí' ORDER BY luottai DESC LIMIT 5";
-														$query_pay = mysqli_query($mysqli,$sql_pay);
-														if (mysqli_num_rows($query_pay) >0 )
-														{
-														while ($row_pay = mysqli_fetch_assoc($query_pay))
-														{
-															?>
-														<tr>
+													<tbody>												
+														<tr th:each="app : ${listPaidApps}">
                                                            
-                                                            <?php echo "<td>" ."<img src='img/featured/".$row_pay['iconimage']." ' width='62' height='52'>" ."</td>";?>
+                                                            <td><img th:src="@{'/img/featured/'+${app.iconimage}}" width='62' height='52'></td>
                                                            
-                                                            <td><?php echo $row_pay['tenungdung']?></td>
+                                                            <td th:text="${app.appname}"></td>
 
                                                             <td>
-                                                                <b class="green"><?php echo $row_pay['giatien'] ?></b>
+                                                                <b class="green" th:text="${app.price} + ' VNĐ'"></b>
                                                             </td>
 
-                                                            <td><?php echo $row_pay['luottai'] ?></td>
-                                                        </tr>
-														<?php
-														}
-														}														
-                                                    ?>
+                                                            <td th:text="${app.downloads}"></td>
+                                                        </tr>														
 													</tbody>
                                                 </table>
                                             </div>
@@ -330,7 +296,7 @@
                                     <div class="widget-box transparent">
                                         <div class="widget-header widget-header-flat">
                                             <h4 class="widget-title lighter">
-                                                <i class="ace-icon fa fa-star orange"></i> Ứng dụng được tải nhiều nhất
+                                                <i class="ace-icon fa fa-star orange"></i> Ứng dụng miễn phí được tải nhiều nhất
                                             </h4>
 
                                             <div class="widget-toolbar">
@@ -359,27 +325,15 @@
                                                         </tr>
                                                     </thead>
 
-                                                    <tbody>
-                                                       	<?php
-														$sql_free = "SELECT * FROM ungdung WHERE hinhthucmua ='Miễn phí' ORDER BY luottai DESC LIMIT 5";
-														$query_free = mysqli_query($mysqli,$sql_free);
-														if (mysqli_num_rows($query_free) >0 )
-														{
-														while ($row_free = mysqli_fetch_assoc($query_free))
-														{
-															?>
-														<tr>
+                                                    <tbody>                                                      
+														<tr th:each="app : ${listFreeApps}">
                                                            
-                                                            <?php echo "<td>" ."<img src='img/featured/".$row_free['iconimage']." ' width='62' height='52'>" ."</td>";?>
+                                                            <td><img th:src="@{'/img/featured/'+${app.iconimage}}" width='62' height='52'></td>
                                                            
-                                                            <td><?php echo $row_free['tenungdung']?></td>
-                                                        
-                                                            <td><?php echo $row_free['luottai'] ?></td>
-                                                        </tr>
-														<?php
-														}
-														}														
-                                                    ?>
+                                                            <td th:text="${app.appname}"></td>
+                                                         
+                                                            <td th:text="${app.downloads}"></td>
+                                                        </tr>														
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -389,9 +343,6 @@
                             </div>
 
                             <div class="hr hr32 hr-dotted"></div>
-
-
-
                         </div>
                     </div>
                 </div>
@@ -430,7 +381,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="@{js/ace.min.js}"></script>
+    <script th:src="@{js/ace.min.js}"></script>
 </body>
 
 </html>

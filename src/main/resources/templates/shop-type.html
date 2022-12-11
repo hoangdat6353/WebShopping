@@ -1,9 +1,3 @@
-<?php
-	include('connect.php');
-	session_start();
-	
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,15 +12,15 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-	<link rel="icon" href="@{img/other/favicon.png}" type="image/png">
+	<link rel="icon" th:href="@{/img/other/icon.png}" type="image/png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" th:href="@{css/https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.css}" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/slicknav.min.css" type="text/css">
 
-    <link rel="stylesheet" th:href="@{css/style.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
 </head>
 
 <body>
@@ -39,50 +33,34 @@
     <div class="option_menu_overlay"></div>
     <div class="option_menu_wrapper">
         <div class="option_menu_logo">
-            <a><img src="@{img/other/logo.png}" alt=""></a>
+            <a><img th:src="@{/img/other/logo.png}" alt=""></a>
         </div>
         <div class="option_menu_cart">
             <ul>
-				<?php
-				if (isset($_SESSION['userLogin']))
-					{
-						echo "<li><i class='fa fa-heart'></i></li>";
-						echo "<div class='header_cart_price'>Số tiền bạn có: ".$row_nguoidung['sodu']."  vnđ </div>";
-					}
-				?>
+				<li><i id="searchScroll" class="fa fa-heart"></i></li>
+				<div class='header_cart_price' th:if="${User != null}" th:text="'Số tiền bạn có: ' + ${User.balance} + ' vnđ'"></div>
 			</ul>
         </div>
         <div class="option_menu_widget">     
             <div class="header_top_right_auth">
-               <?php
-					if (!isset($_SESSION['userLogin']))
-						{
-							echo '<a href="login.php"><i class="fa fa-user"></i> Đăng nhập</a>';
-						}
-					else
-						{
-							echo'<a href="logout.php"><i class="fa fa-user"></i> Đăng xuất</a>';
-						}
-				?>
+               <div th:if="${User == null}"> 
+				 	<a href="/login"><i class="fa fa-sign-in"></i> Đăng nhập</a> 
+				</div>
+				<div th:unless="${User == null}"> 
+				 	<a href="/logout"><i class="fa fa-sign-out"></i> Đăng xuất</a> 
+				</div>
             </div>
         </div>
 		<!-- Navigation mobile -->
         <nav class="option_menu_nav mobile-menu">
             <ul>
-                <li><a href="index.php">Trang Chủ</a></li>
-                <li class="active"><a href="shop-grid.php">Bảng xếp hạng</a></li>              
+                <li><a href="/index">Trang Chủ</a></li>
+                <li class="active"><a href="/shop-grid">Bảng xếp hạng</a></li>              
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
-        <div class="header_top_right_social">
-            
-            <?php
-			if (isset($_SESSION['userLogin']))
-				{
-                    echo "<a href='account-profile.php'><i class='fa fa-user'></i>Xin chào, ".$Username."</a>";
-
-				}
-			?>
+        <div class="header_top_right_social" th:if="${User != null}">
+          <a href='/accountProfile' th:text="'Xin chào, ' + ${User.username}"><i class='fa fa-user'></i></a>	
         </div>
 		<div class="option_menu_contact">
             <ul>
@@ -109,28 +87,18 @@
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="header_top_right">
-                            <div class="header_top_right_social">                             
-                                 <?php
-									if (isset($_SESSION['userLogin']))
-									{
-										echo "<a href='account-profile.php'><i class='fa fa-user'></i> Xin chào, ".$Username."</a>";
-
-									}
-								?>
-                            </div>
+                            <div class="header_top_right_social" th:if="${User != null}">
+          						<a href='/accountProfile' th:text="'Xin chào, ' + ${User.username}"><i class='fa fa-user'></i></a>	
+        					</div>
                            
                             <div class="header_top_right_auth">
-                                 <?php
-									if (!isset($_SESSION['userLogin']))
-									{
-										echo '<a href="login.php"><i class="fa fa-user"></i> Đăng nhập</a>';
-									}
-									else
-									{
-										echo'<a href="logout.php"><i class="fa fa-user"></i> Đăng xuất</a>';
-									}
-								?>
-                            </div>
+                 				<div th:if="${User == null}"> 
+				 					<a href="/login"><i class="fa fa-sign-in"></i> Đăng nhập</a> 
+				 				</div>
+				 				<div th:unless="${User == null}"> 
+				 					<a href="/logout"><i class="fa fa-sign-out"></i> Đăng xuất</a> 
+				 				</div>
+            				</div>
 							
                         </div>
                     </div>
@@ -141,27 +109,21 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header_logo">
-                        <a href="index.php"><img src="@{img/other/logo.png}" alt=""></a>
+                        <a href="/index"><img th:src="@{/img/other/logo.png}" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <nav class="header_menu">
                         <ul>
-                            <li><a href="index.php">Trang Chủ</a></li>
-							<li><a href="shop-grid.php">Bảng xếp hạng</a></li>						
+                            <li><a href="/index">Trang Chủ</a></li>
+							<li><a href="/shop-grid">Bảng xếp hạng</a></li>						
                         </ul>
                     </nav>
                 </div>
                 <div class="col-lg-3">
                     <div class="header_cart">
-                        <ul>
-                           <?php
-							if (isset($_SESSION['userLogin']))
-							{
-							echo "<li><i class='fa fa-heart'></i></li>";
-							echo "<div class='header_cart_price'>Số tiền bạn có: ".$row_nguoidung['sodu']."  vnđ </div>";
-							}
-							?>
+                        <ul>             
+							<div class='header_cart_price' th:if="${User != null}" th:text="'Số tiền bạn có: ' + ${User.balance} + ' vnđ'"></div>
                         </ul>
 						
                     </div>
@@ -184,29 +146,19 @@
                             <i class="fa fa-bars"></i>
                             <span>Thể loại<span class="fa fa-angle-down pull-right pt-1"></span></span>
                         </div>
-                         <?php
-						$sql_cate = "SELECT * FROM theloai";
-						$query_cate = mysqli_query($mysqli,$sql_cate);
-											
-						if (mysqli_num_rows($query_cate) > 0)
-						{	echo '<ul>';
-							while ($row_cate = mysqli_fetch_assoc($query_cate))
-							{
-								echo '<li><a class="smooth-goto" href="shop-type.php?theloai='.$row_cate['tentheloai'].'">'.$row_cate['tentheloai'].'</a></li>';
-							}
-						}
-							echo '
-							<li><a class="smooth-goto" href="shop-type.php?hinhthucmua=Miễn phí">Miễn phí</a></li>
-                            <li><a class="smooth-goto" href="shop-type.php?hinhthucmua=Trả phí">Tính phí</a></li>
-                        </ul> ';
-						
-						?>
+                         <ul>
+                        <div th:each="category : ${listCategories}"> 
+                        	<li><a class="smooth-goto" th:href="@{/shop-type/{filter}(filter=${category.tentheloai})}" th:text="${category.tentheloai}"></a></li>
+                        </div>
+            			<li><a class="smooth-goto" th:href="@{/shop-type/{filter}(filter='Free')}">Miễn phí</a></li>
+                        <li><a class="smooth-goto" th:href="@{/shop-type/{filter}(filter='Paid')}">Trả phí</a></li>
+                        </ul>
                     </div>
                 </div>
                 <div class="col-lg-9">
                     <div class="brave_search">
                         <div class="brave_search_form">
-                             <form action="shop-search.php" method="POST">
+                             <form action="shop-search" method="POST">
                                 <input id="searchScroll" type="text" name="searching" placeholder="Tìm kiếm trên AppShopping">
                                 <button type="submit" name="submitSearch" class="site-btn">TÌM KIẾM</button>
                             </form>
@@ -228,7 +180,7 @@
     <!-- brave Section End -->
 
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="@{img/other/breadcrumb.jpg}">
+    <section class="breadcrumb-section set-bg" th:attr="data-setbg='/img/other/breadcrumb.jpg'">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -236,7 +188,7 @@
                         <h2>Thể loại</h2>
 						
                         <div class="breadcrumb_option">
-                            <a href="index.php">Trang chủ</a>
+                            <a href="/index">Trang chủ</a>
                             <span>Thể loại ứng dụng</span>
                         </div>
                     </div>
@@ -250,117 +202,39 @@
    <div class='row'>
 	<br> </br>
    </div>
-    <!-- apps Details Section End -->
-	
-		<?php
-		if (isset($_GET['theloai']))
-		{
-		$theloai = $_GET['theloai'];
-		$sql_type = "SELECT * FROM ungdung WHERE theloai = '$theloai' AND trangthai ='Publish'";
-		$query_type = mysqli_query($mysqli,$sql_type);
-		
-		if (mysqli_num_rows($query_type) > 0)
-		{	
-			echo "<section class='related-apps'>"; 
-			echo "<div class='container'>";
-			echo "<div class='row'>";
-							echo "<div class='col-lg-12'>";
-								echo "<div class='section-title related_apps_title'>";
-							echo "<h2>" .$theloai. "</h2>";
-						echo "</div>";
-					echo "</div>";
-			echo "</div>";
-			echo "<div class='row justify-content-center'>"; 
-		while ($row_type = mysqli_fetch_assoc($query_type))
-			{
-			?>
-			
-				<?php echo "<div class='col-lg-3 col-md-4 col-sm-6'>"; ?>
-				<?php echo "<div class='apps_item'>"; ?>
-				<?php echo "<div class='apps_item_pic set-bg' data-setbg='img/featured/" .$row_type['iconimage']." '>"; ?>
-				<?php echo "<ul class='apps_item_pic_hover'>"; ?>
-				<?php echo "<li>". "<a>". "<i class='fa fa-heart'>" ."</i>" ."</a>" ."</li>"; ?>
-				<?php echo "<li>". "<a href='shop-details.php?appName=".$row_type['tenungdung']."'>" ."<i class='fa fa-shopping-cart'>". "</i>" ."</a>" ."</li>";?>
-				<?php echo "</ul>";?>
-				<?php echo "</div>";?>
-				<?php echo "<div class='apps_item_text'>";?>
-				<?php echo "<h6>" ."<a href='shop-details.php?appName=".$row_type['tenungdung']."'>". $row_type['tenungdung']. "</a> </h6>";?>
-				<?php 
-				if ($row_type['giatien'] == 0)
-				{
-					echo "<h5> ".$row_type['hinhthucmua']." </hd>";
-				}
-				else
-				{
-					echo "<h5>".$row_type['giatien']." VNĐ</h5>";
-				}
-				?>
-								<?php echo "</div>";?>
-						<?php echo "</div>";?>
-					<?php echo "</div>";?>				
-			<?php
-			}
-			echo "</div>";
-			echo "</div>";
-			echo "</section>"; 
-		}
-		}
-		else if (isset($_GET['hinhthucmua']))
-		{
-		$hinhthuc = $_GET['hinhthucmua'];
-		$sql_type = "SELECT * FROM ungdung WHERE hinhthucmua = '$hinhthuc' AND trangthai ='Publish' ";
-		$query_type = mysqli_query($mysqli,$sql_type);
-		
-		if (mysqli_num_rows($query_type) > 0)
-		{	
-			echo "<section class='related-apps'>"; 
-			echo "<div class='container'>";
-			echo "<div class='row'>";
-							echo "<div class='col-lg-12'>";
-								echo "<div class='section-title related_apps_title'>";
-							echo "<h2>" .$hinhthuc. "</h2>";
-						echo "</div>";
-					echo "</div>";
-			echo "</div>";
-			echo "<div class='row'>"; 
-		while ($row_type = mysqli_fetch_assoc($query_type))
-			{
-			?>
-			
-				<?php echo "<div class='col-lg-3 col-md-4 col-sm-6'>"; ?>
-				<?php echo "<div class='apps_item'>"; ?>
-				<?php echo "<div class='apps_item_pic set-bg' data-setbg='img/featured/" .$row_type['iconimage']." '>"; ?>
-				<?php echo "<ul class='apps_item_pic_hover'>"; ?>
-				<?php echo "<li>". "<a>". "<i class='fa fa-heart'>" ."</i>" ."</a>" ."</li>"; ?>
-				<?php echo "<li>". "<a href='shop-details.php?appName=".$row_type['tenungdung']."'>" ."<i class='fa fa-shopping-cart'>". "</i>" ."</a>" ."</li>";?>
-				<?php echo "</ul>";?>
-				<?php echo "</div>";?>
-				<?php echo "<div class='apps_item_text'>";?>
-				<?php echo "<h6>" ."<a href='shop-details.php?appName=".$row_type['tenungdung']."'>". $row_type['tenungdung']. "</a> </h6>";?>
-				<?php 
-				if ( ($row_type['giatien']) == 0)
-				{
-					echo "<h5> ".$row_type['hinhthucmua']." </hd>";
-				}
-				else
-				{
-					echo "<h5>".$row_type['giatien']." VNĐ</h5>";
-				}
-				?>
-								<?php echo "</div>";?>
-						<?php echo "</div>";?>
-					<?php echo "</div>";?>				
-			<?php
-			}
-			echo "</div>";
-			echo "</div>";
-			echo "</section>"; 
-		}
-		}
-		else 
-		{		
-		}
-		?>
+    <!-- apps Details Section End -->	
+		<section class='related-apps'>
+			<div class='container'>
+			<div class='row'>
+					<div class='col-lg-12'>
+								<div class='section-title related_apps_title'>
+							<h2 th:text="${filter}"></h2>
+						</div>
+					</div>
+			</div>
+			<div class='row justify-content-center'>
+				<div class='col-lg-3 col-md-4 col-sm-6' th:each="app : ${listResult}">
+				<div class='apps_item'>
+				<div class='apps_item_pic set-bg' th:attr="data-setbg='/img/featured/' + ${app.iconimage}">
+							<ul class='apps_item_pic_hover'>
+								<li><a><i class='fa fa-heart'></i></a></li>
+								<li><a th:href="@{/shop-details/{appname}(appname=${app.appname})}"><i class='fa fa-shopping-cart'></i></a></li>
+							</ul>
+				</div>
+				<div class='apps_item_text'>
+				<h6><a th:href="@{/shop-details/{appname}(appname=${app.appname})}" th:text="${app.appname}"></a></h6>
+				<div th:if="${app.price} == 0"> 
+				<h5> MIỄN PHÍ</h5>
+				</div>
+				<div th:unless="${app.price} == 0">
+					<h5 th:text="${app.price} +' VNĐ'"> </h5>
+				</div>
+				</div>
+				</div>
+					</div>				
+			</div>
+			</div>
+			</section> 
 				
     <!-- Related apps Section End -->
 
@@ -371,7 +245,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer_about">
                         <div class="footer_about_logo">
-                            <a href="index.php"><img src="@{img/other/logo.png}" alt=""></a>
+                            <a href="/index"><img th:src="@{/img/other/logo.png}" alt=""></a>
                         </div>
                         <ul>
                             <li>Ứng dụng: AppShopping</li>
@@ -384,8 +258,8 @@
                     <div class="footer_widget">
                         <h6>Có thể bạn cần</h6>
                         <ul>
-                            <li><a href="index.php">Trang chủ</a></li>
-                            <li><a href="shop-grid.php">Bảng xếp hạng</a></li>
+                            <li><a href="/index">Trang chủ</a></li>
+                            <li><a href="/shop-grid">Bảng xếp hạng</a></li>
                            
 							<li><a class="smooth-goto" href="#searchScroll">Tìm kiếm</a></li>
                         </ul>
@@ -411,7 +285,7 @@
 								&copy;<script>document.write(new Date().getFullYear());</script> AppShopping | Trang web được phát triển <i class="fa fa-heart" aria-hidden="true"></i> bởi Nhóm sinh viên đại học Tôn Đức Thắng
 							</p>
 						</div>
-                        <div class="footer_copyright_payment"><img src="@{img/other/payment-item.png}" alt=""></div>
+                        <div class="footer_copyright_payment"><img th:src="@{/img/other/payment-item.png}" alt=""></div>
                     </div>
                 </div>
             </div>
@@ -426,7 +300,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/jquery.slicknav.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-    <script src="@{js/main.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
 
 
 </body>

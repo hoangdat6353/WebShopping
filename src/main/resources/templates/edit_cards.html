@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>Edit Cards</title>
+</head>
+<body>
+<form  th:action="@{/addcards}" method="POST" id="account-form" class="form-horizontal w-100" onsubmit="check_pass(event)" th:object="${cards}">
+										<div class="form-group">
+											 <input type='hidden' th:field="*{id}" name="id" readonly="readonly"> </input>                    
+										</div>
+										<div class="form-group">
+											<label class="control-label" for="mathecao" >Mã thẻ:</label>
+											<input  th:field="*{mathecao}" style="width:100%" name="mathecao" type="text" class="form-control" id="mathecao" placeholder="Nhập mã thẻ cào">
+										</div>
+										<div class="form-group">
+											<label class="control-label" for="soseri">Số seri thẻ:</label>
+											<input  th:field="*{soseri}" style="width:100%" name="soseri" type="text" class="form-control" id="soseri" placeholder="Nhập số seri thẻ cào">
+										</div>
+										<div class="form-group">
+											<label class="control-label" for="menhgia">Mệnh giá:</label>
+											<div>
+												<select  th:field="*{menhgia}" style="width:100%" name="menhgia" id="menhgia" class="form-select">
+												 <!-- <option selected value = "">Chọn mệnh giá thẻ cào</option>  -->
+												<option th:value="'20000'" value="">20.000 vnđ</option>
+												<option th:value="'50000'" value="">50.000 vnđ</option>
+												<option th:value="'100000'" value="">100.000 vnđ</option>
+												<option th:value="'200000'" value="">200.000 vnđ</option>
+												<option th:value="'500000'" value="" >500.000 vnđ</option>
+												<!-- <option  value="20000">20.000 vnđ</option>
+												<option  value="50000">50.000 vnđ</option>
+												<option  value="100000">100.000 vnđ</option>
+												<option value="200000">200.000 vnđ</option>
+												<option value="500000" >500.000 vnđ</option>-->
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label" for="trangthai">Trạng thái thẻ:</label>
+											<div>
+												<select  th:field="*{trangthai}"  style="width:100%" name="trangthai" id="trangthai" class="form-select">
+												<!-- <option selected value="Chọn trạng thái thẻ">Chọn trạng thái thẻ</option>  -->
+												<option th:value="'Ready'" value="">Thẻ khả dụng</option>
+												<option th:value="'Used'"  value="">Thẻ đã được sử dụng</option>
+												<!--<option value="Ready">Thẻ khả dụng</option>
+												<option  value="Used">Thẻ đã được sử dụng</option>-->
+												</select>
+											</div>
+										</div>
+										<div class="form-group row">
+											<div class="col"><button type="submit" name="submitCards" class="btn btn-success add-account">Sửa</button>
+											</div>
+                           
+										</div>
+                    </form>
+</body>
+</html>

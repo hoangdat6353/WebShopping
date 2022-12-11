@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.model.User;
 import com.project.repository.UserRepository;
+import com.project.util.EncrytedPasswordUtils;
  
 @Service
 @Transactional
@@ -37,6 +38,23 @@ public class UserService {
     public User findByUsername(String username)
     {
     	return repo.getUserByUsername(username);
+    }
+    
+    
+    public User getByResetPasswordToken(String token) {
+        return repo.findByResetPasswordToken(token);
+    }
+    
+    public User findByEmail(String email) {
+        return repo.findByEmail(email);
+    }
+    
+    public void updatePassword(User user, String newPassword) {      
+        String encryptedPassword = EncrytedPasswordUtils.encrytePassword(newPassword);
+        
+        user.setPassword(encryptedPassword);     
+        user.setResetPasswordToken(null);
+        repo.save(user);
     }
     
     
