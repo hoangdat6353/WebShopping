@@ -14,12 +14,15 @@ import com.project.model.App;
 import com.project.model.Cards;
 import com.project.model.Categories;
 import com.project.model.Developer;
+import com.project.model.EmailDetails;
 import com.project.model.PendingApp;
 import com.project.model.User;
 import com.project.service.AppService;
 import com.project.service.CardsService;
 //import com.project.model.Cards;
 import com.project.service.CategoriesService;
+import com.project.service.DeveloperService;
+import com.project.service.EmailService;
 import com.project.service.PendingAppService;
 //import com.project.service.CardsService;
 import com.project.service.UserService;
@@ -42,8 +45,11 @@ public class AdminController {
     private PendingAppService pendingService;
     @Autowired
     private CardsService cardService;
-    //@Autowired
-    //private CardsService service1;
+    @Autowired 
+    private EmailService emailService;
+    @Autowired
+	 private DeveloperService developerService;
+    
     @RequestMapping(value = "/index-admin", method = RequestMethod.GET)
     public String viewIndexDev(Model model,Principal principal) {
         String userName = principal.getName();
@@ -84,6 +90,8 @@ public class AdminController {
     		RedirectAttributes redirectAttr) {
 		PendingApp pendingApp = pendingService.get(id);
 
+        EmailDetails emailDetails = new EmailDetails();
+        Developer currDev = developerService.findByDevname(pendingApp.getDeveloper());
     	if (approval.equals("accepted"))
     	{
     		
@@ -110,11 +118,34 @@ public class AdminController {
     		
     		pendingApp.setStatus("Publish");
     		pendingService.save(pendingApp);
+    		
+    		if (currDev != null)
+    		{
+    			String content = "Ứng dụng yêu cầu được xét duyệt của bạn trên hệ thống hiện tại đã được xét duyệt thành công và đã xuất hiện trên trang web của chúng tôi\n"
+    					+ "Vui lòng kiểm tra ứng dụng tại trang quản trị dành cho nhà phát triển\n"
+    					+"Nếu có thêm thắc mắc, vui lòng liên hệ chúng tôi để được giải đáp sớm nhất. Xin cảm ơn";
+                emailDetails.setRecipient(currDev.getDevemail());
+                emailDetails.setSubject("Thông Báo Ứng Dụng Của Bạn Đã Được Duyệt Thành Công - AppShopping");
+                emailDetails.setMsgBody(content);
+                emailService.sendSimpleMail(emailDetails);
+    		}
+    	
     		redirectAttr.addFlashAttribute("message", "ỨNG DỤNG ĐÃ ĐƯỢC XÉT DUYỆT THÀNH CÔNG !");
     	} else if (approval.equals("denied"))
     	{
     		pendingApp.setStatus("Từ chối");
     		pendingService.save(pendingApp);
+    		
+    		if (currDev != null)
+    		{
+    			String content = "Ứng dụng yêu cầu được xét duyệt của bạn trên hệ thống hiện tại đã bị từ chối. Vui lòng cập nhật các thông tin của ứng dụng\n"
+    			+ "đúng với tiêu chuẩn của hệ thống chúng tôi và gửi yêu cầu xét duyệt lần nữa nếu có nhu cầu!"
+    			+"Nếu có thêm thắc mắc, vui lòng liên hệ chúng tôi để được giải đáp sớm nhất. Xin cảm ơn";
+                emailDetails.setRecipient(currDev.getDevemail());
+                emailDetails.setSubject("Thông Báo Ứng Dụng Của Bạn Không Được Phê Duyệt Tại Hệ Thống - AppShopping");
+                emailDetails.setMsgBody(content);
+                emailService.sendSimpleMail(emailDetails);
+    		}
     		redirectAttr.addFlashAttribute("message", "ĐÃ TỪ CHỐI YÊU CẦU XÉT DUYỆT CỦA ỨNG DỤNG !");
 
     	}
@@ -151,9 +182,8 @@ public class AdminController {
               
          return "cards";
     }
-    
-
-    
+   
+   
     @RequestMapping(value = "/addcards", method = RequestMethod.POST)
     public String saveCards(@ModelAttribute("Cards") Cards cards) {
         cardService.save(cards);
@@ -182,8 +212,8 @@ public class AdminController {
           
          return "categories";
     }
-//    
-//    
+
+    
     @RequestMapping(value = "/addcategories", method = RequestMethod.POST)
     public String saveCategories(@ModelAttribute("Categories") Categories categories) {
         categoryService.save(categories);
@@ -206,38 +236,4 @@ public class AdminController {
         return "redirect:/categories";       
     }
    
-    
-// // handler methods...
-//    @RequestMapping("/cards")
-//    public String viewCards(Model model) {
-//    	 List<Cards> listCards = service1.listAll();
-//         model.addAttribute("listCards", listCards);
-//          
-//         return "cards";
-//    }
-//    
-
-    
-//    @RequestMapping(value = "/newcards", method = RequestMethod.POST)
-//    public String saveCards(@ModelAttribute("Cards") Cards cards) {
-//    	
-//        service1.save(cards);
-//         
-//        return "redirect:/cards";
-//    }
-    
-    
-//    @RequestMapping("/editcards/{id}")
-//    public String showEditCategoriesPage(@PathVariable(name = "id") int id, Model model) {
-//    	Cards cards = service1.get(id);
-//    	model.addAttribute("cards", cards);
-//         
-//    	return "edit_categories";
-//    }
-    
-//    @RequestMapping("/deletecards/{id}")
-//    public String deleteCards(@PathVariable(name = "id") int id) {
-//        service1.delete(id);
-//        return "redirect:/cards";       
-//    }
 }

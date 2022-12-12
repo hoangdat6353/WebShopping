@@ -38,4 +38,9 @@ public class DeveloperService {
     {
     	return repo.getDeveloperByUsername(username);
     }
+    
+    public Developer findByDevname(String devname)
+    {
+    	return repo.findByDevname(devname);
+    }
 }

@@ -11,4 +11,5 @@ public interface DeveloperRepository extends JpaRepository<Developer, Long> {
 	@Query("SELECT u FROM Developer u WHERE u.username = :username")
     public Developer getDeveloperByUsername(@Param("username") String username);
 	
+	public Developer findByDevname(String devname);
 }

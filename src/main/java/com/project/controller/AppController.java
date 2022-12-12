@@ -4,26 +4,24 @@ package com.project.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.model.App;
 import com.project.model.AppDownloaded;
 import com.project.model.AppIndex;
 import com.project.model.Categories;
-import com.project.model.Product;
+import com.project.model.EmailDetails;
 import com.project.model.User;
 import com.project.service.AppDownloadedService;
 import com.project.service.AppIndexService;
 import com.project.service.AppService;
 import com.project.service.CategoriesService;
-import com.project.service.ProductService;
+import com.project.service.EmailService;
 import com.project.service.UserService;
 
 import java.awt.print.Pageable;
@@ -43,8 +41,6 @@ import org.springframework.data.domain.PageRequest;
 public class AppController {
  
     @Autowired
-    private ProductService service;
-    @Autowired
     private UserService userService;
     @Autowired
 	private CategoriesService categoryService;
@@ -54,6 +50,8 @@ public class AppController {
     private AppService appService;
     @Autowired
     private AppDownloadedService appDownloadedService;
+    @Autowired 
+    private EmailService emailService;
     
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String viewHomePage(Model model,Principal principal) {
@@ -139,9 +137,15 @@ public class AppController {
     	String filePath = System.getProperty("user.dir") + "/src/main/resources/static/img/downloads/";
 		String userName = principal.getName();
         User loginedUser = userService.findByUsername(userName);
+        EmailDetails emailDetails = new EmailDetails();
 
-    	if (price == 0)
+    	if (price == 0) //Nếu giá là miễn phí thì tải ứng dụng về
     	{
+    		String content = "Bạn vừa thực hiện mua ứng dụng thành công trên hệ thống, vui lòng kiểm tra lại số dư tài khoản cũng như thư viện để xem ứng dụng vừa được mua\n";
+            emailDetails.setRecipient(loginedUser.getEmail());
+            emailDetails.setSubject("Thông Báo Mua Ứng Dụng Thành Công - AppShopping");
+            emailDetails.setMsgBody(content);
+            
     		selectedApp.setDownloads(selectedApp.getDownloads() + 1);
     		appService.save(selectedApp);
     		
@@ -157,6 +161,7 @@ public class AppController {
         		appDownloadedService.save(newAppDownloaded);
     		} 
     		try {
+                emailService.sendSimpleMail(emailDetails);
                 File fileToDownload = new File(filePath+ installFileName);
                 InputStream inputStream = new FileInputStream(fileToDownload);
                 response.setContentType("application/force-download");
@@ -164,6 +169,7 @@ public class AppController {
                 IOUtils.copy(inputStream, response.getOutputStream());
                 response.flushBuffer();
                 inputStream.close();
+                
             } catch (Exception exception){
                 System.out.println(exception.getMessage());
             } 
@@ -175,6 +181,10 @@ public class AppController {
     			selectedApp.setDownloads(selectedApp.getDownloads() + 1);
         		appService.save(selectedApp);
         		
+        		String content = "Bạn vừa thực hiện mua ứng dụng thành công trên hệ thống, vui lòng kiểm tra lại số dư tài khoản cũng như thư viện để xem ứng dụng vừa được mua\n";
+                emailDetails.setRecipient(loginedUser.getEmail());
+                emailDetails.setSubject("Thông Báo Mua Ứng Dụng Thành Công - AppShopping");
+                emailDetails.setMsgBody(content);
         		AppDownloaded appDownloaded = appDownloadedService.findAppByUserNameAndAppName(userName, appName);
         		if (appDownloaded == null)
         		{
@@ -188,6 +198,7 @@ public class AppController {
         		} 
         		
         		try {
+                    emailService.sendSimpleMail(emailDetails);
                     File fileToDownload = new File(filePath+ installFileName);
                     InputStream inputStream = new FileInputStream(fileToDownload);
                     response.setContentType("application/force-download");
@@ -195,6 +206,7 @@ public class AppController {
                     IOUtils.copy(inputStream, response.getOutputStream());
                     response.flushBuffer();
                     inputStream.close();
+                    
                 } catch (Exception exception){
                     System.out.println(exception.getMessage());
                 } 
@@ -330,35 +342,5 @@ public class AppController {
     	
         return "redirect:/shop-search";
     }
-    
-    @RequestMapping("/new")
-    public String showNewProductPage(Model model) {
-        Product product = new Product();
-        model.addAttribute("product", product);
-         
-        return "new_product";
-    }
-    
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveProduct(@ModelAttribute("product") Product product) {
-        service.save(product);
-         
-        return "redirect:/";
-    }
-    
-    @RequestMapping("/edit/{id}")
-    public ModelAndView showEditProductPage(@PathVariable(name = "id") int id) {
-        ModelAndView mav = new ModelAndView("edit_product");
-        Product product = service.get(id);
-        mav.addObject("product", product);
-         
-        return mav;
-    }
-    
-    @RequestMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable(name = "id") int id) {
-        service.delete(id);
-        return "redirect:/";       
-    }
-    
+        
 }
