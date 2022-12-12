@@ -4,55 +4,60 @@
 <head>
 <meta charset="utf-8" />
 <title>Edit Cards</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-<form  th:action="@{/addcards}" method="POST" id="account-form" class="form-horizontal w-100" onsubmit="check_pass(event)" th:object="${cards}">
-										<div class="form-group">
-											 <input type='hidden' th:field="*{id}" name="id" readonly="readonly"> </input>                    
-										</div>
-										<div class="form-group">
-											<label class="control-label" for="mathecao" >Mã thẻ:</label>
-											<input  th:field="*{mathecao}" style="width:100%" name="mathecao" type="text" class="form-control" id="mathecao" placeholder="Nhập mã thẻ cào">
-										</div>
-										<div class="form-group">
-											<label class="control-label" for="soseri">Số seri thẻ:</label>
-											<input  th:field="*{soseri}" style="width:100%" name="soseri" type="text" class="form-control" id="soseri" placeholder="Nhập số seri thẻ cào">
-										</div>
-										<div class="form-group">
-											<label class="control-label" for="menhgia">Mệnh giá:</label>
-											<div>
-												<select  th:field="*{menhgia}" style="width:100%" name="menhgia" id="menhgia" class="form-select">
-												 <!-- <option selected value = "">Chọn mệnh giá thẻ cào</option>  -->
-												<option th:value="'20000'" value="">20.000 vnđ</option>
-												<option th:value="'50000'" value="">50.000 vnđ</option>
-												<option th:value="'100000'" value="">100.000 vnđ</option>
-												<option th:value="'200000'" value="">200.000 vnđ</option>
-												<option th:value="'500000'" value="" >500.000 vnđ</option>
-												<!-- <option  value="20000">20.000 vnđ</option>
-												<option  value="50000">50.000 vnđ</option>
-												<option  value="100000">100.000 vnđ</option>
-												<option value="200000">200.000 vnđ</option>
-												<option value="500000" >500.000 vnđ</option>-->
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="control-label" for="trangthai">Trạng thái thẻ:</label>
-											<div>
-												<select  th:field="*{trangthai}"  style="width:100%" name="trangthai" id="trangthai" class="form-select">
-												<!-- <option selected value="Chọn trạng thái thẻ">Chọn trạng thái thẻ</option>  -->
-												<option th:value="'Ready'" value="">Thẻ khả dụng</option>
-												<option th:value="'Used'"  value="">Thẻ đã được sử dụng</option>
-												<!--<option value="Ready">Thẻ khả dụng</option>
-												<option  value="Used">Thẻ đã được sử dụng</option>-->
-												</select>
-											</div>
-										</div>
-										<div class="form-group row">
-											<div class="col"><button type="submit" name="submitCards" class="btn btn-success add-account">Sửa</button>
-											</div>
-                           
-										</div>
-                    </form>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
+		  <a class="navbar-brand" style="color: azure">Cập nhật thông tin thẻ cào</a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+	</nav>
+	<div class="container">
+	 	<div class="row justify-content-center">
+			<div class="col-md-6 col-lg-5">
+				<h3 class="text-center text-secondary mt-5 mb-3">Cập nhật thông tin</h3>
+					<form class=" form-horizontal border rounded w-100 mb-5 mx-auto px-3 pt-3 bg-light" th:action="@{/addcards}" method="POST" id="account-form" onsubmit="check_pass(event)" th:object="${cards}">
+						<div class="form-group">
+							<input type='hidden' th:field="*{id}" name="id" readonly="readonly"> </input>                    
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="mathecao" >Mã thẻ:</label>
+							<input  th:field="*{mathecao}" style="width:100%" name="mathecao" type="text" class="form-control" id="mathecao" placeholder="Nhập mã thẻ cào">
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4"  for="soseri">Số seri thẻ:</label>
+							<input  th:field="*{soseri}" style="width:100%" name="soseri" type="text" class="form-control" id="soseri" placeholder="Nhập số seri thẻ cào">
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="menhgia">Mệnh giá:</label>
+							<div>
+								<select  th:field="*{menhgia}" style="width:100%" name="menhgia" id="menhgia" class="form-select">
+									<option th:value="'20000'" value="">20.000 vnđ</option>
+									<option th:value="'50000'" value="">50.000 vnđ</option>
+									<option th:value="'100000'" value="">100.000 vnđ</option>
+									<option th:value="'200000'" value="">200.000 vnđ</option>
+									<option th:value="'500000'" value="" >500.000 vnđ</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="trangthai">Trạng thái thẻ:</label>
+								<div>
+									<select  th:field="*{trangthai}"  style="width:100%" name="trangthai" id="trangthai" class="form-select">
+										<option th:value="'Ready'" value="">Thẻ khả dụng</option>
+										<option th:value="'Used'"  value="">Thẻ đã được sử dụng</option>
+									</select>
+								</div>
+						</div>
+						<div class="form-group row">
+							<div class="col">
+								<button type="submit" name="submitCards" class="btn btn-success add-account">Sửa</button>
+							</div>
+						</div>
+					</form>
+			</div>
+    	</div>
+	</div>
 </body>
 </html>

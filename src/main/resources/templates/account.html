@@ -186,8 +186,8 @@
 								</small>
 							</h1>
 						</div><!-- /.page-header -->
-					<div class="container">
-						
+					
+				<div class="container">		
                 <div class="col-md-11" id="table">
                     <table class="table table-hover mt-4">
                         <thead >
@@ -195,7 +195,6 @@
                                 <th>ID</th>	
                                 <th>Tên tài khoản</th>
                                 <th>Email</th>
-                                <th>Mật khẩu</th>
 								<th>Cấp độ quyền hạn</th>
                                 <th class="text-center" colspan="2">Tùy chọn</th>
                             </tr>
@@ -205,13 +204,12 @@
                         		<td th:text="${user.id}"> </td>
                         		<td th:text="${user.username}"> </td>
                         		<td th:text="${user.email}"> </td>
-                        		<td th:text="${user.password}"> </td>
                         		<td th:text="${user.role}"> </td>
 								<td class="text-center">
-									<button class="btn btn-success" type="submit" name="submitStatusPub">SỬA</button>
+									<button class="btn btn-success" type="submit" name="submitStatusPub"><a th:href="@{/edituser/{id}(id=${user.id})}">SỬA</a></button>
 								</td> 
 								<td class="text-center">
-									<button class="btn btn-danger" type="submit" name="submitStatusDelete">Xóa</button>
+									<button class="btn btn-danger" type="submit" name="submitStatusDelete"><a th:href="@{/deleteuser/{id}(id=${user.id})}">Xóa</a></button>
 								</td> 
                         	</tr>
                         </tbody>

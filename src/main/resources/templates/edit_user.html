@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>Edit User</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
+		  <a class="navbar-brand" style="color: azure">Cập nhật thông tin User</a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+	</nav>
+	<div class="container">
+	 	<div class="row justify-content-center">
+			<div class="col-md-6 col-lg-5">
+				<h3 class="text-center text-secondary mt-5 mb-3">Cập nhật thông tin</h3>
+					<form class=" form-horizontal border rounded w-100 mb-5 mx-auto px-3 pt-3 bg-light" th:action="@{/adduser}" method = "POST" th:object="${users}">
+							<div class= "form-group">
+								<label class="control-label col-sm-4" for="username">Tên user:</label>
+				                <input th:field="*{username}" type="text" class="form-control" name="username" placeholder="Nhập username">
+							</div>
+							<div class= "form-group">
+								<label class="control-label col-sm-4" for="email">Email:</label>
+				                <input th:field="*{email}" type="email" class="form-control" name="email" placeholder="Nhập email">
+							</div>
+							<div class= "form-group">
+								<label class="control-label col-sm-4" for="password">Password:</label>
+				                <input th:field="*{password}" type="text" class="form-control" name="password" placeholder="Nhập password">
+							</div>
+							<div class= "form-group">
+								<label class="control-label col-sm-4" for="role">Cấp độ quyền hạn:</label>
+				                <input th:field="*{role}" type="text" class="form-control" name="role" placeholder="Nhập Cấp độ quyền hạn">
+							</div>
+							<div class= "form-group">
+								<input type='hidden' th:field="*{id}" name="id" readonly="readonly"> </input>  
+							</div>
+					        <div class="modal-footer">
+				                 <button type="submit" id="update-button" name="submitUpdateCategories"class="btn btn-primary">Cập nhật</button>		
+				            </div>
+				    </form>
+			</div>
+    	</div>
+	</div>
+</body>
+</html>

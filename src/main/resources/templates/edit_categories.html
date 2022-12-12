@@ -3,32 +3,37 @@
     xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8" />
-<title>Edit Product</title>
+	<title>Edit Categories</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-<div class="modal fade" id="confirm-edit-modal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title text-primary">Cập nhật thông tin thể loại</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p>Cập nhật thông tin</p>				
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
+	  <a class="navbar-brand" style="color: azure">Cập nhật thông tin thể loại</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+	 </nav>
+	<div class="container">
+	 	<div class="row justify-content-center">
+			<div class="col-md-6 col-lg-5">
+				<!--<h4 class="modal-title text-primary">Cập nhật thông tin thể loại</h4>-->
+				<!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+				<h3 class="text-center text-secondary mt-5 mb-3">Cập nhật thông tin</h3>				
+					
+					<form class="border rounded w-100 mb-5 mx-auto px-3 pt-3 bg-light" th:action="@{/addcategories}" method = "POST" th:object="${categories}">
 					<div class="form-group">
-					<form th:action="@{/addcategories}" method = "POST" th:object="${categories}">
-                        <label class="control-label col-sm-2" for="tentheloai">Tên thể loại:</label>
-                        <input type="text" class="form-control" name="tentheloai" placeholder="Nhập tên thể loại">
-						 <input type='hidden' th:field="*{id}" name="id" readonly="readonly"> </input>                    
-					</div>                 
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" id="update-button" name="submitUpdateCategories"class="btn btn-primary">Cập nhật</button>
-					</form>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>		
-                </div>
-            </div>
-        </div>
-    </div>
+						<label class="control-label col-sm-4" for="tentheloai">Tên thể loại:</label>
+						<input type="text" class="form-control" name="tentheloai" placeholder="Nhập tên thể loại">
+					</div>
+					<div class="form-group">
+						<input type='hidden' th:field="*{id}" name="id" readonly="readonly"> </input>                    
+					</div>
+	          		<div class="form-group">
+	                    <button class=" btn btn-primary btn btn-success px-5" type="submit" id="update-button" name="submitUpdateCategories">Cập nhật</button>
+	                </div>
+	                </form>	
+			</div>
+    	</div>
+	</div>
 </body>
 </html>
