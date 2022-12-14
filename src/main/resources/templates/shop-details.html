@@ -154,8 +154,8 @@
                 <div class="col-lg-9">
                     <div class="brave_search">
                         <div class="brave_search_form">
-                            <form action="shop-search.php" method="POST">
-                                <input id="searchScroll" type="text" name="searching" placeholder="Tìm kiếm trên AppShopping">
+                            <form th:action="@{/search-apps}" method="POST">
+                                <input id="searchScroll" type="text" name="search" placeholder="Tìm kiếm trên AppShopping">
                                 <button type="submit" name="submitSearch" class="site-btn">TÌM KIẾM</button>
                             </form>
                         </div>
@@ -383,7 +383,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer_about">
                         <div class="footer_about_logo">
-                            <a href="index"><img th:src="@{/img/other/logo.png}" alt=""></a>
+                            <a href="/index"><img th:src="@{/img/other/logo.png}" alt=""></a>
                         </div>
                         <ul>
                             <li>Ứng dụng: AppShopping</li>
@@ -396,8 +396,8 @@
                     <div class="footer_widget">
                         <h6>Có thể bạn cần</h6>
                         <ul>
-                            <li><a href="index">Trang chủ</a></li>
-                            <li><a href="shop-grid">Bảng xếp hạng</a></li>                        
+                            <li><a href="/index">Trang chủ</a></li>
+                            <li><a href="/shop-grid">Bảng xếp hạng</a></li>                        
 							<li><a class="smooth-goto" href="#searchScroll">Tìm kiếm</a></li>
                         </ul>
                     </div>

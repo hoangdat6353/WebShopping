@@ -23,11 +23,11 @@
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-4" for="mathecao" >Mã thẻ:</label>
-							<input  th:field="*{mathecao}" style="width:100%" name="mathecao" type="text" class="form-control" id="mathecao" placeholder="Nhập mã thẻ cào">
+							<input  th:field="*{mathecao}" style="width:100%" name="mathecao" type="text" pattern="\d*" minlength="4" maxlength="6" class="form-control" id="mathecao" placeholder="Nhập mã thẻ cào">
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-4"  for="soseri">Số seri thẻ:</label>
-							<input  th:field="*{soseri}" style="width:100%" name="soseri" type="text" class="form-control" id="soseri" placeholder="Nhập số seri thẻ cào">
+							<input  th:field="*{soseri}" style="width:100%" name="soseri" type="text" pattern="\d*" minlength="4" maxlength="6" class="form-control" id="soseri" placeholder="Nhập số seri thẻ cào">
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-4" for="menhgia">Mệnh giá:</label>

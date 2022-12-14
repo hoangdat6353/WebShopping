@@ -165,14 +165,12 @@ public class UserController {
         model.addAttribute("User", loginedUser);
         model.addAttribute("updateProfile", new UpdateProfile());
         model.addAttribute("topupInfo", new TopUp());
-        //User loginedUser = (User) ((Authentication) principal).getPrincipal();
-        //String userInfo = WebUtils.toString(loginedUser);
-        
+       
         return "account-profile";
     }
     
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
-    public String updateProfile(Model model,@ModelAttribute UpdateProfile updateInfo, Principal principal) {
+    public String updateProfile(Model model,@ModelAttribute UpdateProfile updateInfo, Principal principal,RedirectAttributes redirectAttr) {
     	String userName = principal.getName();
         User loginedUser = service.findByUsername(userName);
         model.addAttribute("User", loginedUser);
@@ -187,10 +185,10 @@ public class UserController {
     		
     		service.save(currentUser);
     	} else {
-    		model.addAttribute("message", "Có lỗi xảy ra ! Vui lòng nhập đầy đủ thông tin");
+    		redirectAttr.addFlashAttribute("messageProfile", "Có lỗi xảy ra ! Cập nhật thông tin cá nhân thất bại");
     	}
     	
-        return "account-profile";
+        return "redirect:/accountProfile";
     }
     
     @RequestMapping(value = "/uploadAvatar", method = RequestMethod.POST)
@@ -213,7 +211,7 @@ public class UserController {
     }
     
     @RequestMapping(value = "/topup", method = RequestMethod.POST)
-    public String userTopUp(Model model,@ModelAttribute TopUp topupInfo, Principal principal) {
+    public String userTopUp(Model model,@ModelAttribute TopUp topupInfo, Principal principal, RedirectAttributes redirectAttr) {
     	String userName = principal.getName();
         User loginedUser = service.findByUsername(userName);
         model.addAttribute("User", loginedUser);
@@ -235,17 +233,18 @@ public class UserController {
     				cards.setTrangthai("Used");
     				cards.setNgaynap(date);
     				cardsService.save(cards);
+    				redirectAttr.addFlashAttribute("message", "Nạp thẻ thành công");
     			} 
     			else 
     			{
-    				System.out.println("Thẻ đã được sử dụng");
+    				redirectAttr.addFlashAttribute("message", "Thẻ đã được sử dụng");
     			}
     		}
     		else {
-    			System.out.println("Thẻ đã tồn tại");
+				redirectAttr.addFlashAttribute("message", "Thẻ không tồn tại ! Vui lòng liên hệ Admin để được nhận thẻ cào mới");
     		}
     	} else {
-    		model.addAttribute("message", "Có lỗi xảy ra ! Vui lòng nhập đầy đủ thông tin");
+			redirectAttr.addFlashAttribute("Có lỗi xảy ra !", "Vui lòng nhập đầy đủ thông tin thẻ");
     	}
     	
         return "redirect:/accountProfile";
@@ -342,7 +341,6 @@ public class UserController {
      
     @RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
     public String forgotPassword(Model model) {
-    	//model.addAttribute("changePass", new ChangePass());
         return "forgot-password";
     }
     

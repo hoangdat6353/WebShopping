@@ -162,6 +162,7 @@
 <div class="card h-100">
 
 	<div class="card-body">
+		<p th:if="${messageProfile != null}" th:text="${messageProfile}" style="color: red; "></p>
 		<form th:action="@{/updateProfile}" th:object="${updateProfile}" method ="POST">
 		<div class="row gutters">
 		<input class="form-control" type="text" id="id" th:field="${User.id}" hidden> </input>
@@ -202,6 +203,7 @@
 		</div>
 		</form>
 		
+		<p th:if="${message != null}" th:text="${message}" style="color: red;"></p>
 		<form th:action="@{/topup}" th:object="${topupInfo}" method = "POST">
 		<div class="row gutters">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -210,13 +212,13 @@
 			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
 				<div class="form-group">
 					<label for="mathe">Nhập mã thẻ cào:</label>
-					<input name="mathe" type="number" class="form-control" id="mathe" placeholder="Nhập mã thẻ cào" minlength="4" maxlength="5" th:field="*{mathe}" >
+					<input name="mathe" type="text" pattern="\d*" minlength="4" maxlength="6" class="form-control" id="mathe" placeholder="Nhập mã thẻ cào" required th:field="*{mathe}" >
 				</div>
 			</div>
 			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
 				<div class="form-group">
 					<label for="soseri">Nhập số seri thẻ cào:</label>
-					<input name = "soseri" type="number" class="form-control" id="soseri" placeholder="Nhập số seri thẻ cào"  minlength="4" maxlength="5" th:field="*{soseri}">
+					<input name = "soseri" type="text" pattern="\d*" class="form-control" id="soseri" placeholder="Nhập số seri thẻ cào"  minlength="4" maxlength="6" required th:field="*{soseri}">
 				</div>
 			</div>
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
