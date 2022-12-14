@@ -115,12 +115,14 @@ public class UserController {
         return "logout";
     }
     
+    //Hiển thị giao diện đổi mật khẩu
     @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
     public String changePassword(Model model) {
     	model.addAttribute("changePass", new ChangePass());
         return "change-pass";
     }
     
+    //Xử lý đổi mật khẩu
     @RequestMapping(value = "/changePassHandler", method = RequestMethod.POST)
     public String changePasswordHandler(Model model,@ModelAttribute ChangePass changePass) {
     	    	
@@ -149,13 +151,19 @@ public class UserController {
     }
     
     
+    //Hiển thị trang thông tin cá nhân của người dùng
     @RequestMapping(value = "/accountProfile", method = RequestMethod.GET)
     public String viewProfile(Model model,Principal principal) {
     	 // Sau khi user login thanh cong se co principal
+    	//Lấy ra username của người dùng bằng Spring Security
         String userName = principal.getName();
+        //Kiếm thông tin người dùng trong database
         User loginedUser = service.findByUsername(userName);
         
+        //Hiển thị toàn bộ thẻ nạp mà người dùng đã nạp
         List<Cards> listCards= cardsService.listAllCardsByUsername(userName);
+        
+        //Hiển thị toàn bộ ứng dụng mà người dùng đã tải
         List<AppDownloaded> listFreeApps = appDownloadedService.findAppByUserNameAndPayment(userName, "Free");
         List<AppDownloaded> listPaidApps = appDownloadedService.findAppByUserNameAndPayment(userName, "Paid");
 
@@ -169,20 +177,21 @@ public class UserController {
         return "account-profile";
     }
     
+    //Xử lý người dùng cập nhật thông tin cá nhân
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
     public String updateProfile(Model model,@ModelAttribute UpdateProfile updateInfo, Principal principal,RedirectAttributes redirectAttr) {
-    	String userName = principal.getName();
-        User loginedUser = service.findByUsername(userName);
-        model.addAttribute("User", loginedUser);
-        
     	if (updateInfo != null)
     	{
+    		//Lấy ra user nào đang thực hiện thay đổi thông tin
     		User currentUser = service.get(updateInfo.getId());
+    		
+    		//Update lại dữ liệu cho người dùng
     		currentUser.setFullname(updateInfo.getFullname());
     		currentUser.setPhone(updateInfo.getPhone());
     		currentUser.setAddress(updateInfo.getAddress());
     		currentUser.setDateofbirth(updateInfo.getDateofbirth());
     		
+    		//Lưu vào database
     		service.save(currentUser);
     	} else {
     		redirectAttr.addFlashAttribute("messageProfile", "Có lỗi xảy ra ! Cập nhật thông tin cá nhân thất bại");
@@ -191,30 +200,34 @@ public class UserController {
         return "redirect:/accountProfile";
     }
     
+    //Xử lý người dùng upload avatar cá nhân
     @RequestMapping(value = "/uploadAvatar", method = RequestMethod.POST)
     public String uploadAvatar(Model model, Principal principal,@ModelAttribute User user, @RequestParam("image") MultipartFile multipartFile) throws IOException {
+    	 if (multipartFile.isEmpty())
+             return "redirect:/accountProfile";
     	String userName = principal.getName();
-        User loginedUser = service.findByUsername(userName);
+        User loginedUser = service.findByUsername(userName);  
 
-        if (multipartFile.isEmpty())
-            return "redirect:/accountProfile";
-
+        //Lấy ra cái tên của file ảnh
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        loginedUser.setAvatar(fileName);
+        
+        //Cập nhật cột avatar = tên file hình
+        loginedUser.setAvatar(fileName);    
+        //Lưu vào database
         service.save(loginedUser);
         
+        //Lấy ra thư mục sẽ chứa file
         String uploadDir = System.getProperty("user.dir") + "/uploads";
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-        
         
         return "redirect:/accountProfile";
     }
     
+    //Xử lý người dùng nạp thẻ
     @RequestMapping(value = "/topup", method = RequestMethod.POST)
-    public String userTopUp(Model model,@ModelAttribute TopUp topupInfo, Principal principal, RedirectAttributes redirectAttr) {
+    public String userTopUp(Model model,@ModelAttribute TopUp topupInfo, Principal principal, RedirectAttributes redirectAttr) {	
     	String userName = principal.getName();
         User loginedUser = service.findByUsername(userName);
-        model.addAttribute("User", loginedUser);
 
     	if (topupInfo != null)
     	{
@@ -250,16 +263,20 @@ public class UserController {
         return "redirect:/accountProfile";
     }
     
+    //Hiển thị trang nâng cấp thành nhà phát triển
     @RequestMapping(value = "/upgrade", method = RequestMethod.GET)
     public String userUpgrade(Model model, Principal principal) {
+    	//Hiển thị thông tin người dùng
     	String userName = principal.getName();
         User loginedUser = service.findByUsername(userName);
         model.addAttribute("User", loginedUser);
+       
         model.addAttribute("Developer", new Developer());
         
         return "upgrade";
     }
      
+    //Xử lý người dùng cập nhật logo nhà phát triển
     @RequestMapping(value = "/uploadDevAvatar", method = RequestMethod.POST)
     public String uploadDevAvatar(Model model, Principal principal,@ModelAttribute User user, @RequestParam("image") MultipartFile multipartFile) throws IOException {
     	String userName = principal.getName();
@@ -268,13 +285,15 @@ public class UserController {
         if (multipartFile.isEmpty())
             return "redirect:/upgrade";
 
+        //Lấy tên file hình, lưu vào database cho người dùng ở cột devavatar
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         loginedUser.setDevavatar(fileName);
         service.save(loginedUser);
         
+        //Tên folder upload hình
         String uploadDir = System.getProperty("user.dir") + "/uploads";
+        //Lưu hình của người dùng vào folder 
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-        
         
         return "redirect:/upgrade";
     }
@@ -287,28 +306,31 @@ public class UserController {
         if (credentialfront.isEmpty() || credentialback.isEmpty())
             return "redirect:/upgrade";
 
+        //Lấy ra tên của 2 file hình
         String fileName1 = StringUtils.cleanPath(credentialfront.getOriginalFilename());
         String fileName2 = StringUtils.cleanPath(credentialback.getOriginalFilename());
+       //Lưu tên file hình vào cột dữ liệu cho người dùng
         developer.setCredentialfront(fileName1);
         developer.setCredentialback(fileName2);
         developer.setUsername(userName);
         
+        //Lấy ra số dư người dùng hiện tại
         int currBalance = loginedUser.getBalance();
         if (currBalance >= 500000)
         {
+        	//Upload hình CMND nhà phát triển vào folder uploads
         	String uploadDir = System.getProperty("user.dir") + "/uploads";
             FileUploadUtil.saveFile(uploadDir, fileName1, credentialfront);
             FileUploadUtil.saveFile(uploadDir, fileName2, credentialback);
         	developerService.save(developer);
         	
+        	//Cập nhật lại số dư và quyền người dùng
         	loginedUser.setBalance(currBalance - 500000);
         	loginedUser.setRole("ROLE_DEV");
         	service.save(loginedUser);
         } else {
             return "redirect:/upgrade";
         }
-
-    	
         return "redirect:/accountProfile";
     }
     
@@ -338,16 +360,20 @@ public class UserController {
             	
         return "redirect:/devProfile";
     }
-     
+    
+    //Hiển thị trang quên mật khẩu
     @RequestMapping(value = "/forgotPassword", method = RequestMethod.GET)
     public String forgotPassword(Model model) {
         return "forgot-password";
     }
     
+    //Xử lý thay đổi mật khẩu
     @RequestMapping(value = "/forgot-password", method = RequestMethod.POST)
     public String handleForgotPassword(Model model, Principal principal,@RequestParam("email") String email,RedirectAttributes redirectAttr) {
-        String token = RandomString.make(30);
+        //Tạo token dùng để xác thực yêu cầu quên mật khẩu của người dùng
+    	String token = RandomString.make(30);
         
+    	//Tạo mới đối tượng EmailDetails - để lưu thông tin email gửi đến người dùng
         EmailDetails emailDetails = new EmailDetails();
         try {
         	User currUser = service.findByEmail(email);
@@ -369,6 +395,7 @@ public class UserController {
                 String status = emailService.sendSimpleMail(emailDetails);
                 if (status.equals("Mail đã được gửi thành công ! Vui lòng kiểm tra Email để nhận đường link đổi mật khẩu"))
                 {
+                	//Lưu reset token vào bảng user cho người dùng
                 	currUser.setResetPasswordToken(token);
             		service.save(currUser);
                 }
@@ -381,6 +408,7 @@ public class UserController {
         return "redirect:/forgotPassword";
     }
     
+    //Trang cập nhật lại mật khẩu mới
     @RequestMapping(value = "/reset-password/{token}", method = RequestMethod.GET)
     public String showResetPasswordPage(@PathVariable(name = "token") String token, Model model, Principal principal) {
     	User currUser = service.getByResetPasswordToken(token);
@@ -395,6 +423,7 @@ public class UserController {
         return "reset-password";
     };
     
+    //Xử lý cập nhật mật khẩu mới
     @RequestMapping(value = "/reset-password", method = RequestMethod.POST)
     public String handleResetPassword(@RequestParam("newPassword") String newPassword,
     		@RequestParam("Token") String token,

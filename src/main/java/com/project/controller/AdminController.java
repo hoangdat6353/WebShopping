@@ -57,6 +57,7 @@ public class AdminController {
         
         List<User> listUsers = service.listAll();
         List<App> listApps = appService.listAll();
+        
         List<Categories> listCategories = categoryService.listAll();
         List<App> listFreeApps = appService.listAllAppsByStatusAndPayment("Publish", "Free");
         List<App> listPaidApps = appService.listAllAppsByStatusAndPayment("Publish", "Paid");
@@ -64,8 +65,10 @@ public class AdminController {
         model.addAttribute("listCategories", listCategories);
         model.addAttribute("listFreeApps", listFreeApps);
         model.addAttribute("listPaidApps", listPaidApps);
+        
         model.addAttribute("totalUsers", listUsers.size());
         model.addAttribute("totalApps", listApps.size());
+        
         model.addAttribute("User", loginedUser);      
         
         return "index-admin";
