@@ -154,8 +154,8 @@
                 <div class="col-lg-9">
                     <div class="brave_search">
                         <div class="brave_search_form">
-                            <form action="shop-search.php" method="POST">
-                                <input id="searchScroll" type="text" name="searching" placeholder="Tìm kiếm trên AppShopping">
+                            <form th:action="@{/search-apps}" method="POST">
+                                <input id="searchScroll" type="text" name="search" placeholder="Tìm kiếm trên AppShopping">
                                 <button type="submit" name="submitSearch" class="site-btn">TÌM KIẾM</button>
                             </form>
                         </div>

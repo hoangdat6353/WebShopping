@@ -50,7 +50,7 @@ public class DeveloperController {
 	        User loginedUser = service.findByUsername(userName);
 	        Developer currDev = developerService.findByUsername(userName);
 	        
-	        List<App> listAppsSold = appService.listAllAppsByDeveloperAndPayment(currDev.getDevname(), "Paid");
+	        List<App> listAppsSold = appService.listAllAppsByDeveloperAndStatus(currDev.getDevname(), "Publish");
 	        int Revenue = 0;
 	        for (int i = 0; i < listAppsSold.size(); i++)
 	        {
@@ -67,7 +67,6 @@ public class DeveloperController {
 	
 	@RequestMapping(value = "/approval", method = RequestMethod.GET)
     public String viewUploadAppPage(Model model,Principal principal) {
-    	 // Sau khi user login thanh cong se co principal
         String userName = principal.getName();
         User loginedUser = service.findByUsername(userName);
         Developer currDev = developerService.findByUsername(userName);

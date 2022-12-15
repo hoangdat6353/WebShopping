@@ -44,11 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	http.csrf().disable();
     	http.authorizeRequests().antMatchers("/login", "/logout").permitAll();
     	
-    	// Trang /userInfo yêu cầu phải login với vai trò ROLE_USER hoặc ROLE_ADMIN.
-        // Nếu chưa login, nó sẽ redirect tới trang /login.sau Mình dung hasAnyRole để cho phép ai được quyền vào
-        // 2  ROLE_USER và ROLEADMIN thì ta lấy từ database ra cái mà mình chèn vô ở bước 1 (chuẩn bị database)
-        //http.authorizeRequests().antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
-
+    
         http.authorizeRequests().antMatchers("/accountProfile").access("hasAnyRole('ROLE_USER', 'ROLE_DEV')");
         http.authorizeRequests().antMatchers("/upgrade").access("hasRole('ROLE_USER')");
         http.authorizeRequests().antMatchers("/devProfile","/index-dev","/dev-apps","/approval").access("hasRole('ROLE_DEV')");

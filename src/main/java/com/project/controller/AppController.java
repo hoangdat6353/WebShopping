@@ -245,7 +245,6 @@ public class AppController {
         model.addAttribute("listCategories", listCategories);
        
         List<App> listAppsFree = appService.listAllAppsByStatusAndPayment("Publish", "Free");
-        System.out.println("List apps Free" + listAppsFree);
         model.addAttribute("listAppsFree",listAppsFree);
         List<App> listAppsPaid = appService.listAllAppsByStatusAndPayment("Publish", "Paid");
         model.addAttribute("listAppsPaid",listAppsPaid);
@@ -329,7 +328,6 @@ public class AppController {
     
     @RequestMapping(value = "/search-apps", method = RequestMethod.POST)
     public String handleSearch(Principal principal, Model model,@RequestParam("search") String search,RedirectAttributes redirectAttr) {
-    	System.out.println("Search:" + search);
     	
     	List<App> listSearchResult = appService.findByAppnameContainingIgnoreCase(search);
     	if (listSearchResult  != null)
@@ -337,7 +335,6 @@ public class AppController {
     	else
     		redirectAttr.addFlashAttribute("message", "KHÔNG TÌM THẤY ỨNG DỤNG TƯƠNG TỰ NỘI DUNG BẠN TÌM KIẾM");
 
-    	System.out.println("Search result:" + listSearchResult);
     	redirectAttr.addFlashAttribute("listSearchResult", listSearchResult);
     	
         return "redirect:/shop-search";

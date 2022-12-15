@@ -283,7 +283,7 @@ public class UserController {
         User loginedUser = service.findByUsername(userName);
 
         if (multipartFile.isEmpty())
-            return "redirect:/upgrade";
+            return "redirect:/devProfile";
 
         //Lấy tên file hình, lưu vào database cho người dùng ở cột devavatar
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
@@ -295,7 +295,8 @@ public class UserController {
         //Lưu hình của người dùng vào folder 
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         
-        return "redirect:/upgrade";
+        System.out.println("REACHED HERE");
+        return "redirect:/devProfile";
     }
     
     @RequestMapping(value = "/upgradeDeveloper", method = RequestMethod.POST)
