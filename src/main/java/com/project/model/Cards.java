@@ -19,8 +19,8 @@ public class Cards {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
  private Long id;
- private int mathecao;
- private int soseri;
+ private Integer mathecao;
+ private Integer soseri;
  private int menhgia;
  private String ngaynap;
  private String trangthai;

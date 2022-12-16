@@ -157,8 +157,9 @@ public class AdminController {
     
     @RequestMapping("/accounts")
     public String viewUser(Model model) {
-    	 List<User> listUser = service.listAll();
-         model.addAttribute("listUsers", listUser);
+    	List<User> listUser = service.listAll();
+        model.addAttribute("listUser", listUser);
+        model.addAttribute("users", new User());
           
          return "account";
     }
@@ -188,16 +189,50 @@ public class AdminController {
    
    
     @RequestMapping(value = "/addcards", method = RequestMethod.POST)
-    public String saveCards(@ModelAttribute("Cards") Cards cards) {
-        cardService.save(cards);
+    public String saveCards(RedirectAttributes redirectAttr,@ModelAttribute("Cards") Cards cards) {
+    	
+    	int soseri = cards.getSoseri();
+    	int mathecao = cards.getMathecao();
+    	
+    	if((soseri == 0 || mathecao == 0)) {
+    		if(cards.getId() != null) {
+				redirectAttr.addFlashAttribute("message", "Cập nhật thẻ thất bại! Vui lòng điền đầy đủ thông tin");
+			} else {
+				redirectAttr.addFlashAttribute("message", "Thêm thẻ thất bại! Vui lòng điền đầy đủ thông tin");
+	    	}
+		}
+    	else {
+    			if (cardService.findCardsByCode(mathecao) == null && cardService.findCardsBySeri(soseri) == null) {
+    				
+//        			int mathecao1 = Integer.parseInt(mathecao);
+//        			int soseri1 = Integer.parseInt(soseri);
+    				cardService.save(cards);
+            	}
+            	else {
+            		if(cards.getId() != null) {
+            			redirectAttr.addFlashAttribute("message", "Cập nhật thẻ thất bại! Thẻ đã có trong hệ thống");
+            		}
+            		else{
+            			redirectAttr.addFlashAttribute("message", "Thêm thẻ thất bại! Thẻ đã có trong hệ thống");
+            		}
+            	}
+    		} 
+    	
         return "redirect:/cards";
     }
     
     
     @RequestMapping("/editcards/{id}")
-    public String showEditCardsPage(@PathVariable(name = "id") int id, Model model) {
-    	Cards cards = cardService.get(id);
-    	model.addAttribute("cards", cards);
+    public String showEditCategoriesPage(@PathVariable(name = "id") int id, Model model, @ModelAttribute("Cards") Cards cards) {
+    	
+    	Integer soseri = cards.getSoseri();
+    	Integer mathecao = cards.getMathecao();
+    	cards = cardService.get(id);
+    	
+    	if (cardService.findCardsByCode(mathecao) == null && cardService.findCardsBySeri(soseri) == null) {
+    		model.addAttribute("cards", cards);
+    	}
+    	
          
     	return "edit_cards";
     }
@@ -218,18 +253,49 @@ public class AdminController {
 
     
     @RequestMapping(value = "/addcategories", method = RequestMethod.POST)
-    public String saveCategories(@ModelAttribute("Categories") Categories categories) {
-        categoryService.save(categories);
-         
+    public String saveCategories(RedirectAttributes redirectAttr, @ModelAttribute("Categories") Categories categories) {
+    	
+    	String tentheloai = categories.getTentheloai();
+    	
+    	if(tentheloai == "") {
+    		if(categories.getId() != null) {
+				redirectAttr.addFlashAttribute("message", "Cập nhật thể loại thất bại! Vui lòng điền đầy đủ thông tin");
+			} else {
+				redirectAttr.addFlashAttribute("message", "Thêm thể loại thất bại! Vui lòng điền đầy đủ thông tin");
+	    	}
+		}
+    	else {
+    		if (categoryService.findByTentheloai(tentheloai) == null) {
+    			categoryService.save(categories);
+    		}
+    		else {
+    			if(categories.getId() != null) {
+    				redirectAttr.addFlashAttribute("message", "Cập nhật thể loại thất bại! Thể loại đã có trong hệ thống");
+    			}
+    			else{
+    				redirectAttr.addFlashAttribute("message", "Thêm thể loại thất bại! Thể loại đã có trong hệ thống");
+    			}
+    		}
+    	} 
+    		 
         return "redirect:/categories";
     }
     
     
     @RequestMapping("/editcategories/{id}")
-    public String showEditCategoriesPage(@PathVariable(name = "id") int id, Model model) {
-    	Categories categories = categoryService.get(id);
-    	model.addAttribute("categories", categories);
-         
+    public String showEditCategoriesPage(RedirectAttributes redirectAttr, @PathVariable(name = "id") int id, Model model,@ModelAttribute("Categories") Categories categories) {
+    	
+    	String tentheloai = categories.getTentheloai();
+    	categories = categoryService.get(id);
+    	if(tentheloai == "") {
+    		redirectAttr.addFlashAttribute("message", "Thêm thể loại thất bại! Vui lòng điền đầy đủ thông tin");
+    	}else {
+    		if (categoryService.findByTentheloai(tentheloai) == null) {
+        		model.addAttribute("categories", categories);
+        	}
+    	}
+    	
+    	
     	return "edit_categories";
     }
     

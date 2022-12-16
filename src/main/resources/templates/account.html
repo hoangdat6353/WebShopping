@@ -187,7 +187,8 @@
 							</h1>
 						</div><!-- /.page-header -->
 					
-				<div class="container">		
+				<div class="container">
+						
                 <div class="col-md-11" id="table">
                     <table class="table table-hover mt-4">
                         <thead >
@@ -196,25 +197,32 @@
                                 <th>Tên tài khoản</th>
                                 <th>Email</th>
 								<th>Cấp độ quyền hạn</th>
-                                <th class="text-center" colspan="2">Tùy chọn</th>
+                                <th class="text-center">Tùy chọn</th>
                             </tr>
                         </thead>
                         <tbody id="table-body">
-                        	<tr th:each="user : ${listUsers}">
-                        		<td th:text="${user.id}"> </td>
-                        		<td th:text="${user.username}"> </td>
-                        		<td th:text="${user.email}"> </td>
-                        		<td th:text="${user.role}"> </td>
-								<td class="text-center">
-									<button class="btn btn-success" type="submit" name="submitStatusPub"><a th:href="@{/edituser/{id}(id=${user.id})}">SỬA</a></button>
-								</td> 
-								<td class="text-center">
-									<button class="btn btn-danger" type="submit" name="submitStatusDelete"><a th:href="@{/deleteuser/{id}(id=${user.id})}">Xóa</a></button>
-								</td> 
-                        	</tr>
+                        <tr th:each="users : ${listUser}">
+				                <td th:text="${users.id}">ID</td>
+				                <td th:text="${users.username}">Tên tài khoản</td>
+				                <td th:text="${users.email}">Email</td>
+				                <td th:text="${users.role}">Cấp độ quyền hạn</td>
+				                <td>
+				                    <a th:href="@{/edituser/{id}(id=${users.id})}">Edit</a>
+				                    &nbsp;&nbsp;&nbsp;
+				                    <a th:href="@{/deleteuser/{id}(id=${users.id})}">Delete</a>
+				                </td>
+				            </tr>
                         </tbody>
                     </table>
                 </div>
+                <div class="overlay">
+									<div class="overlay-panel overlay-right">
+											<div th:if="${message != null}">
+											    <p class="text-warning">[[${message}]]</p>
+											</div>
+										</div>
+										
+						</div>
             </div>
     </div>
     <!-- text-danger -->

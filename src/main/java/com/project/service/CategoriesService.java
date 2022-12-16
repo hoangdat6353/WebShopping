@@ -31,4 +31,9 @@ public class CategoriesService {
     public void delete(long id) {
         repo.deleteById(id);
     }
+    
+    public Categories findByTentheloai(String tentheloai)
+    {
+    	return repo.getTentheloaiByTentheloai(tentheloai);
+    }
 }

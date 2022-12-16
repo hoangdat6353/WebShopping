@@ -40,4 +40,13 @@ public class CardsService {
     public List<Cards> listAllCardsByUsername(String username) {
         return repo.findAllCardsByUsername(username);
     }
+    public Cards findCardsByCode(Integer mathecao)
+    {
+    	return repo.findCardsByCode(mathecao);
+    }
+    
+    public Cards findCardsBySeri(Integer soseri)
+    {
+    	return repo.findCardsBySeri(soseri);
+    }
 }
