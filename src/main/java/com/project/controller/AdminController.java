@@ -163,6 +163,44 @@ public class AdminController {
           
          return "account";
     }
+    
+    @RequestMapping(value = "/adduser", method = RequestMethod.POST)
+    public String saveUser(@ModelAttribute("user") User users, RedirectAttributes redirectAttr) {
+    	String username = users.getUsername();
+    	String email = users.getEmail();
+    	String role = users.getRole();
+    	
+    	//Lấy currentUser ra
+    	User currUser = service.get(users.getId());
+    	
+    	if(username == "" || email == "" ||  role == "") {
+    		if(users.getId() != null) {
+				redirectAttr.addFlashAttribute("message", "Cập nhật user thất bại! Vui lòng điền đầy đủ thông tin");
+			} else {
+				redirectAttr.addFlashAttribute("message", "Thêm user thất bại! Vui lòng điền đầy đủ thông tin");
+	    	}
+		}
+    	else {
+    		//Nếu không trùng username và email thì update lại thông tin của currUser
+    		if (service.findByUsername(username) == null && service.findByEmail(email) == null) {
+    			currUser.setUsername(username);
+    			currUser.setEmail(email);
+    			currUser.setRole(role);
+    			service.save(currUser);
+        	}
+        	else {
+        		if(users.getId() != null) {
+        			redirectAttr.addFlashAttribute("message", "Cập nhật user thất bại! user đã có trong hệ thống");
+        		}
+        		else{
+        			redirectAttr.addFlashAttribute("message", "Thêm user thất bại! user đã có trong hệ thống");
+        		}
+        	}
+    	} 
+    	
+        
+        return "redirect:/accounts";
+    }
       
     @RequestMapping("/edituser/{id}")
     public String showEditUserPage(@PathVariable(name = "id") int id, Model model) {
