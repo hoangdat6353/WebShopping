@@ -213,7 +213,7 @@ public class AdminController {
     @RequestMapping("/deleteuser/{id}")
     public String deleteUser(@PathVariable(name = "id") int id) {
         service.delete(id);
-        return "redirect:/account";       
+        return "redirect:/accounts";       
     }
     
     @RequestMapping("/cards")

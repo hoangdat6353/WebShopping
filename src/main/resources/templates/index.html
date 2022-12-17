@@ -95,6 +95,10 @@
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="header_top_right">
+                        <div class="header_top_right_social" th:if="${Role == 'Developer'}">
+          						<a href='index-dev'><i class='fa fa-user'></i> Trang quản trị của nhà phát triển </a>	
+							</div>
+							
                             <div class="header_top_right_social" th:if="${User != null}">
           						<a href='accountProfile'><i class='fa fa-user' th:text="' Xin chào, ' + ${User.username}"></i></a>	
 							</div>
